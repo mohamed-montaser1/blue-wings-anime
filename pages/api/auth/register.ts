@@ -12,8 +12,16 @@ export default async function handler(
   if (req.method !== "POST")
     return res.status(405).json({ message: "Method Not Allowed" });
   await connectDB();
-  const { username, email, password, confirmPassword, isArtist } = req.body;
-  if (!username || !email || !password || !confirmPassword) {
+  const { username, email, password, confirmPassword, isArtist, isAdmin } =
+    req.body;
+  if (
+    !username ||
+    !email ||
+    !password ||
+    !confirmPassword ||
+    isAdmin === undefined ||
+    isArtist === undefined
+  ) {
     return res.status(400).json({ message: "Invalid Data" });
   }
   if (password !== confirmPassword) {
@@ -52,13 +60,13 @@ export default async function handler(
     email,
     password: hashedPassword,
     artist: isArtist,
+    admin: isAdmin,
   });
   let err = newUser.validateSync();
   if (err) {
     return res.json({ message: err.errors.email.message });
   }
   let token = createToken(newUser._id.toString());
-  console.log(token);
 
   try {
     await newUser.save().then(() => {

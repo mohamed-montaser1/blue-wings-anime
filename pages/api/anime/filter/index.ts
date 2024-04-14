@@ -39,7 +39,7 @@ export default async function handler(
   type = filters[0].includes(filter) ? "type" : "status";
 
   let mangas = await Manga.find({ [type]: { $eq: filter } })
-    .populate({ path: "author", select: "username avatar -_id" })
+    .populate({ path: "author", select: "username -_id" })
     .limit(limit);
 
   if (mangas.length === 0) {

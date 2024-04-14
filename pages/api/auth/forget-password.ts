@@ -35,7 +35,7 @@ export default async function handler(
     });
   }
 
-  setCookie("code", code, { req, res });
+  setCookie("code", code, { req, res, httpOnly: true });
 
   return res.status(200).json({
     message: "تم إرسال رمز التحقق بنجاح",

@@ -40,7 +40,7 @@ export default async function handler(
 
   let token = createToken(user._id);
 
-  setCookie("token", token, { req, res });
+  setCookie("token", token, { req, res, httpOnly: true });
   // correct password & email
   return res.status(200).json({ success: true, message: "login success" });
 }

@@ -77,7 +77,7 @@ export default async function handler(
   }
   let token = createToken(newUser._id.toString());
 
-  setCookie("token", token, { req, res });
+  setCookie("token", token, { req, res, httpOnly: true });
 
   try {
     await newUser.save().then(() => {

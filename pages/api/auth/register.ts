@@ -4,6 +4,7 @@ import bcrypt from "bcryptjs";
 import connectDB from "@/utils/connectDB";
 import createToken from "@/utils/generateToken";
 import mongoose from "mongoose";
+import { setCookie } from "cookies-next";
 
 export default async function handler(
   req: NextApiRequest,
@@ -68,11 +69,13 @@ export default async function handler(
   }
   let token = createToken(newUser._id.toString());
 
+  setCookie("token", token, { req, res });
+
   try {
     await newUser.save().then(() => {
-      return res.status(201).json({ token });
+      return res.status(201).json({ message: "تم حفظ المستخدم بنجاح" });
     });
   } catch (error) {
-    res.json({ message: "error while saving user", error });
+    return res.json({ message: "error while saving user", error });
   }
 }

@@ -1,11 +1,7 @@
-import jwt from "jsonwebtoken";
+import { sign } from "jsonwebtoken";
 
 export default function createToken(userId: string) {
-  console.log(process.env.JWT_SECRET as string);
-  const token = jwt.sign({ sub: userId }, process.env.JWT_SECRET as string, {
-    algorithm: "HS256",
-    expiresIn: "2 days",
+  return sign({ sub: userId }, process.env.JWT_SECRET as string, {
+    expiresIn: "2d",
   });
-
-  return token;
 }

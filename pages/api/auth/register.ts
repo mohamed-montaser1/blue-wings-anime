@@ -6,6 +6,15 @@ import createToken from "@/utils/generateToken";
 import mongoose from "mongoose";
 import { setCookie } from "cookies-next";
 
+type TBody = {
+  username: string;
+  email: string;
+  password: string;
+  confirmPassword: string;
+  isArtist: boolean;
+  isAdmin: boolean;
+};
+
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
@@ -13,16 +22,15 @@ export default async function handler(
   if (req.method !== "POST")
     return res.status(405).json({ message: "Method Not Allowed" });
   await connectDB();
-  const { username, email, password, confirmPassword, isArtist, isAdmin } =
-    req.body;
-  if (
-    !username ||
-    !email ||
-    !password ||
-    !confirmPassword ||
-    isAdmin === undefined ||
-    isArtist === undefined
-  ) {
+  const {
+    username,
+    email,
+    password,
+    confirmPassword,
+    isArtist,
+    isAdmin,
+  }: TBody = req.body;
+  if (!username || !email || !password || !confirmPassword) {
     return res.status(400).json({ message: "Invalid Data" });
   }
   if (password !== confirmPassword) {

@@ -1,15 +1,16 @@
 import { Schema, model, models } from "mongoose";
 
-interface TUser {
+export interface User {
   _id: Schema.Types.ObjectId;
   username: string;
   email: string;
+  avatar: string;
   password: string;
   artist: boolean;
   admin: boolean;
 }
 
-const UserSchema = new Schema<TUser>(
+const UserSchema = new Schema<User>(
   {
     _id: {
       type: Schema.Types.ObjectId,
@@ -34,6 +35,10 @@ const UserSchema = new Schema<TUser>(
       type: String,
       required: [true, "يجب أن تدخل كلمة السر لحسابك"],
       minlength: 8,
+    },
+    avatar: {
+      type: String,
+      required: [true, "يجب إدخال صورة مستخدم"],
     },
     artist: {
       type: Boolean,

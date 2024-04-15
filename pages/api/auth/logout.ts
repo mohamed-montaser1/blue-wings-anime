@@ -11,7 +11,7 @@ export default async function handler(
     });
   }
 
-  deleteCookie("token", { httpOnly: true });
+  deleteCookie("token", { req, res, httpOnly: true });
 
   return res.status(200).json({
     message: "Logout Success",

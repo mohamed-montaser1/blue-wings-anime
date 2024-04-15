@@ -4,7 +4,7 @@ import { JwtPayload, verify } from "jsonwebtoken";
 type ReturnedValue = { success: boolean; sub?: string };
 
 export default function isAuthenticated(req: NextApiRequest): ReturnedValue {
-  let token = req.headers["authorization"]?.trim();
+  let token = req.cookies["token"]?.trim();
   if (!token || !token.startsWith("Bearer ")) {
     return { success: false };
   }

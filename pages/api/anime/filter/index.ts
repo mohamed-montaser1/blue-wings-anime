@@ -1,4 +1,5 @@
 import Manga from "@/models/Manga";
+import User from "@/models/User";
 import connectDB from "@/utils/connectDB";
 import isAuthenticated from "@/utils/isAuthenticated";
 import { NextApiRequest, NextApiResponse } from "next";
@@ -11,8 +12,9 @@ export default async function handler(
     return res.status(405).json({ message: "Method Not Allowed" });
   }
   await connectDB();
+  await User.init();
   let auth = isAuthenticated(req);
-  if (!auth) {
+  if (!auth.success) {
     return res.status(401).json({
       message: "المستخدم غير مسجل",
     });

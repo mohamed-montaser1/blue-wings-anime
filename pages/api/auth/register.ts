@@ -75,7 +75,7 @@ export default async function handler(
   if (err) {
     return res.json({ message: err.errors.email.message });
   }
-  let token = createToken(newUser._id.toString());
+  let token = 'Bearer ' + createToken(newUser._id.toString());
 
   setCookie("token", token, { req, res, httpOnly: true });
 

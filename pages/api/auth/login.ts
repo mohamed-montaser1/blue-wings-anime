@@ -38,9 +38,11 @@ export default async function handler(
     return res.status(401).json({ message: "كلمة المرور غير صحيحة" });
   }
 
-  let token = "Bearer " + createToken(user._id);
+  let accessToken = "Bearer " + createToken(user._id, false);
+  let refreshToken = "Bearer " + createToken(user._id, true);
 
-  setCookie("token", token, { req, res, httpOnly: true });
-  // correct password & email
+  setCookie("access_token", accessToken, { req, res, httpOnly: true });
+  setCookie("refresh_token", refreshToken, { req, res, httpOnly: true });
+
   return res.status(200).json({ success: true, message: "login success" });
 }

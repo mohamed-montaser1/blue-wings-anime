@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import User from "@/models/User";
+import User, { UserRoles } from "@/models/User";
 import bcrypt from "bcryptjs";
 import connectDB from "@/utils/connectDB";
 import createToken from "@/utils/generateToken";
@@ -11,8 +11,9 @@ type TBody = {
   email: string;
   password: string;
   confirmPassword: string;
-  isArtist: boolean;
-  isAdmin: boolean;
+  role: UserRoles;
+  discord: string;
+  avatar: string;
 };
 
 export default async function handler(
@@ -27,10 +28,20 @@ export default async function handler(
     email,
     password,
     confirmPassword,
-    isArtist,
-    isAdmin,
+    role,
+    discord,
+    avatar,
   }: TBody = req.body;
-  if (!username || !email || !password || !confirmPassword) {
+
+  if (
+    !username ||
+    !email ||
+    !password ||
+    !confirmPassword ||
+    !role ||
+    !discord ||
+    !avatar
+  ) {
     return res.status(400).json({ message: "Invalid Data" });
   }
   if (password !== confirmPassword) {
@@ -68,16 +79,28 @@ export default async function handler(
     username,
     email,
     password: hashedPassword,
-    artist: isArtist,
-    admin: isAdmin,
+    role,
+    discord:
+      role === UserRoles.ARTIST || role === UserRoles.EDITOR ? discord : "",
+    avatar,
   });
   let err = newUser.validateSync();
   if (err) {
-    return res.json({ message: err.errors.email.message });
+    let errors = err.errors;
+    let errorsArr = [];
+    for (let key in errors) {
+      errorsArr.push(errors[key].message);
+    }
+    return res.json({
+      errors: errorsArr,
+    });
   }
-  let token = 'Bearer ' + createToken(newUser._id.toString());
 
-  setCookie("token", token, { req, res, httpOnly: true });
+  let accessToken = "Bearer " + createToken(newUser._id.toString(), false);
+  let refreshToken = "Bearer " + createToken(newUser._id.toString(), true);
+
+  setCookie("access_token", accessToken, { req, res, httpOnly: true });
+  setCookie("refresh_token", refreshToken, { req, res, httpOnly: true });
 
   try {
     await newUser.save().then(() => {

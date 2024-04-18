@@ -1,13 +1,20 @@
 import { Schema, model, models } from "mongoose";
 
+export enum UserRoles {
+  USER = "user",
+  ADMIN = "admin",
+  ARTIST = "artist",
+  EDITOR = "editor",
+}
+
 export interface User {
   _id: Schema.Types.ObjectId;
   username: string;
   email: string;
   avatar: string;
   password: string;
-  artist: boolean;
-  admin: boolean;
+  role: string;
+  discord: string;
 }
 
 const UserSchema = new Schema<User>(
@@ -40,13 +47,14 @@ const UserSchema = new Schema<User>(
       type: String,
       required: [true, "يجب إدخال صورة مستخدم"],
     },
-    artist: {
-      type: Boolean,
-      default: false,
+    role: {
+      type: String,
+      enum: ["admin", "artist", "editor", "user"],
+      default: "user",
     },
-    admin: {
-      type: Boolean,
-      default: false,
+    discord: {
+      type: String,
+      default: "",
     },
   },
   { timestamps: true }

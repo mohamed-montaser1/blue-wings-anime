@@ -22,3 +22,8 @@ img {
 .swiper-button-next::after {
   display: none;
 }
+@media (max-width: 767px) {
+  .hero .swiper-wrapper {
+    height: calc(100dvh - 141px);
+  }
+}

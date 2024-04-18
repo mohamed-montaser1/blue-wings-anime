@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import Container from "../Container";
 import { Swiper, SwiperSlide } from "swiper/react";
 import {
@@ -24,7 +24,7 @@ export default function Hero() {
   };
 
   return (
-    <div className="hero" style={{ height: "90vh" }}>
+    <div className="hero">
       <Container fluid={false}>
         <Swiper
           pagination={{ clickable: true }}
@@ -35,47 +35,23 @@ export default function Hero() {
             crossFade: true,
           }}
           effect="fade"
-          autoplay={true}
-          modules={[
+           modules={[
             Keyboard,
             Pagination,
             Navigation,
             Autoplay,
             EffectFade,
-            Autoplay,
           ]}
-          className="max-[102px]:h-[60vh]"
+          className="max-[102px]:h-[60vh] min-h-fit"
         >
-          <SwiperSlide>
-            <Slide
-              image="https://kingofmanga.com/wp-content/uploads/2024/04/Magic-Emperor.webp"
-              info={info}
-            />
-          </SwiperSlide>
-          <SwiperSlide>
-            <Slide
-              image="https://i2.wp.com/kingofmanga.com/wp-content/uploads/2024/04/5ed701d2-f575-4217-9493-39efb154ca83.jpg"
-              info={info}
-            />
-          </SwiperSlide>
-          <SwiperSlide>
-            <Slide
-              image="https://i2.wp.com/kingofmanga.com/wp-content/uploads/2024/04/d9d2aea8-7478-4609-8832-d36ddc650228.jpg"
-              info={info}
-            />
-          </SwiperSlide>
-          <SwiperSlide>
-            <Slide
-              image="https://kingofmanga.com/wp-content/uploads/2024/04/Magic-Emperor.webp "
-              info={info}
-            />
-          </SwiperSlide>
-          <SwiperSlide>
-            <Slide
-              image="https://kingofmanga.com/wp-content/uploads/2024/04/Magic-Emperor.webp "
-              info={info}
-            />
-          </SwiperSlide>
+          {Array.from({ length: 5 }).map(() => (
+            <SwiperSlide>
+              <Slide
+                image="https://placehold.co/416x400/393C4C/white"
+                info={info}
+              />
+            </SwiperSlide>
+          ))}
         </Swiper>
       </Container>
     </div>

@@ -9,6 +9,7 @@ import SwiperArrow from "./swiper-arrow.svg";
 import StarIcon from "./star.svg";
 import HalfStarIcon from "./half-star.svg";
 import EmptyStarIcon from "./empty-star.svg";
+import Logo from "./logo.svg";
 
 export {
   Home,
@@ -21,5 +22,6 @@ export {
   SwiperArrow,
   StarIcon,
   HalfStarIcon,
-  EmptyStarIcon
+  EmptyStarIcon,
+  Logo,
 };

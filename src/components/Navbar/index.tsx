@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from "react";
-import Logo from "@/public/logo.svg";
+"use client";
+import React, { useState } from "react";
+import { Logo } from "@/../public/icons";
 import Image from "next/image";
 import Container from "../Container";
 import Menu from "./Menu";
 import Button from "../Button";
-import { MenuIcon, UserIcon } from "@/public/icons";
+import { MenuIcon, UserIcon } from "@/../public/icons";
 import MobileMenu from "./MobileMenu";
 
 export default function Navbar() {

@@ -1,6 +1,6 @@
 import Image from "next/image";
 import MenuItem from "./MenuItem";
-import { Home, ArtPen, Heart, WorkList } from "@/public/icons";
+import { Home, ArtPen, Heart, WorkList } from "@/../public/icons";
 import { usePathname } from "next/navigation";
 
 export default function Menu() {

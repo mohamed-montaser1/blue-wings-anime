@@ -1,3 +1,4 @@
+import Image from "next/image";
 import React from "react";
 
 interface Props {
@@ -12,7 +13,9 @@ interface Props {
 export default function Slide({ image, info }: Props) {
   return (
     <div className="flex justify-between items-center gap-24 mt-3 max-[991px]:gap-4 min-[779px]:pl-16 pt-10 min-[900px]:max-h-[410px] h-fit mb-16 relative max-[767px]:h-full">
-      <img
+      <Image
+        width={416}
+        height={400}
         src={image}
         alt="slide-img"
         className="w-[311px] max-h-[538px] object-cover max-[657px]:h-[778px] max-[767px]:w-full max-[767px]:absolute max-[767px]:-z-[1] top-0 object-center max-[767px]:blur-md"

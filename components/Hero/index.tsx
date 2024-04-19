@@ -1,6 +1,7 @@
 import React from "react";
 import Container from "../Container";
 import { Swiper, SwiperSlide } from "swiper/react";
+import placeholder from "@/public/placeholder.svg";
 import {
   Keyboard,
   Pagination,
@@ -35,21 +36,14 @@ export default function Hero() {
             crossFade: true,
           }}
           effect="fade"
-           modules={[
-            Keyboard,
-            Pagination,
-            Navigation,
-            Autoplay,
-            EffectFade,
-          ]}
+          autoplay={true}
+          grabCursor={true}
+          modules={[Keyboard, Pagination, Navigation, Autoplay, EffectFade]}
           className="max-[102px]:h-[60vh] min-h-fit"
         >
-          {Array.from({ length: 5 }).map(() => (
-            <SwiperSlide>
-              <Slide
-                image="https://placehold.co/416x400/393C4C/white"
-                info={info}
-              />
+          {Array.from({ length: 5 }).map((x, i) => (
+            <SwiperSlide key={i}>
+              <Slide image={placeholder} info={info} />
             </SwiperSlide>
           ))}
         </Swiper>

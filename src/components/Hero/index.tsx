@@ -1,7 +1,8 @@
+"use client";
 import React from "react";
 import Container from "../Container";
 import { Swiper, SwiperSlide } from "swiper/react";
-import placeholder from "@/public/placeholder.svg";
+import placeholder from "@/../public/placeholder.svg";
 import {
   Keyboard,
   Pagination,
@@ -26,7 +27,7 @@ export default function Hero() {
 
   return (
     <div className="hero">
-      <Container fluid={false}>
+      <Container>
         <Swiper
           pagination={{ clickable: true }}
           keyboard={true}
@@ -41,7 +42,7 @@ export default function Hero() {
           modules={[Keyboard, Pagination, Navigation, Autoplay, EffectFade]}
           className="max-[102px]:h-[60vh] min-h-fit"
         >
-          {Array.from({ length: 5 }).map((x, i) => (
+          {Array.from({ length: 5 }).map((_, i) => (
             <SwiperSlide key={i}>
               <Slide image={placeholder} info={info} />
             </SwiperSlide>
@@ -50,12 +51,4 @@ export default function Hero() {
       </Container>
     </div>
   );
-}
-
-async function getData() {
-  return new Promise((resolve, reject) => {
-    setTimeout(() => {
-      resolve({ x: "xxxx", y: "yyyyy", z: "zzzzzzz" });
-    }, 1000);
-  });
 }

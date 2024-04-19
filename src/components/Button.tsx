@@ -4,7 +4,7 @@ interface Props
     HTMLButtonElement
   > {
   children: React.ReactNode;
-  variant?: "main" | "";
+  variant?: "main" | "form-btn";
 }
 
 interface Styles {
@@ -14,6 +14,7 @@ interface Styles {
 export default function Button({ children, variant, ...props }: Props) {
   let styles: Styles = {
     main: "from-main-color to-secondary-color bg-gradient-to-br",
+    "form-btn": "bg-card text-main-color",
   };
   let style = variant ? styles[variant] : "";
   return (

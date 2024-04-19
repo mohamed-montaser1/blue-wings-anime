@@ -28,3 +28,7 @@ img {
     height: calc(100dvh - 141px);
   }
 }
+
+.input {
+  @apply flex-1 h-full bg-transparent outline-none caret-secondary-color text-[#ccc] placeholder:text-[#ccc];
+}

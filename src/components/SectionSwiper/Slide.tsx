@@ -4,7 +4,11 @@ import SmallCardPlacholder from "@/../public/small-card-placeholder.svg";
 import { EmptyStarIcon, HalfStarIcon, StarIcon } from "@/../public/icons";
 import { TAnime } from "./index";
 
-export default function Slide({ data }: { data: TAnime }) {
+interface Props {
+  data: TAnime;
+}
+
+export default function Slide({ data }: Props) {
   let height = "h-[364px]";
   return (
     <div className="w-full h-full rounded-md bg-card p-5 flex flex-col items-center">
@@ -25,13 +29,13 @@ export default function Slide({ data }: { data: TAnime }) {
         <p className="text-[#ccc] mb-2">عدد الفصول {data.chaptersNumber}</p>
         <div className="rate flex gap-2">
           <div className="stars flex gap-[6px]">
-            {data.rate.map((el) =>
+            {data.rate.map((el, i) =>
               el === 1 ? (
-                <Image src={StarIcon} alt="star-icon" />
+                <Image src={StarIcon} alt="star-icon" key={i} />
               ) : el === 0.5 ? (
-                <Image src={HalfStarIcon} alt="star-icon" />
+                <Image src={HalfStarIcon} alt="star-icon" key={i} />
               ) : (
-                <Image src={EmptyStarIcon} alt="star-icon" />
+                <Image src={EmptyStarIcon} alt="star-icon" key={i} />
               )
             )}
           </div>

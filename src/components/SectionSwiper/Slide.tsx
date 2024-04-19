@@ -1,7 +1,7 @@
 import Image from "next/image";
 import React from "react";
-import SmallCardPlacholder from "@/public/small-card-placeholder.svg";
-import { EmptyStarIcon, HalfStarIcon, StarIcon } from "@/public/icons";
+import SmallCardPlacholder from "@/../public/small-card-placeholder.svg";
+import { EmptyStarIcon, HalfStarIcon, StarIcon } from "@/../public/icons";
 import { TAnime } from "./index";
 
 export default function Slide({ data }: { data: TAnime }) {

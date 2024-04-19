@@ -1,4 +1,4 @@
-import React from "react";
+"use client";
 import Container from "../Container";
 import SectionHeader from "../SectionHeader";
 import SectionSwiper, { TAnime } from "../SectionSwiper";
@@ -39,7 +39,7 @@ export default function Trend() {
   return (
     <div>
       <Container className="lg:px-0">
-        <SectionHeader title="آخر الأعمال الرائجة" id='trend' />
+        <SectionHeader title="آخر الأعمال الرائجة" id="trend" />
         <SectionSwiper slidesPerView={4} data={data} id="trend" />
       </Container>
     </div>

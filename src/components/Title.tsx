@@ -1,4 +1,4 @@
-import { TitleLine } from "@/public/icons";
+import { TitleLine } from "@/../public/icons";
 import Image from "next/image";
 import React from "react";
 

@@ -5,13 +5,14 @@ interface Props
   > {
   children: React.ReactNode;
   variant?: "main" | "form-btn";
+  type?: "submit" | "reset" | "button";
 }
 
 interface Styles {
   [key: string]: string;
 }
 
-export default function Button({ children, variant, ...props }: Props) {
+export default function Button({ children, variant, type, ...props }: Props) {
   let styles: Styles = {
     main: "from-main-color to-secondary-color bg-gradient-to-br",
     "form-btn": "bg-card text-main-color",
@@ -20,7 +21,8 @@ export default function Button({ children, variant, ...props }: Props) {
   return (
     <button
       {...props}
-      className={`text-white text-[20px] px-[14px] py-[5px] rounded-[10px] flex items-center gap-[10px] ${style} ${props.className}`}
+      type={type}
+      className={`text-white text-[20px] px-[14px] py-[5px] rounded-[10px] flex items-center gap-[10px] ${style} ${props.className} outline-none`}
     >
       {children}
     </button>

@@ -32,3 +32,11 @@ img {
 .input {
   @apply flex-1 h-full bg-transparent outline-none caret-secondary-color text-[#ccc] placeholder:text-[#ccc];
 }
+
+.input-container {
+  @apply w-full mb-[22px];
+}
+
+.error {
+  @apply text-red-500 mt-2;
+}

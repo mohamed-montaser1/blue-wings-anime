@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Logo } from "@/../public/icons";
 import Image from "next/image";
 import Container from "../Container";
@@ -9,10 +9,14 @@ import { MenuIcon, UserIcon } from "@/../public/icons";
 import MobileMenu from "./MobileMenu";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 export default function Navbar() {
   const { status, data } = useSession();
-  const [activeMobileMenu, setActiveMobileMenu] = useState<boolean>(false);
+  const [activeMobileMenu, setActiveMobileMenu] = useState(false);
+  const isAuth = status === "authenticated";
+  const router = useRouter();
+
   function handleActiveMenu() {
     setActiveMobileMenu((prev) => !prev);
   }
@@ -30,8 +34,8 @@ export default function Navbar() {
           <Menu />
         </div>
         <div className="btn-container flex">
-          {status === "unauthenticated" ? (
-            <Button variant="main">
+          {!isAuth ? (
+            <Button variant="main" onClick={() => router.push("/login")}>
               <span className="max-[466px]:hidden">تسجيل الدخول</span>
               <Image src={UserIcon} alt="user-icon" />
             </Button>
@@ -41,7 +45,7 @@ export default function Navbar() {
               className="flex flex-row-reverse gap-2 cursor-pointer md:bg-sub-card md:p-4 md:rounded-xl"
             >
               <Image
-                src={data?.user?.image ?? ""}
+                src={data.user!.image ?? ""}
                 width={"50"}
                 height={"40"}
                 alt="user-icon"

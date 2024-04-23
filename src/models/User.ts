@@ -1,4 +1,5 @@
 import { Schema, model, models } from "mongoose";
+import path from "path";
 
 export enum UserRoles {
   USER = "user",
@@ -15,6 +16,7 @@ export interface User {
   password: string;
   role: "user" | "admin" | "artist" | "editor";
   discord: string;
+  verified_email: boolean;
 }
 
 const UserSchema = new Schema<User>(
@@ -32,13 +34,17 @@ const UserSchema = new Schema<User>(
       trim: true,
       lowercase: true,
     },
+    verified_email: {
+      type: Boolean,
+      default: false,
+    },
     password: {
       type: String,
       minlength: 8,
     },
     avatar: {
       type: String,
-      default: "",
+      default: "default.jpeg",
     },
     role: {
       type: String,

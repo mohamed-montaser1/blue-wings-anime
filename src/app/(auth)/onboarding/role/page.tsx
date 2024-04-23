@@ -3,9 +3,10 @@
 import Button from "@/components/Button";
 import Container from "@/components/Container";
 import { TRole } from "@/lib/types";
-import { signOut, useSession } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
+import "@/app/globals.css";
 
 type TRoles = {
   [key in TRole]: string;

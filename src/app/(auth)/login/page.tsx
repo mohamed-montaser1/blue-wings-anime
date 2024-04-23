@@ -1,8 +1,5 @@
 "use client";
-
-import Button from "@/components/Button";
-import Container from "@/components/Container";
-import Title from "@/components/Title";
+import { Button, Container, Title, Input } from "@/components";
 import Image from "next/image";
 import React, { useEffect, useRef } from "react";
 import {
@@ -12,17 +9,14 @@ import {
   UserOutlineIcon,
 } from "@/../public/icons";
 import Link from "next/link";
-import { useSession, signIn, signOut } from "next-auth/react";
-import { redirect, useRouter } from "next/navigation";
-import Input from "@/components/Input";
+import { useSession, signIn } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import loginSchema from "@/lib/loginSchema";
 import { ToastContainer, toast } from "react-toastify";
-import LoginLayout from "./layout";
 
 import "react-toastify/dist/ReactToastify.css";
-import RootLayout from "@/app/layout";
 
 type FormValues = {
   email: string;
@@ -54,14 +48,14 @@ export default function Login() {
     signIn("credentials", {
       ...getValues(),
       redirect: false,
+      callbackUrl: "/onboarding/verify-email",
     }).then((res) => {
-      console.log(res);
-      if (res?.ok) {
+      console.log(res)
+      if (!res?.error) {
         toast("تم تسجيل الدخول بنجاح", { type: "success" });
-        redirect("/onboarding/verify-email");
-      } else if (res?.status === 401 && !res?.ok) {
-        toast("لا يوجد مستخدم مسجل بهذا الإيميل", { type: "error" });
-        toast("أو أن كلمة المرور خاطئه", { type: "error" });
+        router.replace(res?.url as string);
+      } else {
+        toast(res.error, { type: "error" });
       }
     });
   }

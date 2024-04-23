@@ -13,9 +13,12 @@
     "@types/bcrypt": "^5.0.2",
     "axios": "^1.6.8",
     "bcrypt": "^5.1.1",
+    "fs": "^0.0.1-security",
+    "jimp": "^0.22.12",
     "mongoose": "^8.3.2",
     "next": "14.2.2",
     "next-auth": "^4.24.7",
+    "node": "^18.20.2",
     "react": "^18",
     "react-dom": "^18",
     "react-hook-form": "^7.51.3",
@@ -25,7 +28,7 @@
     "zod": "^3.22.5"
   },
   "devDependencies": {
-    "@types/node": "^20",
+    "@types/node": "^20.12.7",
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "eslint": "^8",

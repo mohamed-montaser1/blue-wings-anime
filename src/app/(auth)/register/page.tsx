@@ -1,7 +1,5 @@
 "use client";
-import Button from "@/components/Button";
-import Container from "@/components/Container";
-import Title from "@/components/Title";
+import { Button, Container, Title, Input } from "@/components";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import {
@@ -9,18 +7,24 @@ import {
   LockIcon,
   PlainIcon,
   UserOutlineIcon,
-} from "../../../../public/icons";
+} from "@/../public/icons";
 import Link from "next/link";
-import { useSession, signIn, signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import Input from "@/components/Input";
-import { FieldValues, useForm } from "react-hook-form";
-import { ToastContainer, toast } from "react-toastify";
+import { useSession, signIn, signOut } from "next-auth/react";
+import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import axios from "axios";
 import registerSchema from "@/lib/registerSchema";
+import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "@/app/globals.css";
+
+type FormValues = {
+  username: string;
+  email: string;
+  password: string;
+  confirmPassword: string;
+};
 
 export default function Register() {
   const {
@@ -28,7 +32,7 @@ export default function Register() {
     handleSubmit,
     formState: { isSubmitting, errors },
     getValues,
-  } = useForm({
+  } = useForm<FormValues>({
     resolver: zodResolver(registerSchema),
   });
   const passwordRefOne = useRef<HTMLInputElement>();
@@ -42,6 +46,7 @@ export default function Register() {
   const { status } = useSession();
   const router = useRouter();
   useEffect(() => {
+    // signOut();
     if (status === "authenticated") {
       router.push("/");
     }
@@ -52,10 +57,12 @@ export default function Register() {
     toast(error, { type: "error" });
   }, [error]);
 
-  const handleSignInWithGoogle = () => signIn("google");
-
-  async function handleRegularSignUp(e: FieldValues) {
-    const res = await axios
+  const handleSignInWithGoogle = async () => {
+    const res = await signIn("google", { callbackUrl: "/onboarding/role" });
+    console.log(res);
+  };
+  async function handleRegularSignUp(_: FormValues) {
+    await axios
       .post("/api/auth/register", {
         ...getValues(),
       })
@@ -63,16 +70,14 @@ export default function Register() {
         if (value.status === 201) {
           toast("تم إنشاء الحساب بنجاح", { type: "success" });
           setTimeout(() => {
-            router.push("/login");
+            router.replace("/login");
           }, 3000);
         }
       })
       .catch((e) => {
         const statusCode = e.response.status as number;
-        switch (statusCode) {
-          case 409:
-            setError("يوجد مستخدم بالفعل بهذا البريد الإلكتروني");
-            break;
+        if (statusCode === 409) {
+          setError("يوجد مستخدم بالفعل بهذا البريد الإلكتروني");
         }
       });
   }

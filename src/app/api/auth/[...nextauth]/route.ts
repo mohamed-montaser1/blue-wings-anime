@@ -21,19 +21,28 @@ export const authOptions: AuthOptions = {
     CredentialsProvider({
       name: "credentials",
       async authorize(credentials, req) {
-        await dbConnect()
-        const { success } = loginSchema.safeParse(credentials);
-        const { email, password } = credentials as {
-          email: string;
-          password: string;
-        };
-        if (!success) return null;
-        const user = await User.findOne({ email });
-        if (!user) return null;
-        let validPassword = compare(password, user.password);
+        await dbConnect();
+        return null;
+        // const { success } = loginSchema.safeParse(credentials);
+        // if (!success) {
+        //   throw new Error("البيانات المدخله غير صالحة");
+        // }
 
-        if (!validPassword) return null;
-        return user;
+        // const { email, password } = credentials as {
+        //   email: string;
+        //   password: string;
+        // };
+        // const user = await User.findOne({ email });
+        // if (!user) {
+        //   throw new Error("لا يوجد مستخدم بهذا البريد الإلكتروني");
+        // }
+
+        // let validPassword = await compare(password, user.password);
+        // if (!validPassword) {
+        //   throw new Error("كلمة المرور غير صالحة");
+        // }
+
+        // return user;
       },
       credentials: {},
     }),
@@ -41,6 +50,7 @@ export const authOptions: AuthOptions = {
   callbacks: {
     session({ session, token }) {
       session.user.id = token.id;
+      console.log({ session, token });
       return session;
     },
     jwt({ token, account, user }) {

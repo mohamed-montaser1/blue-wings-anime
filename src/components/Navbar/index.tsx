@@ -10,12 +10,23 @@ import MobileMenu from "./MobileMenu";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+// import fs from "fs/promises";
+import axios from "axios";
 
 export default function Navbar() {
   const { status, data } = useSession();
+  console.log(data);
   const [activeMobileMenu, setActiveMobileMenu] = useState(false);
   const isAuth = status === "authenticated";
   const router = useRouter();
+
+  async function readImage() {
+    // const res = await axios.get(`/api/readfile?filename=default-profile.jpeg`);
+    // console.log(res.data.url);
+  }
+  useEffect(() => {
+    readImage();
+  }, []);
 
   function handleActiveMenu() {
     setActiveMobileMenu((prev) => !prev);
@@ -45,7 +56,7 @@ export default function Navbar() {
               className="flex flex-row-reverse gap-2 cursor-pointer md:bg-sub-card md:p-4 md:rounded-xl"
             >
               <Image
-                src={data.user!.image ?? ""}
+                src={"" ?? ""}
                 width={"50"}
                 height={"40"}
                 alt="user-icon"

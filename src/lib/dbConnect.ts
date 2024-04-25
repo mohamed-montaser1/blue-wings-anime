@@ -1,16 +1,27 @@
-import mongoose from "mongoose";
+import mongoose, { ConnectOptions } from "mongoose";
 
-export default async function dbConnect(url?: string) {
-  let uri = url ?? (process.env.DB_URL as string);
-  try {
-    const connection = await mongoose.connect(uri, {
-      dbName: "anime-db",
-    });
-    console.log("-#-".repeat(20));
-    console.log("DB Connected Successfully");
-    console.log("-#-".repeat(20));
-    return connection;
-  } catch (error) {
-    console.log("error while connect to the mongodb", error);
-  }
+const { MONGODB_URI } = process.env;
+
+if (!MONGODB_URI) {
+  throw new Error(
+    "Please define the MONGODB_URI environment variable inside .env.local"
+  );
 }
+
+let cached = global.mongoose;
+
+if (!cached) {
+  cached = global.mongoose = { conn: null, prmoise: null };
+}
+
+async function dbConnect() {
+  if (cached.conn) return cached.conn;
+  const opts: ConnectOptions = {
+    dbName: "Anime-DB",
+  };
+  cached.prmoise = mongoose.connect(MONGODB_URI as string, opts);
+  cached.conn = await cached.prmoise;
+  return cached.conn;
+}
+
+export default dbConnect;

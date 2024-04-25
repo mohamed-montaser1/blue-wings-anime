@@ -18,6 +18,7 @@ import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "@/app/globals.css";
+import { TRegisterError } from "@/lib/types";
 
 type FormValues = {
   username: string;
@@ -37,7 +38,7 @@ export default function Register() {
   });
   const passwordRefOne = useRef<HTMLInputElement>();
   const passwordRefTwo = useRef<HTMLInputElement>();
-  const [error, setError] = useState<string>("");
+  const [userRole, setUserRole] = useState("user");
 
   let { ref: passwordOneRef, ...passwordOneRegister } = register("password");
   let { ref: passwordTwoRef, ...passwordTwoRegister } =
@@ -52,34 +53,27 @@ export default function Register() {
     }
   }, []);
 
-  useEffect(() => {
-    if (!error) return;
-    toast(error, { type: "error" });
-  }, [error]);
-
   const handleSignInWithGoogle = async () => {
     const res = await signIn("google", { callbackUrl: "/onboarding/role" });
     console.log(res);
   };
   async function handleRegularSignUp(_: FormValues) {
-    await axios
-      .post("/api/auth/register", {
+    try {
+      const res = await axios.post("/api/auth/register", {
         ...getValues(),
-      })
-      .then((value) => {
-        if (value.status === 201) {
-          toast("تم إنشاء الحساب بنجاح", { type: "success" });
-          setTimeout(() => {
-            router.replace("/login");
-          }, 3000);
-        }
-      })
-      .catch((e) => {
-        const statusCode = e.response.status as number;
-        if (statusCode === 409) {
-          setError("يوجد مستخدم بالفعل بهذا البريد الإلكتروني");
-        }
+        role: userRole,
       });
+      toast(res.data.message, { type: "success" });
+      signIn("credentials", {
+        email: getValues().email,
+        password: getValues().password,
+        callbackUrl: "/onboarding/verify-email",
+      });
+    } catch (e: unknown) {
+      let error = e as unknown as TRegisterError;
+      const errorMsg = error.response.data.message;
+      toast(errorMsg, { type: "error" });
+    }
   }
 
   function showPassword(n: number) {
@@ -173,6 +167,28 @@ export default function Register() {
           {errors.confirmPassword && (
             <p className="error">{`${errors.confirmPassword.message}`}</p>
           )}
+        </div>{" "}
+        <div className="input-container w-full">
+          <Input className="items-center py-0">
+            <select
+              className="input"
+              dir="rtl"
+              tabIndex={4}
+              className="bg-card w-full text-white py-[10px] outline-none"
+              value={userRole}
+              onChange={(e) => setUserRole(e.target.value)}
+            >
+              <option value="user" defaultChecked>
+                مستخدم
+              </option>
+              <option value="editor" defaultChecked>
+                محرر
+              </option>
+              <option value="artist" defaultChecked>
+                فنان
+              </option>
+            </select>
+          </Input>
         </div>
         <Button
           variant="form-btn"

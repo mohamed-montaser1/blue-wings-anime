@@ -10,10 +10,12 @@ import StarIcon from "./star.svg";
 import HalfStarIcon from "./half-star.svg";
 import EmptyStarIcon from "./empty-star.svg";
 import Logo from "./logo.svg";
-import PlainIcon from "./plain.svg"
+import PlainIcon from "./plain.svg";
 import UserOutlineIcon from "./user-outline.svg";
 import LockIcon from "./lock.svg";
 import GoogleIcon from "./google.svg";
+import SettingsIcon from "./settings.svg";
+import LogoutIcon from "./logout.svg";
 
 export {
   Home,
@@ -32,4 +34,6 @@ export {
   UserOutlineIcon,
   LockIcon,
   GoogleIcon,
+  SettingsIcon,
+  LogoutIcon,
 };

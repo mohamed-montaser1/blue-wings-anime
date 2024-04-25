@@ -1,6 +1,36 @@
+import { HTMLAttributes } from "react";
+
 export type TRole = "user" | "editor" | "artist" | "admin";
+
 export type TProfile = {
   username: string;
   email: string;
   avatar: string;
+};
+
+export type TAuthenticatedUser = {
+  name: string;
+  email: string;
+  image: string;
+};
+
+export type TRegisterError = {
+  response: {
+    data: {
+      error: boolean;
+      message: string;
+    };
+  };
+};
+
+export type TDropdownOptionProps = React.DetailedHTMLProps<
+  HTMLAttributes<HTMLDivElement>,
+  HTMLDivElement
+> & {
+  icon: any;
+  text: string;
+};
+
+export type TDropdownMenuProps = {
+  children: React.ReactNode;
 };

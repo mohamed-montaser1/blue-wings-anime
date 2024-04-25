@@ -18,23 +18,24 @@ export async function POST(req: Request) {
     $or: [{ username: body.username }, { email: body.email }],
   });
 
-  if (user !== null) {
+  if (user) {
     return NextResponse.json(
       {
-        user: null,
+        error: true,
         message: "المستخدم موجود بالفعل",
       },
       { status: 409 }
     );
   }
 
-  let hashPassowrd = await hash(body.password, 10);
+  let hashPassword = await hash(body.password, 10);
 
   const newUser = await User.create({
     _id: new mongoose.Types.ObjectId(),
     username: body.username,
     email: body.email,
-    passowrd: hashPassowrd,
+    password: hashPassword,
+    role: body.role,
   });
 
   try {

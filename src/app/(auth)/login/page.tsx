@@ -40,9 +40,18 @@ export default function Login() {
     if (status === "authenticated") {
       router.push("/");
     }
-  }, []);
+  }, [status]);
 
-  const handleSignInWithGoogle = () => signIn("google");
+  const handleSignInWithGoogle = () => {
+    signIn("google").then((res) => {
+      console.log("#".repeat(30), "RESPONSE", "#".repeat(30));
+      if (res?.ok) {
+        router.replace("/");
+      } else {
+        toast(res?.error, { type: "error" });
+      }
+    });
+  };
 
   async function handleSignIn(data: FormValues) {
     signIn("credentials", {
@@ -50,10 +59,12 @@ export default function Login() {
       redirect: false,
       callbackUrl: "/onboarding/verify-email",
     }).then((res) => {
-      console.log(res)
+      console.log(res);
       if (!res?.error) {
         toast("تم تسجيل الدخول بنجاح", { type: "success" });
-        router.replace(res?.url as string);
+        setTimeout(() => {
+          router.replace(res?.url as string);
+        }, 1000);
       } else {
         toast(res.error, { type: "error" });
       }

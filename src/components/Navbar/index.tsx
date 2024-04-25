@@ -1,32 +1,20 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { Logo } from "@/../public/icons";
+import { Logo, MenuIcon, UserIcon } from "@/../public/icons";
 import Image from "next/image";
-import Container from "../Container";
 import Menu from "./Menu";
-import Button from "../Button";
-import { MenuIcon, UserIcon } from "@/../public/icons";
 import MobileMenu from "./MobileMenu";
-import { useSession } from "next-auth/react";
-import Link from "next/link";
+import { Button, Container } from "@/components";
+import { signOut, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-// import fs from "fs/promises";
-import axios from "axios";
+import AccountSettings from "./AccountSettings";
 
 export default function Navbar() {
-  const { status, data } = useSession();
-  console.log(data);
+  const { status } = useSession();
   const [activeMobileMenu, setActiveMobileMenu] = useState(false);
+
   const isAuth = status === "authenticated";
   const router = useRouter();
-
-  async function readImage() {
-    // const res = await axios.get(`/api/readfile?filename=default-profile.jpeg`);
-    // console.log(res.data.url);
-  }
-  useEffect(() => {
-    readImage();
-  }, []);
 
   function handleActiveMenu() {
     setActiveMobileMenu((prev) => !prev);
@@ -51,26 +39,7 @@ export default function Navbar() {
               <Image src={UserIcon} alt="user-icon" />
             </Button>
           ) : (
-            <Link
-              href={"/account"}
-              className="flex flex-row-reverse gap-2 cursor-pointer md:bg-sub-card md:p-4 md:rounded-xl"
-            >
-              <Image
-                src={"" ?? ""}
-                width={"50"}
-                height={"40"}
-                alt="user-icon"
-                className="rounded-2xl w-10 aspect-square md:h-full md:w-[50px]"
-              />
-              <div className="flex flex-col justify-center">
-                <h3 className="text-white text-left text-[14px] md:text-[16px]">
-                  {data?.user?.name}
-                </h3>
-                <p className="text-[#ccc] text-[14px] md:block hidden text-left">
-                  {data?.user?.email}
-                </p>
-              </div>
-            </Link>
+            <AccountSettings />
           )}
           <Button
             className="hidden max-[1199px]:block p-0"

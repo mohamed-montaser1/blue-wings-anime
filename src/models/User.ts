@@ -16,7 +16,7 @@ export interface User {
   password: string;
   role: "user" | "admin" | "artist" | "editor";
   discord: string;
-  verified_email: boolean;
+  email_verified: boolean;
 }
 
 const UserSchema = new Schema<User>(
@@ -34,7 +34,7 @@ const UserSchema = new Schema<User>(
       trim: true,
       lowercase: true,
     },
-    verified_email: {
+    email_verified: {
       type: Boolean,
       default: false,
     },
@@ -44,7 +44,7 @@ const UserSchema = new Schema<User>(
     },
     avatar: {
       type: String,
-      default: "default.jpeg",
+      default: "default-profile.jpeg",
     },
     role: {
       type: String,

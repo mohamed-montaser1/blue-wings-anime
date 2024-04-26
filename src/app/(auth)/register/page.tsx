@@ -55,7 +55,6 @@ export default function Register() {
 
   const handleSignInWithGoogle = async () => {
     const res = await signIn("google", { callbackUrl: "/onboarding/role" });
-    console.log(res);
   };
   async function handleRegularSignUp(_: FormValues) {
     try {

@@ -7,7 +7,6 @@ import "@/app/globals.css"
 
 export default function Home() {
   const { data } = useSession();
-  console.log(data);
   return (
     <>
       <Hero />

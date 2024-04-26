@@ -1,5 +1,6 @@
 import { TDropdownMenuProps, TDropdownOptionProps } from "@/lib/types";
 import Image from "next/image";
+import { useEffect } from "react";
 
 function DropdownMenu({ children }: TDropdownMenuProps) {
   return (

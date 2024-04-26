@@ -1,7 +1,7 @@
 "use client";
 
 import { signOut, useSession } from "next-auth/react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "@/components";
 import Image from "next/image";
 import { DropdownMenu, DropdownOption } from "./DropdownMenu";
@@ -20,6 +20,13 @@ export default function AccountSettings() {
     setShowDropdown((prev) => !prev);
   }
 
+  useEffect(() => {
+    document.body.addEventListener("click", (e) => {
+      const target: HTMLElement = e.target as HTMLElement;
+      const ele = document.getElementById("DropdownMenu");
+      if (!target.contains(ele)) setShowDropdown(false);
+    });
+  }, []);
   return (
     <div className="relative">
       <Button
@@ -46,7 +53,7 @@ export default function AccountSettings() {
         <DropdownMenu>
           <DropdownOption
             icon={SettingsIcon}
-            text="زيارة الحساب"
+            text="عرض الملف الشخصي"
             onClick={() => router.push("/account")}
           />
           <DropdownOption

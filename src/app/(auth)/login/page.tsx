@@ -44,7 +44,6 @@ export default function Login() {
 
   const handleSignInWithGoogle = () => {
     signIn("google").then((res) => {
-      console.log("#".repeat(30), "RESPONSE", "#".repeat(30));
       if (res?.ok) {
         router.replace("/");
       } else {
@@ -59,7 +58,6 @@ export default function Login() {
       redirect: false,
       callbackUrl: "/onboarding/verify-email",
     }).then((res) => {
-      console.log(res);
       if (!res?.error) {
         toast("تم تسجيل الدخول بنجاح", { type: "success" });
         setTimeout(() => {

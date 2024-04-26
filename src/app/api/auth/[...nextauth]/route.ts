@@ -64,9 +64,6 @@ export const authOptions: AuthOptions = {
   ],
   callbacks: {
     async session({ session, token, ...props }) {
-      console.log("#".repeat(30));
-      console.log({ session, token, ...props });
-      console.log("#".repeat(30));
       session.user.id = token.id;
       session.user.email_verified = token.email_verified;
       session.user.role = token.role;

@@ -1,4 +1,9 @@
-import NextAuth, { AuthOptions } from "next-auth";
+import NextAuth, {
+  Account,
+  AuthOptions,
+  Profile,
+  User as UserAuth,
+} from "next-auth";
 import DiscordProvider from "next-auth/providers/discord";
 import GoogleProvider from "next-auth/providers/google";
 import CredentialsProvider from "next-auth/providers/credentials";
@@ -6,7 +11,8 @@ import { z } from "zod";
 import User from "@/models/User";
 import { compare } from "bcrypt";
 import dbConnect from "@/lib/dbConnect";
-import mongoose from "mongoose";
+import mongoose, { isValidObjectId } from "mongoose";
+import { AdapterUser } from "next-auth/adapters";
 
 const loginSchema = z.object({
   email: z.string().email("يجب ان تدخل بريد الكتروني صالح"),
@@ -89,12 +95,17 @@ export const authOptions: AuthOptions = {
         token.accessToken = account.access_token;
         token.id = user.id;
       }
-      let u = await User.findById(token.id);
-      token.email_verified = u.email_verified;
+      if (isValidObjectId(token.id)) {
+        let u = await User.findById(token.id);
+        token.email_verified = u.email_verified;
+      }
       token.image = token.picture;
       return token;
     },
-    async signIn({ user, profile }) {
+    async signIn({ user, profile, account, credentials }) {
+      console.log("#".repeat(30));
+      console.log("DATA ===>", { user, profile, account, credentials });
+      console.log("#".repeat(30));
       await dbConnect();
       const isFound = await User.findOne({ email: user.email });
       if (isFound) return true;
@@ -126,6 +137,7 @@ export const authOptions: AuthOptions = {
   },
   secret: process.env.JWT_SECRET,
 };
+async function signInWithCredentials() {}
 
 export const handler = NextAuth(authOptions);
 

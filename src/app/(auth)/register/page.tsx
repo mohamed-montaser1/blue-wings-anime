@@ -199,7 +199,11 @@ export default function Register() {
           <Image src={PlainIcon} alt="plain-icon" />
         </Button>
       </form>
-      <span className="text-white text-2xl my-7">أو</span>
+      <div className="my-8 flex items-center gap-5 w-[603px]">
+        <hr className="flex-1" />
+        <span className="text-white text-2xl">أو</span>
+        <hr className="flex-1" />
+      </div>
       <div className="w-[600px] bg-card min-h-[100px] rounded-3xl flex items-center justify-center">
         <Button
           className="bg-sub-card px-[40px] py-[15px]"

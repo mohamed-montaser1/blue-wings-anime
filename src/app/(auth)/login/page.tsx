@@ -117,7 +117,11 @@ export default function Login() {
           <Image src={PlainIcon} alt="plain-icon" />
         </Button>
       </form>
-      <span className="text-white text-2xl my-7">أو</span>
+      <div className="my-8 flex items-center gap-5 w-[603px]">
+        <hr className="flex-1" />
+        <span className="text-white text-2xl">أو</span>
+        <hr className="flex-1" />
+      </div>
       <div className="w-[600px] bg-card min-h-[100px] rounded-3xl grid place-items-center">
         <Button
           className="bg-sub-card px-[40px] py-[15px]"
@@ -128,9 +132,9 @@ export default function Login() {
         </Button>
       </div>
       <p className="mt-[20px] text-white">
-        ليس لديك حساب بالفعل ؟
+        ليس لديك حساب بالفعل ؟{" "}
         <Link href={"/register"} className="text-main-color">
-          إنشئ حساب جديد
+          قم بإنشاء حساب جديد
         </Link>
       </p>
 

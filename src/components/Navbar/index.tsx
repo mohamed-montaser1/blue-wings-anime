@@ -1,11 +1,11 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Logo, MenuIcon, UserIcon } from "@/../public/icons";
 import Image from "next/image";
 import Menu from "./Menu";
 import MobileMenu from "./MobileMenu";
 import { Button, Container } from "@/components";
-import { signOut, useSession } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import AccountSettings from "./AccountSettings";
 

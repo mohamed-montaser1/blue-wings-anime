@@ -16,6 +16,7 @@ import LockIcon from "./lock.svg";
 import GoogleIcon from "./google.svg";
 import SettingsIcon from "./settings.svg";
 import LogoutIcon from "./logout.svg";
+import CameraIcon from "./camera.svg";
 
 export {
   Home,
@@ -36,4 +37,5 @@ export {
   GoogleIcon,
   SettingsIcon,
   LogoutIcon,
+  CameraIcon,
 };

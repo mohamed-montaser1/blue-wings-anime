@@ -46,12 +46,12 @@ export default function Register() {
 
   const { status } = useSession();
   const router = useRouter();
+
   useEffect(() => {
-    // signOut();
     if (status === "authenticated") {
       router.push("/");
     }
-  }, []);
+  }, [status]);
 
   const handleSignInWithGoogle = async () => {
     const res = await signIn("google", { callbackUrl: "/onboarding/role" });
@@ -171,10 +171,9 @@ export default function Register() {
         <div className="input-container w-full">
           <Input className="items-center py-0">
             <select
-              className="input"
               dir="rtl"
               tabIndex={4}
-              className="bg-card w-full text-white py-[10px] outline-none"
+              className="bg-card w-full py-[10px] outline-none text-white"
               value={userRole}
               onChange={(e) => setUserRole(e.target.value)}
             >

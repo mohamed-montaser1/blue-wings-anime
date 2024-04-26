@@ -22,7 +22,7 @@ export default function Button({ children, variant, type, ...props }: Props) {
     <button
       {...props}
       type={type}
-      className={`text-white text-[20px] px-[14px] py-[5px] rounded-[10px] flex items-center gap-[10px] ${style} ${props.className} outline-none`}
+      className={`text-white text-[20px] px-[20px] py-[10px] rounded-[10px] flex items-center gap-[10px] ${style} ${props.className} outline-none`}
     >
       {children}
     </button>

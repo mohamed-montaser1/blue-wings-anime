@@ -63,9 +63,13 @@ export const authOptions: AuthOptions = {
     }),
   ],
   callbacks: {
-    async session({ session, token }) {
+    async session({ session, token, ...props }) {
+      console.log("#".repeat(30));
+      console.log({ session, token, ...props });
+      console.log("#".repeat(30));
       session.user.id = token.id;
       session.user.email_verified = token.email_verified;
+      session.user.role = token.role;
       return session;
     },
     async jwt({ token, trigger, account, user, session }) {
@@ -98,14 +102,14 @@ export const authOptions: AuthOptions = {
       if (isValidObjectId(token.id)) {
         let u = await User.findById(token.id);
         token.email_verified = u.email_verified;
+        token.role = u.role;
+      } else {
+        token.role = "user";
       }
       token.image = token.picture;
       return token;
     },
     async signIn({ user, profile, account, credentials }) {
-      console.log("#".repeat(30));
-      console.log("DATA ===>", { user, profile, account, credentials });
-      console.log("#".repeat(30));
       await dbConnect();
       const isFound = await User.findOne({ email: user.email });
       if (isFound) return true;

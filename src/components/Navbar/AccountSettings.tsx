@@ -1,13 +1,13 @@
 "use client";
 
 import { signOut, useSession } from "next-auth/react";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Button } from "@/components";
 import Image from "next/image";
 import { DropdownMenu, DropdownOption } from "./DropdownMenu";
 import { LogoutIcon, SettingsIcon } from "@/../public/icons";
 import { useRouter } from "next/navigation";
-import defaultAvatar from "@/../uploads/default-profile.jpeg";
+import defaultAvatar from "@/../public/uploads/default-profile.jpeg";
 
 export default function AccountSettings() {
   const { data } = useSession();
@@ -26,15 +26,13 @@ export default function AccountSettings() {
         className="flex flex-row-reverse gap-2 cursor-pointer md:bg-sub-card md:p-4 md:rounded-xl"
         onClick={handleToggleDropdown}
       >
-        {avatar !== null && (
-          <Image
-            src={defaultAvatar}
-            width={"50"}
-            height={"40"}
-            alt="user-icon"
-            className="rounded-2xl w-10 aspect-square md:h-full md:w-[50px]"
-          />
-        )}
+        <Image
+          src={avatar}
+          width={"50"}
+          height={"40"}
+          alt="user-icon"
+          className="rounded-2xl w-10 aspect-square md:h-full md:w-[50px]"
+        />
         <div className="flex flex-col justify-center">
           <h3 className="text-white text-left text-[14px] md:text-[16px]">
             {user?.name}

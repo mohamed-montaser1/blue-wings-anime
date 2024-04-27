@@ -10,7 +10,7 @@ export default function MenuItem({ children, className, active, link }: Props) {
     <li>
       <a
         href={link}
-        className={`flex items-center gap-[10px] text-[12px] cursor-pointer ${className} ${
+        className={`flex items-center gap-[10px] text-sm cursor-pointer ${className} ${
           active ? "text-secondary-color text-[14px]" : "text-white"
         } hover:text-secondary-color transition-colors duration-300 ease-in`}
       >

@@ -70,7 +70,7 @@ export default function Login() {
   }
 
   return (
-    <Container className="flex flex-col items-center mt-16">
+    <Container className="flex flex-col items-center my-16">
       <Title lineSize={"medium"}>تسجيل الدخول</Title>
       <form
         className="mt-[80px] flex flex-col w-[603px] max-w-full items-center"
@@ -115,24 +115,26 @@ export default function Login() {
           <Image src={PlainIcon} alt="plain-icon" />
         </Button>
       </form>
-      <div className="my-8 flex items-center gap-5 w-[603px]">
+      <div className="my-8 flex items-center gap-5 w-[603px] max-w-full">
         <hr className="flex-1" />
         <span className="text-white text-2xl">أو</span>
         <hr className="flex-1" />
       </div>
-      <div className="w-[600px] bg-card min-h-[100px] rounded-3xl grid place-items-center">
+      <div className="w-[600px] max-w-full bg-card min-h-[100px] rounded-3xl grid place-items-center">
         <Button
-          className="bg-sub-card px-[40px] py-[15px]"
+          className="bg-sub-card px-[20px] py-[20px]"
           onClick={handleSignInWithGoogle}
         >
-          <span>تسجيل الدخول بإستخدام Google</span>
+          <span className="inline-block max-[450px]:hidden">
+            تسجيل الدخول بإستخدام Google
+          </span>
           <Image src={GoogleIcon} alt="google-icon" />
         </Button>
       </div>
       <p className="mt-[20px] text-white">
         ليس لديك حساب بالفعل ؟{" "}
         <Link href={"/register"} className="text-main-color">
-          قم بإنشاء حساب جديد
+          إنشاء حساب جديد
         </Link>
       </p>
 

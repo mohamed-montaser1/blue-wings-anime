@@ -54,7 +54,7 @@ export default function Register() {
   }, [status]);
 
   const handleSignInWithGoogle = async () => {
-    const res = await signIn("google", { callbackUrl: "/onboarding/role" });
+    await signIn("google", { callbackUrl: "/onboarding/role" });
   };
   async function handleRegularSignUp(_: FormValues) {
     try {
@@ -197,22 +197,24 @@ export default function Register() {
           <Image src={PlainIcon} alt="plain-icon" />
         </Button>
       </form>
-      <div className="my-8 flex items-center gap-5 w-[603px]">
+      <div className="my-8 flex items-center gap-5 w-[603px] max-w-full">
         <hr className="flex-1" />
         <span className="text-white text-2xl">أو</span>
         <hr className="flex-1" />
       </div>
-      <div className="w-[600px] bg-card min-h-[100px] rounded-3xl flex items-center justify-center">
+      <div className="w-[600px] max-w-full bg-card min-h-[100px] rounded-3xl flex items-center justify-center">
         <Button
-          className="bg-sub-card px-[40px] py-[15px]"
+          className="bg-sub-card p-[25px]"
           onClick={handleSignInWithGoogle}
         >
-          <span>تسجيل الدخول بإستخدام Google</span>
+          <span className="hidden sm:inline-block">
+            تسجيل الدخول بإستخدام Google
+          </span>
           <Image src={GoogleIcon} alt="google-icon" />
         </Button>
       </div>
       <p className="mt-[20px] text-white">
-        لديك حساب بالفعل ؟
+        لديك حساب بالفعل ؟{" "}
         <Link href={"/login"} className="text-main-color">
           تسجيل الدخول
         </Link>

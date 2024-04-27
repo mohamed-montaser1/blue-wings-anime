@@ -15,12 +15,13 @@ const config: Config = {
         page: "#272A38",
         card: "#303343",
         "sub-card": "#393C4C",
-        "main-color": "#9128FF",
-        "secondary-color": "#4264FF",
+        "main-color": "#18B2FF",
+        "secondary-color": "#9128FF",
       },
     },
   },
-  plugins: [],
+  darkMode: "class",
+  plugins: [require("tw-elements-react/dist/plugin.cjs")],
 };
 
 export default config;

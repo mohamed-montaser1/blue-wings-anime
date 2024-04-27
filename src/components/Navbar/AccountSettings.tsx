@@ -20,13 +20,6 @@ export default function AccountSettings() {
     setShowDropdown((prev) => !prev);
   }
 
-  useEffect(() => {
-    document.body.addEventListener("click", (e) => {
-      const target: HTMLElement = e.target as HTMLElement;
-      const ele = document.getElementById("DropdownMenu");
-      if (!target.contains(ele)) setShowDropdown(false);
-    });
-  }, []);
   return (
     <div className="relative">
       <Button

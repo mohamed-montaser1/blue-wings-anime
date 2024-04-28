@@ -40,7 +40,7 @@ const UserSchema = new Schema<User>(
     },
     password: {
       type: String,
-      minlength: 8,
+      minlength: 10,
     },
     avatar: {
       type: String,

@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 import fs from "fs";
 import { join } from "path";
 
-export async function GET(req: NextApiRequest) {
+export async function GET(req: Request & NextApiRequest) {
   const url = req.url as string;
   const query = url.substr(url.indexOf("?filename")).substr(1);
   const filename = query.split("=")[1];

@@ -8,12 +8,10 @@ import { signOut } from "next-auth/react";
 export default function Menu() {
   let path = usePathname();
   let page = path === "/" ? "home" : path.substr(1);
-  // useEffect(() => {
-  //   signOut()
-  // }, [])
+
   return (
-    <div className="menu max-[1199px]:hidden">
-      <ul className="flex gap-[38px] items-center">
+    <div className="menu hidden xl:block">
+      <ul className="flex xxl:gap-10 gap-5 items-center">
         <MenuItem link="/" active={page === "home"}>
           <Image src={Home} alt="home-icon" />
           <span>الصفحة الرئيسية</span>

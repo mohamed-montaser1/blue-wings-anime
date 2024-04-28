@@ -1,3 +1,4 @@
+import { Session } from "next-auth";
 import { HTMLAttributes } from "react";
 
 export type TRole = "user" | "editor" | "artist" | "admin";
@@ -33,4 +34,18 @@ export type TDropdownOptionProps = React.DetailedHTMLProps<
 
 export type TDropdownMenuProps = {
   children: React.ReactNode;
+};
+
+export type TUseUserReturn = {
+  user: Session["user"] | null;
+  avatar: string | null;
+  status: "authenticated" | "loading" | "unauthenticated";
+};
+
+export type TUseUserProps = {
+  required: boolean;
+};
+
+export type TGlobalMongoose = typeof globalThis & {
+  mongoose: any;
 };

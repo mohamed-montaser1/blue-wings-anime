@@ -40,7 +40,7 @@ export default function Login() {
     if (status === "authenticated") {
       router.push("/");
     }
-  }, [status]);
+  }, [status, router]);
 
   const handleSignInWithGoogle = () => {
     signIn("google").then((res) => {
@@ -111,7 +111,7 @@ export default function Login() {
           className={`py-[10px] px-[50px] h-[57px] disabled:bg-sub-card`}
           type="submit"
         >
-          <span className="text-main-color">تسجيل الدخول</span>
+          <span className="text-primary">تسجيل الدخول</span>
           <Image src={PlainIcon} alt="plain-icon" />
         </Button>
       </form>
@@ -133,7 +133,7 @@ export default function Login() {
       </div>
       <p className="mt-[20px] text-white">
         ليس لديك حساب بالفعل ؟{" "}
-        <Link href={"/register"} className="text-main-color">
+        <Link href={"/register"} className="text-primary">
           إنشاء حساب جديد
         </Link>
       </p>

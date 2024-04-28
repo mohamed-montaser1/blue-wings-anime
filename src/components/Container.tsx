@@ -1,3 +1,5 @@
+import "@/app/globals.css";
+
 interface Props
   extends React.DetailedHTMLProps<
     React.HTMLAttributes<HTMLDivElement>,
@@ -7,11 +9,5 @@ interface Props
 }
 
 export default function Container({ children, ...props }: Props) {
-  return (
-    <div
-      className={`w-full sm:w-[540px] md:w-[720px] px-[15px] mx-auto lg:w-[960px] xl:w-[1140px] xxl:w-[1320px] ${props.className}`}
-    >
-      {children}
-    </div>
-  );
+  return <div className={`container ${props.className}`}>{children}</div>;
 }

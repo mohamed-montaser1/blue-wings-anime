@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+body {
+  padding-top: 121px;
+}
+
 img {
   user-select: none;
 }
@@ -30,7 +34,7 @@ img {
 }
 
 .input {
-  @apply flex-1 h-full bg-transparent outline-none caret-secondary-color text-[#ccc] placeholder:text-[#ccc];
+  @apply flex-1 h-full bg-transparent outline-none caret-secondary text-[#ccc] placeholder:text-[#ccc];
 }
 
 .input-container {
@@ -39,4 +43,27 @@ img {
 
 .error {
   @apply text-red-500 mt-2;
+}
+
+.container {
+  @apply w-full sm:w-[540px] md:w-[720px] px-[15px] mx-auto lg:w-[960px] xl:w-[1140px] xxl:w-[1320px];
+}
+
+.banner {
+  @apply min-h-screen z-[50000] fixed top-0  w-1/4;
+}
+
+/* Change Autocomplete styles in Chrome*/
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover,
+textarea:-webkit-autofill:focus,
+select:-webkit-autofill,
+select:-webkit-autofill:hover,
+select:-webkit-autofill:focus {
+  -webkit-text-fill-color: #ccc;
+  background: transparent;
+  transition: background-color 5000s ease-in-out 0s;
 }

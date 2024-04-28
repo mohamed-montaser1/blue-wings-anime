@@ -14,8 +14,8 @@ interface Styles {
 
 export default function Button({ children, variant, type, ...props }: Props) {
   let styles: Styles = {
-    main: "from-main-color to-secondary-color bg-gradient-to-br",
-    "form-btn": "bg-card text-main-color",
+    main: "from-primary to-secondary bg-gradient-to-br",
+    "form-btn": "bg-card text-primary",
   };
   let style = variant ? styles[variant] : "";
   return (

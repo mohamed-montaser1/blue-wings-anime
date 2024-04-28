@@ -21,7 +21,9 @@ export default function Title({ children, lineSize, ...props }: Props) {
   }
   return (
     <div {...props} className={`flex flex-col w-fit ${props.className}`}>
-      <h2 className={`text-[40px] text-white text-center mb-2`}>{children}</h2>
+      <h2 className={`text-2xl md:text-[40px] text-white text-center md:mb-4`}>
+        {children}
+      </h2>
       <Image src={TitleLine} alt="title-line" className={`self-end ${size}`} />
     </div>
   );

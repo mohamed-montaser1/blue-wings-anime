@@ -1,16 +1,13 @@
 "use client";
-import { useSession } from "next-auth/react";
 import Image from "next/image";
-import defaultAvatar from "@/../public/uploads/default-profile.jpeg";
 import { CameraIcon, UserOutlineIcon } from "@/../public/icons";
 import { TRole } from "@/lib/types";
 import { useState } from "react";
+import useUser from "@/hooks/useUser";
 
 export default function AccountInfo() {
-  const { data } = useSession();
+  const { user, avatar } = useUser({ required: true });
   const [showEditAvatar, setShowEditAvatar] = useState(false);
-  const user = data?.user;
-  const avatar = user?.image.startsWith("https") ? user.image : defaultAvatar;
   const roles = {
     user: "مستخدم",
     editor: "محرر",
@@ -25,7 +22,7 @@ export default function AccountInfo() {
         onMouseOut={() => setShowEditAvatar(false)}
       >
         <Image
-          src={avatar}
+          src={avatar || ""}
           alt="avatar"
           width={192}
           height={192}
@@ -49,12 +46,14 @@ export default function AccountInfo() {
         <h1 className="text-white text-[30px]">
           {user?.name || user?.username}
         </h1>
-        <p className="text-[#ccc] text-xl">{user?.email}</p>
+        <p className="text-[#ccc] md:text-xl max-w-full text-ellipsis overflow-hidden">
+          {user?.email}
+        </p>
         <div className="role flex justify-center mt-4 gap-2">
           <Image
             src={UserOutlineIcon}
             alt="role-icon"
-            className="text-main-color"
+            className="text-primary"
           />
           <span className="text-white text-lg">
             {roles[user?.role as TRole]}

@@ -2,16 +2,16 @@ import { usePathname } from "next/navigation";
 import MenuItem from "./MenuItem";
 
 interface Props {
-  state: boolean;
+  active: boolean;
 }
 
-export default function MobileMenu({ state }: Props) {
+export default function MobileMenu({ active }: Props) {
   let path = usePathname();
   let page = path === "/" ? "home" : path.substr(1);
   return (
     <div
-      className={`fixed bg-card w-40 h-60 top-[130px] rounded-lg justify-center pt-6 px-3 flex mobile-menu transition-all duration-500 ease-in-out z-50 ${
-        state ? "right-[40px]" : "-right-[100%]"
+      className={`fixed bg-card w-40 top-[130px] rounded-lg justify-center py-8 px-3 flex mobile-menu transition-all duration-500 ease-in-out z-50 ${
+        active ? "left-[40px]" : "-left-[100%]"
       }`}
     >
       <ul className="flex flex-col gap-[15px] items-center">

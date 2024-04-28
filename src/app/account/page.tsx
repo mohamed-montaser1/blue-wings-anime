@@ -1,24 +1,18 @@
 "use client";
 
 import { Container } from "@/components";
-import { useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
-import { useEffect } from "react";
-import AccountInfo from "@/components/AccountInfo";
-import LastReadedChapters from "@/components/AccountInfo/LastReadedChapters";
+import AccountInfo from "@/components/Account/AccountInfo";
+import LastReadedChapters from "@/components/Account/LastReadedChapters";
+import FavouriteManga from "@/components/Account/FavouriteManga";
+import ReadingLater from "@/components/Account/ReadingLater";
 
 export default function AccountPage() {
-  const { status } = useSession();
-  const router = useRouter();
-  useEffect(() => {
-    if (status === "unauthenticated") {
-      router.replace("/login");
-    }
-  }, [status]);
   return (
     <Container>
       <AccountInfo />
       <LastReadedChapters />
+      <FavouriteManga />
+      <ReadingLater />
     </Container>
   );
 }

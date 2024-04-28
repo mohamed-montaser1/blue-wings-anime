@@ -1,12 +1,11 @@
 import { TDropdownMenuProps, TDropdownOptionProps } from "@/lib/types";
 import Image from "next/image";
-import { useEffect } from "react";
 
 function DropdownMenu({ children }: TDropdownMenuProps) {
   return (
     <div
       id="DropdownMenu"
-      className="flex flex-col gap-2 cursor-pointer md:bg-sub-card md:p-2 md:rounded-xl absolute top-full mt-6 w-full min-h-14 z-50"
+      className="flex flex-col gap-2 cursor-pointer shadow-xl rounded-lg bg-card md:bg-sub-card md:p-2 md:rounded-xl absolute top-full mt-6 min-w-56 w-full min-h-14 z-50"
     >
       {children}
     </div>

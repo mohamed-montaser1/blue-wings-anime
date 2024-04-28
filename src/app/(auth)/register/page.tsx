@@ -51,7 +51,7 @@ export default function Register() {
     if (status === "authenticated") {
       router.push("/");
     }
-  }, [status]);
+  }, [status, router]);
 
   const handleSignInWithGoogle = async () => {
     await signIn("google", { callbackUrl: "/onboarding/role" });
@@ -131,7 +131,7 @@ export default function Register() {
               {...passwordOneRegister}
             />
             <span
-              className="text-main-color cursor-pointer"
+              className="text-primary cursor-pointer"
               onClick={() => showPassword(1)}
             >
               إظهار كلمة المرور
@@ -157,7 +157,7 @@ export default function Register() {
               {...passwordTwoRegister}
             />
             <span
-              className="text-main-color cursor-pointer"
+              className="text-primary cursor-pointer"
               onClick={() => showPassword(2)}
             >
               إظهار كلمة المرور
@@ -193,7 +193,7 @@ export default function Register() {
           className={`py-[10px] px-[50px] h-[57px] disabled:bg-sub-card`}
           aria-disabled={isSubmitting}
         >
-          <span className="text-main-color">إنشاء حساب جديد</span>
+          <span className="text-primary">إنشاء حساب جديد</span>
           <Image src={PlainIcon} alt="plain-icon" />
         </Button>
       </form>
@@ -215,7 +215,7 @@ export default function Register() {
       </div>
       <p className="mt-[20px] text-white">
         لديك حساب بالفعل ؟{" "}
-        <Link href={"/login"} className="text-main-color">
+        <Link href={"/login"} className="text-primary">
           تسجيل الدخول
         </Link>
       </p>

@@ -30,7 +30,7 @@ export default function VerifyEmail() {
       }
       setCanSend(true);
     }
-  }, [status]);
+  }, [status, router, data?.user.email_verified]);
   useEffect(() => {
     if (!email || !canSend) return;
     axios

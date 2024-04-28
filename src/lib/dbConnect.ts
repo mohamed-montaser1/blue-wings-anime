@@ -1,4 +1,5 @@
 import mongoose, { ConnectOptions } from "mongoose";
+import { TGlobalMongoose } from "./types";
 
 const { MONGODB_URI } = process.env;
 
@@ -7,6 +8,7 @@ if (!MONGODB_URI) {
     "Please define the MONGODB_URI environment variable inside .env.local"
   );
 }
+let global = globalThis as TGlobalMongoose;
 
 let cached = global.mongoose;
 

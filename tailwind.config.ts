@@ -5,6 +5,7 @@ const config: Config = {
   theme: {
     extend: {
       screens: {
+        xs: "480px",
         sm: "576px",
         md: "768px",
         lg: "992px",
@@ -15,13 +16,11 @@ const config: Config = {
         page: "#272A38",
         card: "#303343",
         "sub-card": "#393C4C",
-        "main-color": "#18B2FF",
-        "secondary-color": "#9128FF",
+        primary: "#18B2FF",
+        secondary: "#9128FF",
       },
     },
   },
-  darkMode: "class",
-  plugins: [require("tw-elements-react/dist/plugin.cjs")],
 };
 
 export default config;

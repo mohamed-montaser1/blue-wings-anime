@@ -10,25 +10,31 @@ interface Props
   arrowDir?: "left" | "right";
 }
 
+type SwiperFn = {
+  slideNext: () => void;
+  slidePrev: () => void;
+  swiper: any;
+};
 export default function SwiperButton({ arrowDir, id, ...props }: Props) {
   function handleSwipe() {
-    let swiper = document.getElementById(id!) as HTMLElement;
+    let swiper = document.getElementById(id!) as HTMLElement & SwiperFn;
     if (arrowDir === "left") {
-      swiper.swiper!.slideNext();
-    } else {
-      swiper.swiper!.slidePrev();
+      swiper.swiper.slideNext();
+      return;
     }
+    swiper.swiper.slidePrev();
   }
 
   return (
     <button
       {...props}
-      className={`bg-card p-7 rounded-full`}
+      className={`bg-card p-4 md:p-7 rounded-full`}
       onClick={handleSwipe}
     >
       <Image
         src={SwiperArrow}
         alt="swiper-arrow"
+        className="w-10"
         style={{ transform: arrowDir === "left" ? "rotateY(180deg)" : "" }}
       />
     </button>

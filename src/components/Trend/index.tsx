@@ -1,4 +1,5 @@
 "use client";
+import generateSwiperBreakPoints from "@/lib/swiperOptions";
 import Container from "../Container";
 import SectionHeader from "../SectionHeader";
 import SectionSwiper, { TAnime } from "../SectionSwiper";
@@ -37,27 +38,14 @@ export default function Trend() {
     },
   ];
   return (
-    <div className="mt-8">
+    <div className="mt-16">
       <Container className="lg:px-0">
         <SectionHeader title="آخر الأعمال الرائجة" id="trend" />
         <SectionSwiper
           data={data}
           id="trend"
           options={{
-            breakpoints: {
-              0: {
-                slidesPerView: 1,
-              },
-              575: {
-                slidesPerView: 2,
-              },
-              1024: {
-                slidesPerView: 3,
-              },
-              1280: {
-                slidesPerView: 4,
-              },
-            },
+            breakpoints: generateSwiperBreakPoints({ slidesPerView: 4 }),
           }}
           slidesPerView={4}
         />

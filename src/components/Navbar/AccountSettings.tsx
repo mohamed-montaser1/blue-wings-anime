@@ -60,9 +60,8 @@ export default function AccountSettings() {
               icon={LogoutIcon}
               text="تسجيل الخروج"
               onClick={() => {
-                signOut().then(() => {
-                  router.push("/login");
-                });
+                signOut();
+                router.push("/login");
               }}
             />
           </DropdownMenu>

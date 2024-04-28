@@ -4,8 +4,7 @@
 import Hero from "@/components/Hero";
 import Trend from "@/components/Trend";
 import "@/app/globals.css";
-import { Suspense, useEffect, useState } from "react";
-import Loading from "./loading";
+import FilterBar from "@components/FilterBar";
 
 export default async function Home() {
   // const [loading, setLoading] = useState(true);
@@ -18,6 +17,7 @@ export default async function Home() {
     <>
       {/* {loading && <Loading />} */}
       <Hero />
+      <FilterBar />
       <Trend />
     </>
   );

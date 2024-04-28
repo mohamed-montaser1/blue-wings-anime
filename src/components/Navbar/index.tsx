@@ -39,7 +39,7 @@ export default function Navbar() {
           <Menu />
         </div>
         <div className="btn-container flex">
-          {isAuth === "authenticated" || isAuth === "loading" ? (
+          {isAuth === "authenticated" ? (
             <AccountSettings />
           ) : (
             <Button variant="main" onClick={() => router.push("/login")}>

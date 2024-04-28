@@ -9,9 +9,7 @@ type Props = {
 
 export default function Template({ children }: Props) {
   useEffect(() => {
-    setTimeout(() => {
-      animatePageIn();
-    }, 200);
+    animatePageIn();
   }, []);
   return (
     <>

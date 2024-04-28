@@ -6,11 +6,13 @@ import { Button } from "@/components";
 import Image from "next/image";
 import { DropdownMenu, DropdownOption } from "./DropdownMenu";
 import { LogoutIcon, SettingsIcon } from "@/../public/icons";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import useUser from "@/hooks/useUser";
+import { animatePageOut } from "@/utils/animations";
 
 export default function AccountSettings() {
   const router = useRouter();
+  const pathname = usePathname();
   const { user, avatar } = useUser({ required: true });
   const [showDropdown, setShowDropdown] = useState(false);
 
@@ -48,14 +50,20 @@ export default function AccountSettings() {
               icon={SettingsIcon}
               text="عرض الملف الشخصي"
               onClick={() => {
-                router.push("/account");
-                setShowDropdown(false);
+                if (pathname !== "/account") {
+                  animatePageOut("/account", router);
+                  setShowDropdown(false);
+                }
               }}
             />
             <DropdownOption
               icon={LogoutIcon}
               text="تسجيل الخروج"
-              onClick={() => signOut()}
+              onClick={() => {
+                signOut().then(() => {
+                  router.push("/login");
+                });
+              }}
             />
           </DropdownMenu>
         )}

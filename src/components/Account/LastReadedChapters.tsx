@@ -15,7 +15,10 @@ export default function LastReadedChapters() {
             <Chapter key={i} text="I Can Control All Opportunities 1" />
           ))}
         </ul>
-        <Button variant="main" className="mx-auto mt-14">
+        <Button
+          variant="main"
+          className="mx-auto mt-14"
+        >
           عرض المزيد
         </Button>
       </div>

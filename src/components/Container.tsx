@@ -9,5 +9,7 @@ interface Props
 }
 
 export default function Container({ children, ...props }: Props) {
-  return <div className={`container ${props.className}`}>{children}</div>;
+  return (
+    <div className={`container ${props.className} relative`}>{children}</div>
+  );
 }

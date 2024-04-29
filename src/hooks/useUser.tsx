@@ -2,7 +2,6 @@ import { TUseUserReturn, TUseUserProps } from "@/lib/types";
 import { Session } from "next-auth";
 import { useSession } from "next-auth/react";
 import defaultAvatar from "@/../public/uploads/default-profile.jpeg";
-import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 
 export default function useUser({ required }: TUseUserProps): TUseUserReturn {

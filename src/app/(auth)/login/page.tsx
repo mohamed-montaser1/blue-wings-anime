@@ -17,6 +17,7 @@ import loginSchema from "@/lib/loginSchema";
 import { ToastContainer, toast } from "react-toastify";
 
 import "react-toastify/dist/ReactToastify.css";
+import { animatePageOut } from "@/utils/animations";
 
 type FormValues = {
   email: string;
@@ -61,7 +62,8 @@ export default function Login() {
       if (!res?.error) {
         toast("تم تسجيل الدخول بنجاح", { type: "success" });
         setTimeout(() => {
-          router.replace(res?.url as string);
+          // router.replace(res?.url as string);
+          animatePageOut(res?.url as string, router);
         }, 1000);
       } else {
         toast(res.error, { type: "error" });
@@ -108,7 +110,7 @@ export default function Login() {
         </div>
         <Button
           variant="form-btn"
-          className={`py-[10px] px-[50px] h-[57px] disabled:bg-sub-card`}
+          className={`py-2.5 px-[50px] h-[57px] disabled:bg-sub-card`}
           type="submit"
         >
           <span className="text-primary">تسجيل الدخول</span>
@@ -128,7 +130,7 @@ export default function Login() {
           <span className="inline-block max-[450px]:hidden">
             تسجيل الدخول بإستخدام Google
           </span>
-          <Image src={GoogleIcon} alt="google-icon" />
+          <Image src={GoogleIcon} alt="google-icon" className="h-10" />
         </Button>
       </div>
       <p className="mt-[20px] text-white">

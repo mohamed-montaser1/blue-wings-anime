@@ -2,16 +2,14 @@ import Image from "next/image";
 import MenuItem from "./MenuItem";
 import { Home, ArtPen, Heart, WorkList } from "@/../public/icons";
 import { usePathname } from "next/navigation";
-import { useEffect } from "react";
-import { signOut } from "next-auth/react";
 
 export default function Menu() {
   let path = usePathname();
   let page = path === "/" ? "home" : path.substr(1);
 
   return (
-    <div className="menu hidden xl:block">
-      <ul className="flex xxl:gap-10 gap-5 items-center">
+    <div className="menu hidden min-[1280px]:!block">
+      <ul className="flex xxl:gap-10 gap-6 items-center">
         <MenuItem link="/" active={page === "home"}>
           <Image src={Home} alt="home-icon" />
           <span>الصفحة الرئيسية</span>

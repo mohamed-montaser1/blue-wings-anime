@@ -4,8 +4,6 @@ import "@/app/globals.css";
 import { NextAuthProvider } from "@/app/Providers";
 import Navbar from "@/components/Navbar";
 import "tw-elements-react/dist/css/tw-elements-react.min.css";
-import { Suspense } from "react";
-import Loading from "./loading";
 
 const cairo = Cairo({ subsets: ["arabic"] });
 
@@ -24,11 +22,11 @@ export const metadata: Metadata = {
   ],
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{
+type TProps = Readonly<{
   children: React.ReactNode;
-}>) {
+}>;
+
+export default function RootLayout({ children }: TProps) {
   return (
     <html lang="ar" dir="rtl">
       <body className={`${cairo.className} bg-page`}>

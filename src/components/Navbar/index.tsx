@@ -5,14 +5,16 @@ import Image from "next/image";
 import Menu from "./Menu";
 import MobileMenu from "./MobileMenu";
 import { Button, Container } from "@/components";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import AccountSettings from "./AccountSettings";
 import useUser from "@/hooks/useUser";
 import Loading from "@/app/loading";
 import { TUseUserReturn } from "@/lib/types";
+import { animatePageOut } from "@/utils/animations";
 
 export default function Navbar() {
   const router = useRouter();
+  const pathname = usePathname();
   const { status } = useUser({ required: false });
   const [activeMobileMenu, setActiveMobileMenu] = useState(false);
   const [isAuth, setIsAuth] = useState<TUseUserReturn["status"]>();
@@ -25,7 +27,7 @@ export default function Navbar() {
     setActiveMobileMenu((prev) => !prev);
   }
   return (
-    <nav className="bg-card shadow-xl h-[120px] flex items-center fixed right-0 left-0 top-0 z-[10000]">
+    <nav className="bg-card shadow-2xl h-[120px] flex items-center fixed right-0 left-0 top-0 z-[10000]">
       <Container className="flex justify-between items-center relative">
         <div className="flex items-center">
           <Image
@@ -33,8 +35,10 @@ export default function Navbar() {
             width={190}
             height={70}
             alt="Logo"
-            className="h-[90px] cursor-pointer"
-            onClick={() => router.push("/")}
+            className="h-[90px] aspect-video cursor-pointer"
+            onClick={() => {
+              if (pathname !== "/") animatePageOut("/", router);
+            }}
           />
           <Menu />
         </div>
@@ -42,13 +46,18 @@ export default function Navbar() {
           {isAuth === "authenticated" ? (
             <AccountSettings />
           ) : (
-            <Button variant="main" onClick={() => router.push("/login")}>
-              <span className="max-[466px]:hidden">تسجيل الدخول</span>
+            <Button
+              variant="main"
+              onClick={() =>
+                pathname !== "/login" ? animatePageOut("/login", router) : null
+              }
+            >
+              <span className="max-[640px]:!hidden">تسجيل الدخول</span>
               <Image src={UserIcon} alt="user-icon" />
             </Button>
           )}
           <Button
-            className="min-[1200px]:hidden md:mr-3 !p-1"
+            className="xl:hidden md:mr-3 !p-3 !min-w-0"
             onClick={handleActiveMenu}
           >
             <Image src={MenuIcon} alt="menu-icon" className="min-w-6" />

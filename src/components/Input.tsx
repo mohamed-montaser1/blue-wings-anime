@@ -14,7 +14,7 @@ export default function Input({ children, ...props }: Props) {
   return (
     <div
       {...props}
-      className={`w-full bg-card rounded-md py-[10px] gap-[10px] flex px-[20px] ${props.className}`}
+      className={`w-full bg-card rounded-md py-2.5 gap-2.5 flex px-[20px] ${props.className}`}
     >
       {children}
     </div>

@@ -172,7 +172,7 @@ export default function Register() {
             <select
               dir="rtl"
               tabIndex={4}
-              className="bg-card w-full py-[10px] outline-none text-white"
+              className="bg-card w-full py-2.5 outline-none text-white"
               value={userRole}
               onChange={(e) => setUserRole(e.target.value)}
             >
@@ -190,7 +190,7 @@ export default function Register() {
         </div>
         <Button
           variant="form-btn"
-          className={`py-[10px] px-[50px] h-[57px] disabled:bg-sub-card`}
+          className={`py-2.5 px-[50px] h-[57px] disabled:bg-sub-card`}
           aria-disabled={isSubmitting}
         >
           <span className="text-primary">إنشاء حساب جديد</span>

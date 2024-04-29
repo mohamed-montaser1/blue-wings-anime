@@ -32,12 +32,12 @@ export default function AccountSettings() {
             width={"50"}
             height={"40"}
             alt="user-icon"
-            className="rounded-2xl w-10 aspect-square md:h-full md:w-[50px]"
+            className="rounded-full w-10 aspect-square md:h-full md:w-[50px]"
           />
 
           <div className="flex flex-col justify-center">
-            <h3 className="text-white text-left text-sm md:text-[16px]">
-              <span className="hidden xs:inline">{user?.name}</span>
+            <h3 className="text-white text-left text-sm hidden xs:!inline">
+              {user?.name}
             </h3>
             <p className="text-[#ccc] text-[14px] md:block hidden text-left">
               {user?.email}
@@ -59,10 +59,7 @@ export default function AccountSettings() {
             <DropdownOption
               icon={LogoutIcon}
               text="تسجيل الخروج"
-              onClick={() => {
-                signOut();
-                router.push("/login");
-              }}
+              onClick={() => signOut()}
             />
           </DropdownMenu>
         )}

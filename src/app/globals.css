@@ -1,6 +1,9 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
 
 body {
   padding-top: 121px;
@@ -53,6 +56,22 @@ img {
   @apply min-h-screen z-[50000] fixed top-0  w-1/4;
 }
 
+.info-data {
+  @apply text-white flex justify-between items-center;
+}
+
+.info-data span:first-child {
+  @apply font-bold;
+}
+
+.keywords {
+  @apply flex flex-wrap gap-2.5 mt-2.5;
+}
+
+.keyword {
+  @apply bg-sub-card px-5 py-2 rounded-md cursor-default select-none hover:bg-primary duration-300 transition-colors ease-out;
+}
+
 /* Change Autocomplete styles in Chrome*/
 input:-webkit-autofill,
 input:-webkit-autofill:hover,
@@ -66,4 +85,34 @@ select:-webkit-autofill:focus {
   -webkit-text-fill-color: #ccc;
   background: transparent;
   transition: background-color 5000s ease-in-out 0s;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #474e77;
+  border-radius: 10px;
+  transition: background-color 300ms ease-in-out;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: #6f7ed3;
+}
+
+.react-rater {
+  @apply !block w-fit mt-4 mx-auto select-none;
+}
+
+.react-rater-star {
+  @apply text-6xl !text-[#393C4C];
+}
+
+.react-rater-star.is-active {
+  @apply !text-[#18B2FF];
+}
+
+.react-rater-star.will-be-active {
+  @apply !text-[#2a99d1];
 }

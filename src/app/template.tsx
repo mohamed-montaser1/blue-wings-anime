@@ -1,5 +1,6 @@
 "use client";
 
+import useUser from "@/hooks/useUser";
 import { animatePageIn } from "@/utils/animations";
 import { useEffect } from "react";
 
@@ -8,9 +9,11 @@ type Props = {
 };
 
 export default function Template({ children }: Props) {
+  const { status } = useUser({ required: false });
   useEffect(() => {
+    if (status === "loading") return;
     animatePageIn();
-  }, []);
+  }, [status]);
   return (
     <>
       <div className="w-full fixed z-[50000]">

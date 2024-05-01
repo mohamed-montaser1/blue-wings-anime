@@ -1,4 +1,5 @@
 import { Session } from "next-auth";
+import { StaticImageData } from "next/image";
 import { HTMLAttributes } from "react";
 
 export type TRole = "user" | "editor" | "artist" | "admin";
@@ -37,9 +38,17 @@ export type TDropdownMenuProps = {
 };
 
 export type TUseUserReturn = {
-  user: Session["user"] | null;
+  user: Session["user"] & TUser;
   avatar: string | null;
   status: "authenticated" | "loading" | "unauthenticated";
+};
+
+export type TUser = {
+  email: string;
+  id: string;
+  image: string | StaticImageData;
+  name: string;
+  role: TRole;
 };
 
 export type TUseUserProps = {

@@ -1,5 +1,5 @@
 "use client";
-import React, { Suspense, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Logo, MenuIcon, UserIcon } from "@/../public/icons";
 import Image from "next/image";
 import Menu from "./Menu";
@@ -8,7 +8,6 @@ import { Button, Container } from "@/components";
 import { usePathname, useRouter } from "next/navigation";
 import AccountSettings from "./AccountSettings";
 import useUser from "@/hooks/useUser";
-import Loading from "@/app/loading";
 import { TUseUserReturn } from "@/lib/types";
 import { animatePageOut } from "@/utils/animations";
 
@@ -33,7 +32,7 @@ export default function Navbar() {
           <Image
             src={Logo}
             width={190}
-            height={70}
+            // height={70}
             alt="Logo"
             className="h-[90px] aspect-video cursor-pointer"
             onClick={() => {

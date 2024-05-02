@@ -41,6 +41,7 @@ export type TUseUserReturn = {
   user: Session["user"] & TUser;
   avatar: string | null;
   status: "authenticated" | "loading" | "unauthenticated";
+  setUserAvatar: (filename: string) => void;
 };
 
 export type TUser = {

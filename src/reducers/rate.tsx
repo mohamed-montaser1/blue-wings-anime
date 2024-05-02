@@ -36,6 +36,7 @@ export function ratingReducerFn(
       };
     case "SAVE":
       saveRating(action.payload);
+      break;
     default:
       return state;
   }
@@ -49,10 +50,6 @@ export const defaultState: TRatingState = {
 type TSaveRateFn = any | void;
 
 async function saveRating(payload: TPayload): Promise<TSaveRateFn> {
-  const { rating, text, user, slug } = payload;
-
-  console.log({ rating, text, user, slug });
-  // const id = "";
   // axios.post(`/rate/${id}`, {
   //   userId: user,
   // });

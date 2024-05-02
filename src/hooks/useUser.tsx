@@ -1,12 +1,17 @@
 import { TUseUserReturn, TUseUserProps } from "@/lib/types";
 import { useSession } from "next-auth/react";
-import defaultAvatar from "@/../public/uploads/default-profile.jpeg";
 import { useRouter } from "next/navigation";
+import { animatePageOut } from "@/utils/animations";
+import { readFile } from "fs";
 
 // main goal is to get user data from the server
 export default function useUser({ required }: TUseUserProps): TUseUserReturn {
   const router = useRouter();
-  const { data: session, status } = useSession({
+  const {
+    data: session,
+    status,
+    update,
+  } = useSession({
     required,
     onUnauthenticated() {
       // redirect to login page
@@ -16,11 +21,17 @@ export default function useUser({ required }: TUseUserProps): TUseUserReturn {
 
   const user: TUseUserReturn["user"] = session?.user;
   let avatar;
-
-  if (typeof user?.image === "string") {
+  const image = user?.image as string;
+  if (image?.startsWith("/uploads") || image?.startsWith("http")) {
     avatar = user?.image;
   } else {
-    avatar = defaultAvatar;
+    avatar = "/uploads/default-profile.jpeg";
   }
-  return { user: user, status, avatar };
+
+  function setUserAvatar(filename: string) {
+    const image = `/uploads/${filename}`;
+    update({ ...user, image });
+    animatePageOut("/account", router);
+  }
+  return { user, status, avatar, setUserAvatar };
 }

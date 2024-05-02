@@ -2,18 +2,33 @@
 import Image from "next/image";
 import { CameraIcon, UserOutlineIcon } from "@/../public/icons";
 import { TRole } from "@/lib/types";
-import { useState } from "react";
+import { FormEvent, useState } from "react";
 import useUser from "@/hooks/useUser";
+import axios from "axios";
+import Avatar from "@components/Avatar";
 
 export default function AccountInfo() {
-  const { user, avatar } = useUser({ required: true });
+  const { user, avatar, setUserAvatar } = useUser({ required: true });
   const [showEditAvatar, setShowEditAvatar] = useState(false);
+
   const roles = {
     user: "مستخدم",
     editor: "محرر",
     artist: "فنان",
     admin: "مسؤول",
   };
+
+  async function handleChangeImage(e: FormEvent<HTMLInputElement>) {
+    e.preventDefault();
+    const target = e?.target as HTMLInputElement;
+    const img = target.files![0];
+    const form = new FormData();
+    form.append("image", img);
+    const res = await axios.post<{ image: string }>("/api/uploads", form);
+    const filename = res.data.image;
+    setUserAvatar(filename);
+  }
+
   return (
     <div className="personal-info">
       <div
@@ -21,13 +36,9 @@ export default function AccountInfo() {
         onMouseOver={() => setShowEditAvatar(true)}
         onMouseOut={() => setShowEditAvatar(false)}
       >
-        <Image
-          src={avatar || ""}
-          alt="avatar"
-          width={192}
-          height={192}
-          className="rounded-full mx-auto w-full h-full"
-        />
+        <div>
+          <Avatar width={192} height={192} image={avatar as string} />
+        </div>
         <div
           className={`absolute h-[195px] aspect-square top-0 rounded-full transition-all duration-500 ease-in-out ${
             showEditAvatar
@@ -35,11 +46,19 @@ export default function AccountInfo() {
               : "opacity-0 pointer-events-none"
           } flex items-center justify-center`}
         >
-          <Image
-            src={CameraIcon}
-            alt="camera-icon"
-            className="w-14 cursor-pointer"
-          />
+          <label>
+            <input
+              type="file"
+              className="hidden"
+              accept=".jpg, .jpeg, .png"
+              onChange={handleChangeImage}
+            />
+            <Image
+              src={CameraIcon}
+              alt="camera-icon"
+              className="w-14 cursor-pointer"
+            />
+          </label>
         </div>
       </div>
       <div className="text-center">

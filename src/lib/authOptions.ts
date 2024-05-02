@@ -55,21 +55,32 @@ const authOptions: AuthOptions = {
       session.user.id = token.id;
       session.user.email_verified = token.email_verified;
       session.user.role = token.role;
+      session.user.image = token.avatar;
       return session;
     },
     async jwt({ token, trigger, account, user, session }) {
       if (trigger === "update") {
-        let user = session.user;
+        let { name: username, email, image: avatar, email_verified } = session;
         try {
-          await User.findByIdAndUpdate(user.id, {
-            username: user.name,
-            email: user.email,
-            avatar: user.image,
-            email_verified: user.email_verified,
-          });
+          await User.findOneAndUpdate(
+            { email },
+            {
+              username,
+              email,
+              avatar,
+              email_verified,
+            }
+          );
           console.log(
             `${"#".repeat(15)} JWT UPDATE SUCCESSFULLY ${"#".repeat(15)}`
           );
+          token = {
+            ...token,
+            username,
+            email,
+            avatar,
+            email_verified,
+          };
           return token;
         } catch (error) {
           console.log(

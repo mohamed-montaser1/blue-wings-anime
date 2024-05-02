@@ -32,9 +32,9 @@ export default function Navbar() {
           <Image
             src={Logo}
             width={190}
-            // height={70}
+            height={90}
             alt="Logo"
-            className="h-[90px] aspect-video cursor-pointer"
+            className="h-[90px] aspect-video cursor-pointer ml-4"
             onClick={() => {
               if (pathname !== "/") animatePageOut("/", router);
             }}

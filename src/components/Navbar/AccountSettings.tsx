@@ -9,6 +9,7 @@ import { LogoutIcon, SettingsIcon } from "@/../public/icons";
 import { usePathname, useRouter } from "next/navigation";
 import useUser from "@/hooks/useUser";
 import { animatePageOut } from "@/utils/animations";
+import Avatar from "@components/Avatar";
 
 export default function AccountSettings() {
   const router = useRouter();
@@ -27,13 +28,9 @@ export default function AccountSettings() {
           className="flex flex-row-reverse gap-2 cursor-pointer md:bg-sub-card !p-1 md:!p-4 md:rounded-xl"
           onClick={handleToggleDropdown}
         >
-          <Image
-            src={avatar as string}
-            width={"50"}
-            height={"40"}
-            alt="user-icon"
-            className="rounded-full w-10 aspect-square md:h-full md:w-[50px]"
-          />
+          <div className="w-14">
+            <Avatar width={50} height={50} image={avatar as string} />
+          </div>
 
           <div className="flex flex-col justify-center">
             <h3 className="text-white text-left text-sm hidden xs:!inline">

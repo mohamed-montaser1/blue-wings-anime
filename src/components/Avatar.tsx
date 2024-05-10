@@ -11,7 +11,7 @@ type Props = {
 export default function Avatar({ image, width, height, className }: Props) {
   return (
     <Image
-      src={image || "/uploads/default-profile.jpeg"}
+      src={image || "/default-profile.jpg"}
       width={width}
       height={height}
       alt="user-image"

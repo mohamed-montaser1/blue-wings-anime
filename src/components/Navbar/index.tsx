@@ -1,15 +1,15 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { Logo, MenuIcon, UserIcon } from "@/../public/icons";
+import { Logo, MenuIcon, UserIcon } from "@public/icons";
 import Image from "next/image";
 import Menu from "./Menu";
 import MobileMenu from "./MobileMenu";
-import { Button, Container } from "@/components";
+import { Button, Container } from "@components";
 import { usePathname, useRouter } from "next/navigation";
 import AccountSettings from "./AccountSettings";
-import useUser from "@/hooks/useUser";
-import { TUseUserReturn } from "@/lib/types";
-import { animatePageOut } from "@/utils/animations";
+import useUser from "@hooks/useUser";
+import { TUseUserReturn } from "@lib/types";
+import { animatePageOut } from "@utils/animations";
 
 export default function Navbar() {
   const router = useRouter();

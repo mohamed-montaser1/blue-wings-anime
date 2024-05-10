@@ -1,6 +1,5 @@
 import React from "react";
-import Title from "../Title";
-import SwiperButton from "../SwiperButton";
+import { Title, SwiperButton } from "@components";
 
 interface Props {
   title: string;

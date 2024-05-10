@@ -1,6 +1,6 @@
 "use client";
 import data from "@/lib/demoSwiperData";
-import { Container, SectionSwiper, Title } from "..";
+import { Container, SectionSwiper, Title } from "@components";
 
 export default function SimilarManga() {
   return (

@@ -1,23 +1,18 @@
 "use client";
-import { Button, Container, Title, Input } from "@/components";
+import { Button, Container, Title, Input } from "@components";
 import Image from "next/image";
 import React, { useEffect, useRef } from "react";
-import {
-  GoogleIcon,
-  LockIcon,
-  PlainIcon,
-  UserOutlineIcon,
-} from "@/../public/icons";
+import { GoogleIcon, LockIcon, PlainIcon, UserOutlineIcon } from "@icons";
 import Link from "next/link";
 import { useSession, signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import loginSchema from "@/lib/loginSchema";
+import loginSchema from "@lib/loginSchema";
 import { ToastContainer, toast } from "react-toastify";
 
 import "react-toastify/dist/ReactToastify.css";
-import { animatePageOut } from "@/utils/animations";
+import { animatePageOut } from "@utils/animations";
 
 type FormValues = {
   email: string;

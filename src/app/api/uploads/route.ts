@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import imageTypesAllowed from "@/lib/imageTypesAllowed";
+import imageTypesAllowed from "@lib/imageTypesAllowed";
 import { writeFile } from "fs/promises";
 import { join } from "path";
 import { nanoid } from "nanoid";

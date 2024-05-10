@@ -1,4 +1,4 @@
-import { SwiperArrow } from "@/../public/icons";
+import { SwiperArrow } from "@icons";
 import Image from "next/image";
 import React from "react";
 

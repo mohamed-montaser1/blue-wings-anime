@@ -10,7 +10,7 @@ import SectionSwiper from "./SectionSwiper";
 import SwiperButton from "./SwiperButton";
 import Title from "./Title";
 import Trend from "./Trend";
-
+import Avatar from "./Avatar";
 
 export {
   FilterBar,
@@ -25,4 +25,5 @@ export {
   Input,
   SwiperButton,
   Title,
-}
+  Avatar,
+};

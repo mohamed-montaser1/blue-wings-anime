@@ -1,10 +1,12 @@
 "use client";
 
 import { Container } from "@/components";
-import AccountInfo from "@/components/Account/AccountInfo";
-import LastReadedChapters from "@/components/Account/LastReadedChapters";
-import FavouriteManga from "@/components/Account/FavouriteManga";
-import ReadingLater from "@/components/Account/ReadingLater";
+import {
+  AccountInfo,
+  LastReadedChapters,
+  FavouriteManga,
+  ReadingLater,
+} from "@components/Account";
 
 export default function AccountPage() {
   return (

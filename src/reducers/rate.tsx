@@ -1,6 +1,6 @@
 import { Session } from "next-auth";
 
-type TRatingState = {
+export type TRatingState = {
   rating: number;
   text: string;
 };
@@ -22,7 +22,7 @@ type TRatingAction<TP> = {
 export function ratingReducerFn(
   state: TRatingState,
   action: TRatingAction<TPayload>
-) {
+): TRatingState {
   switch (action.type) {
     case "SET_RATING":
       return {
@@ -36,7 +36,10 @@ export function ratingReducerFn(
       };
     case "SAVE":
       saveRating(action.payload);
-      break;
+      return {
+        ...state,
+        text: action.payload.text,
+      };
     default:
       return state;
   }

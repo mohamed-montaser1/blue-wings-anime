@@ -1,6 +1,6 @@
-import generateSwiperBreakPoints from "@/lib/swiperOptions";
+import generateSwiperBreakPoints from "@lib/swiperOptions";
 import { TAnime } from "../SectionSwiper";
-import { SectionHeader, SectionSwiper } from "@/components";
+import { SectionHeader, SectionSwiper } from "@components";
 
 export default function FavouriteManga() {
   const data: TAnime[] = [

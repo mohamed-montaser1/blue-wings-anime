@@ -1,5 +1,5 @@
 import mongoose, { ConnectOptions } from "mongoose";
-import { TGlobalMongoose } from "./types";
+import { TGlobalMongoose } from "@lib/types";
 
 const { MONGODB_URI } = process.env;
 

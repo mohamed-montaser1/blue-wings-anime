@@ -1,7 +1,7 @@
 "use client";
 
-import useUser from "@/hooks/useUser";
-import { animatePageIn } from "@/utils/animations";
+import useUser from "@hooks/useUser";
+import { animatePageIn } from "@utils/animations";
 import { useEffect } from "react";
 
 type Props = {

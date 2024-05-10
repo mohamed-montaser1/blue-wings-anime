@@ -1,4 +1,4 @@
-import { TDropdownMenuProps, TDropdownOptionProps } from "@/lib/types";
+import { TDropdownMenuProps, TDropdownOptionProps } from "@lib/types";
 import Image from "next/image";
 
 function DropdownMenu({ children }: TDropdownMenuProps) {

@@ -1,12 +1,12 @@
 "use client";
 
 import React, { useReducer } from "react";
-import { Button, Container, Input, Title } from "..";
+import { Button, Container, Input, Title } from "@components";
 import Rater from "react-rater";
 import "react-rater/lib/react-rater.css";
-import Plain from "@/../public/icons/plain";
-import { defaultState, ratingReducerFn } from "@/reducers/rate";
-import useUser from "@/hooks/useUser";
+import Plain from "@icons/plain";
+import { defaultState, ratingReducerFn } from "@reducers/rate";
+import useUser from "@hooks/useUser";
 import { usePathname } from "next/navigation";
 
 export default function Rate() {

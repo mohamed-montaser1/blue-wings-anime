@@ -2,14 +2,12 @@
 
 import { signOut } from "next-auth/react";
 import React, { useState } from "react";
-import { Button } from "@/components";
-import Image from "next/image";
+import { Button, Avatar } from "@components";
 import { DropdownMenu, DropdownOption } from "./DropdownMenu";
-import { LogoutIcon, SettingsIcon } from "@/../public/icons";
+import { LogoutIcon, SettingsIcon } from "@icons";
 import { usePathname, useRouter } from "next/navigation";
 import useUser from "@/hooks/useUser";
-import { animatePageOut } from "@/utils/animations";
-import Avatar from "@components/Avatar";
+import { animatePageOut } from "@utils/animations";
 
 export default function AccountSettings() {
   const router = useRouter();

@@ -1,11 +1,11 @@
 import { AuthOptions } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import CredentialsProvider from "next-auth/providers/credentials";
-import User from "@/models/User";
+import User from "@models/User";
 import { compare } from "bcrypt";
-import dbConnect from "@/lib/dbConnect";
 import mongoose, { isValidObjectId } from "mongoose";
-import loginSchema from "@/lib/loginSchema";
+import { TCredentials } from "@lib/types";
+import { dbConnect, loginSchema } from "@lib";
 
 const authOptions: AuthOptions = {
   providers: [
@@ -18,10 +18,7 @@ const authOptions: AuthOptions = {
       async authorize(credentials) {
         await dbConnect();
         const { success } = loginSchema.safeParse(credentials);
-        const { email, password } = credentials as {
-          email: string;
-          password: string;
-        };
+        const { email, password } = credentials as TCredentials;
         if (!success) {
           throw new Error("البيانات المدخله غير صالحة");
         }
@@ -52,15 +49,24 @@ const authOptions: AuthOptions = {
   ],
   callbacks: {
     async session({ session, token }) {
-      session.user.id = token.id;
-      session.user.email_verified = token.email_verified;
-      session.user.role = token.role;
-      session.user.image = token.avatar;
+      session.user = {
+        ...session.user,
+        id: token.id,
+        email_verified: token.email_verified,
+        role: token.role,
+        image: token.avatar,
+      };
       return session;
     },
     async jwt({ token, trigger, account, user, session }) {
+      await dbConnect();
       if (trigger === "update") {
-        let { name: username, email, image: avatar, email_verified } = session;
+        let {
+          name: username,
+          email,
+          image: avatar,
+          email_verified,
+        } = session.user;
         try {
           await User.findOneAndUpdate(
             { email },

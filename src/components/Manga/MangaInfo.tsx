@@ -1,10 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import { Button, Container, Input } from "..";
+import { Button, Container, Input } from "@components";
 import Image from "next/image";
-import Star from "@/../public/icons/star";
-import Bookmark from "@/../public/icons/bookmark";
+import Star from "@icons/star";
+import Bookmark from "@icons/bookmark";
 
 export default function MangaInfo() {
   const [chapter, setChapter] = useState<"default" | number>("default");

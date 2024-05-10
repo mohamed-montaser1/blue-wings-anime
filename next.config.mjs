@@ -1,8 +1,12 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  reactStrictMode: true,
-  swcMinify: true,
+  // webpack: (config, { isServer }) => {
+
+  // config.externals = [...config.externals, "bcrypt"];
+  // return config;
+  // },
   webpack: (config, { isServer }) => {
+    // Add a loader for SVG files
     if (!isServer) {
       config.resolve.fallback = {
         fs: false,

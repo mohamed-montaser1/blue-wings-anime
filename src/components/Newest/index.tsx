@@ -1,8 +1,6 @@
 import React from "react";
-import Container from "../Container";
-import SectionHeader from "../SectionHeader";
-import SectionSwiper from "../SectionSwiper";
-import data from "@/lib/demoSwiperData";
+import { Container, SectionSwiper, SectionHeader } from "@components";
+import data from "@lib/demoSwiperData";
 
 export default function Newest() {
   return (

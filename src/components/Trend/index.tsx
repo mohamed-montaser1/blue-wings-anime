@@ -1,8 +1,7 @@
 "use client";
-import generateSwiperBreakPoints from "@/lib/swiperOptions";
-import Container from "../Container";
-import SectionHeader from "../SectionHeader";
-import SectionSwiper, { TAnime } from "../SectionSwiper";
+import generateSwiperBreakPoints from "@lib/swiperOptions";
+import { Container, SectionHeader, SectionSwiper } from "@components";
+import { TAnime } from "@components/SectionSwiper";
 
 export default function Trend() {
   const data: TAnime[] = [

@@ -1,8 +1,8 @@
 "use client";
 import React from "react";
-import Container from "../Container";
+import { Container } from "@/components";
 import { Swiper, SwiperSlide } from "swiper/react";
-import placeholder from "@/../public/placeholder.svg";
+import placeholder from "@public/placeholder.svg";
 import {
   Keyboard,
   Pagination,

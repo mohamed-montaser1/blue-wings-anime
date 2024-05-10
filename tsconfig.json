@@ -18,10 +18,26 @@
       }
     ],
     "paths": {
+      "@/*": ["./src/*"],
       "@components/*": ["./src/components/*"],
-      "@/*": ["./src/*"]
+      "@components": ["./src/components/index.ts"],
+      "@icons/*": ["./public/icons/*"],
+      "@icons": ["./public/icons/index.ts"],
+      "@hooks/*": ["./src/hooks/*"],
+      "@lib/*": ["./src/lib/*"],
+      "@lib": ["./src/lib/index.ts"],
+      "@models/*": ["./src/models/*"],
+      "@reducers/*": ["./src/reducers/*"],
+      "@utils/*": ["./src/utils/*"],
+      "@public/*": ["./public/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/app/auth/register"],
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts",
+    "src/app/auth/register"
+  ],
   "exclude": ["node_modules"]
 }

@@ -1,6 +1,5 @@
-import { Button, Container } from "..";
+import { Button, Container, Title } from "..";
 import React from "react";
-import { Title } from "..";
 
 export default function LastReadedChapters() {
   return (
@@ -15,10 +14,7 @@ export default function LastReadedChapters() {
             <Chapter key={i} text="I Can Control All Opportunities 1" />
           ))}
         </ul>
-        <Button
-          variant="main"
-          className="mx-auto mt-14"
-        >
+        <Button variant="main" className="mx-auto mt-14">
           عرض المزيد
         </Button>
       </div>

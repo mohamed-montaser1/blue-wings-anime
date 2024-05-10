@@ -1,5 +1,4 @@
 import { Schema, model, models } from "mongoose";
-import path from "path";
 
 export enum UserRoles {
   USER = "user",
@@ -59,4 +58,4 @@ const UserSchema = new Schema<User>(
   { timestamps: true }
 );
 
-export default models.User || model("User", UserSchema);
+export default models.User ?? model("User", UserSchema);

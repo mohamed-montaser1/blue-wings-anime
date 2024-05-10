@@ -1,5 +1,5 @@
 import { usePathname, useRouter } from "next/navigation";
-import { animatePageOut } from "@/utils/animations";
+import { animatePageOut } from "@utils/animations";
 
 interface Props {
   children: React.ReactNode;

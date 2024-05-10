@@ -59,3 +59,15 @@ export type TUseUserProps = {
 export type TGlobalMongoose = typeof globalThis & {
   mongoose: any;
 };
+
+export type TCredentials = {
+  email: string;
+  password: string;
+};
+
+export type TLoginFormValues = {
+  email: string;
+  password: string;
+};
+
+export type UpdateSession = (data?: any) => Promise<Session | null>

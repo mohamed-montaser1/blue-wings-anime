@@ -1,6 +1,4 @@
 import React from "react";
-import { UserOutlineIcon } from "../../public/icons";
-import Image from "next/image";
 
 interface Props
   extends React.DetailedHTMLProps<

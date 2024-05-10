@@ -1,7 +1,6 @@
 import React from "react";
-import Container from "../Container";
-import Button from "../Button";
 import ListItem from "./ListItem";
+import { Container, Button } from "@components";
 
 export default function FilterBar() {
   return (

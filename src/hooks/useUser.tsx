@@ -1,12 +1,12 @@
-import { TUseUserReturn, TUseUserProps } from "@/lib/types";
+import { TUseUserReturn, TUseUserProps } from "@lib/types";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { animatePageOut } from "@/utils/animations";
-import { readFile } from "fs";
+import { useEffect, useState } from "react";
 
 // main goal is to get user data from the server
 export default function useUser({ required }: TUseUserProps): TUseUserReturn {
   const router = useRouter();
+  const [avatar, setAvatar] = useState<string>("/default-profile.jpg");
   const {
     data: session,
     status,
@@ -20,18 +20,18 @@ export default function useUser({ required }: TUseUserProps): TUseUserReturn {
   });
 
   const user: TUseUserReturn["user"] = session?.user;
-  let avatar;
   const image = user?.image as string;
-  if (image?.startsWith("/uploads") || image?.startsWith("http")) {
-    avatar = user?.image;
-  } else {
-    avatar = "/uploads/default-profile.jpeg";
-  }
+  useEffect(() => {
+    if (image?.startsWith("/uploads") || image?.startsWith("http")) {
+      setAvatar(user?.image);
+    }
+  }, []);
 
   function setUserAvatar(filename: string) {
     const image = `/uploads/${filename}`;
-    update({ ...user, image });
-    animatePageOut("/account", router);
+    update({ ...session, user: { ...user, image } }).then(() => {
+      setAvatar(image);
+    });
   }
   return { user, status, avatar, setUserAvatar };
 }

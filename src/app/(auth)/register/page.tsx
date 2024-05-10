@@ -2,23 +2,19 @@
 import { Button, Container, Title, Input } from "@/components";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
-import {
-  GoogleIcon,
-  LockIcon,
-  PlainIcon,
-  UserOutlineIcon,
-} from "@/../public/icons";
+import { GoogleIcon, LockIcon, PlainIcon, UserOutlineIcon } from "@icons";
+import { TRegisterError } from "@lib/types";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useSession, signIn, signOut } from "next-auth/react";
+import { useSession, signIn } from "next-auth/react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import registerSchema from "@/lib/registerSchema";
+import registerSchema from "@lib/registerSchema";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
+
 import "react-toastify/dist/ReactToastify.css";
 import "@/app/globals.css";
-import { TRegisterError } from "@/lib/types";
 
 type FormValues = {
   username: string;

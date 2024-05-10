@@ -1,9 +1,9 @@
 "use client";
 import Image from "next/image";
-import { CameraIcon, UserOutlineIcon } from "@/../public/icons";
-import { TRole } from "@/lib/types";
+import { CameraIcon, UserOutlineIcon } from "@icons";
+import { TRole } from "@lib/types";
 import { FormEvent, useState } from "react";
-import useUser from "@/hooks/useUser";
+import useUser from "@hooks/useUser";
 import axios from "axios";
 import Avatar from "@components/Avatar";
 
@@ -42,7 +42,7 @@ export default function AccountInfo() {
         <div
           className={`absolute h-[195px] aspect-square top-0 rounded-full transition-all duration-500 ease-in-out ${
             showEditAvatar
-              ? "bg-card bg-opacity-90 opacity-100 pointer-events-auto"
+              ? "bg-secondary bg-opacity-90 opacity-100 pointer-events-auto"
               : "opacity-0 pointer-events-none"
           } flex items-center justify-center`}
         >

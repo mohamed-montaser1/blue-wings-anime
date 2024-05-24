@@ -34,14 +34,14 @@ export default function Login() {
 
   useEffect(() => {
     if (status === "authenticated") {
-      router.push("/");
+      router.push("/account");
     }
   }, [status, router]);
 
   const handleSignInWithGoogle = () => {
     signIn("google").then((res) => {
       if (res?.ok) {
-        router.replace("/");
+        router.replace("/account");
       } else {
         toast(res?.error, { type: "error" });
       }

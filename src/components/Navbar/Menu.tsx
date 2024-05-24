@@ -18,7 +18,7 @@ export default function Menu() {
           <Image src={WorkList} alt="worklist-icon" />
           <span>قائمة الأعمال</span>
         </MenuItem>
-        <MenuItem link="/favorite" active={page === "favorite"}>
+        <MenuItem link="/favs" active={page === "favs"}>
           <Image src={Heart} alt="heart-icon" />
           <span>أعمالك المفضلة</span>
         </MenuItem>

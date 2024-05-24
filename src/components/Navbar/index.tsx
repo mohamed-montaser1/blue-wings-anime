@@ -25,6 +25,7 @@ export default function Navbar() {
   function handleActiveMenu() {
     setActiveMobileMenu((prev) => !prev);
   }
+
   return (
     <nav className="bg-card shadow-2xl h-[120px] flex items-center fixed right-0 left-0 top-0 z-[10000]">
       <Container className="flex justify-between items-center relative">

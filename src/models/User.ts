@@ -16,6 +16,7 @@ export interface User {
   role: "user" | "admin" | "artist" | "editor";
   discord: string;
   email_verified: boolean;
+  createdAt: number;
 }
 
 const UserSchema = new Schema<User>(
@@ -54,8 +55,12 @@ const UserSchema = new Schema<User>(
       type: String,
       default: "",
     },
+    createdAt: {
+      type: Number,
+      default: Date.now(),
+    },
   },
-  { timestamps: true }
+  { versionKey: false }
 );
 
 export default models.User ?? model("User", UserSchema);

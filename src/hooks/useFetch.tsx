@@ -12,9 +12,10 @@ export default function useFetch<DT extends ObjectInterface>(
 ): Promise<DT> {
   return new Promise<DT>((resolve, reject) => {
     if (!type) reject("You Should Pass The Request Type");
-    if (type === "POST" || type === "PUT") {
-      if (!body) reject("You Should Pass The Request Body");
+    if (type === "POST" || (type === "PUT" && !body)) {
+      reject("You Should Pass The Request Body");
     }
+    // Call The Correct Function Based On Fetch Method
     switch (type) {
       case "GET":
         handleGET<DT>(url)
@@ -43,6 +44,13 @@ export default function useFetch<DT extends ObjectInterface>(
   });
 }
 
+/**
+ *
+ * @param url the request url
+ * @param body request body
+ * @description send GET request to the {url}
+ * @returns {Promise} promise with response data or with rejection error message
+ */
 function handleGET<T>(url: string): Promise<T> {
   return new Promise<T>((resolve, reject) => {
     if (!url.trim()) reject("Please Pass a Valid Request URL");
@@ -53,6 +61,13 @@ function handleGET<T>(url: string): Promise<T> {
   });
 }
 
+/**
+ *
+ * @param url the request url
+ * @param body request body
+ * @description send POST request to the {url} with data of {body} content and type
+ * @returns {Promise} promise with response data or with rejection error message
+ */
 function handlePOST<T extends ObjectInterface>(
   url: string,
   body: T
@@ -66,6 +81,13 @@ function handlePOST<T extends ObjectInterface>(
   });
 }
 
+/**
+ *
+ * @param url the request url
+ * @param body request body
+ * @description send PUT request to the {url} with data of {body} content and type
+ * @returns {Promise} promise with response data or with rejection error message
+ */
 function handlePUT<T extends ObjectInterface>(
   url: string,
   body: T
@@ -79,6 +101,12 @@ function handlePUT<T extends ObjectInterface>(
   });
 }
 
+/**
+ * @param url the request url
+ * @param body request body
+ * @description send DELETE request to the {url} with data of {body} content and type
+ * @returns {Promise} promise with response data or with rejection error message
+ */
 function handleDELETE<T extends ObjectInterface>(
   url: string,
   body?: T

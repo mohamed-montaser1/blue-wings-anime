@@ -8,9 +8,9 @@ interface Props {
 
 export default function SectionHeader({ title, id }: Props) {
   return (
-    <div className="section-header header flex justify-between items-center gap-9 md:flex-row">
+    <div className="flex flex-col md:flex-row">
       <Title>{title}</Title>
-      <div className="flex gap-2.5">
+      <div className="flex gap-2.5 mx-auto md:mx-0">
         <SwiperButton arrowDir="right" id={id} />
         <SwiperButton arrowDir="left" id={id} />
       </div>

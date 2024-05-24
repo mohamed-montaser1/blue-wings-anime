@@ -1,9 +1,7 @@
 "use client";
 
-import Hero from "@/components/Hero";
-import Trend from "@/components/Trend";
+import { Hero, Trend, FilterBar } from "@components";
 import "@/app/globals.css";
-import FilterBar from "@components/FilterBar";
 
 export default async function Home() {
   return (

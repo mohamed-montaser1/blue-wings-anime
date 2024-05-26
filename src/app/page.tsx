@@ -1,6 +1,6 @@
 "use client";
 
-import { Hero, Trend, FilterBar } from "@components";
+import { Hero, Trend, FilterBar, Newest } from "@components";
 import "@/app/globals.css";
 
 export default async function Home() {
@@ -9,6 +9,7 @@ export default async function Home() {
       <Hero />
       <FilterBar />
       <Trend />
+      <Newest />
     </>
   );
 }

@@ -102,19 +102,32 @@ select:-webkit-autofill:focus {
 }
 
 .react-rater {
-  @apply !block w-fit mt-4 mx-auto select-none;
+  @apply !flex w-fit mx-auto select-none;
 }
 
 .react-rater-star {
-  @apply text-6xl !text-[#393C4C];
+  @apply text-2xl !text-[#393C4C];
+}
+
+.large .react-rater-star {
+  @apply !text-6xl;
 }
 
 .react-rater-star.is-active {
-  @apply !text-[#18B2FF];
+  @apply !text-primary;
 }
 
 .react-rater-star.will-be-active {
   @apply !text-[#2a99d1];
+}
+
+.react-rater-star.is-active-half {
+  @apply relative;
+}
+
+.react-rater-star.is-active-half::before {
+  content: "\2605";
+  @apply absolute right-0 !text-primary;
 }
 
 button {

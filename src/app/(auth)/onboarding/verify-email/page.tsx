@@ -3,101 +3,84 @@
 import { Button, Container } from "@/components";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "@/app/globals.css";
 import useUser from "@/hooks/useUser";
-import { Session } from "next-auth";
-import { TUseUserReturn, UpdateSession } from "@/lib/types";
-import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
+import useFetch from "@/hooks/useFetch";
 
-class verifyEmailController {
-  data: Session | null;
-  user: TUseUserReturn["user"];
-  status: TUseUserReturn["status"];
-  setUserAvatar: (filename: string) => void;
-  avatar: string | null;
-  update: UpdateSession;
-  constructor(public router: AppRouterInstance) {
-    const { avatar, setUserAvatar, status, user } = useUser({ required: true });
-    const { data, update } = useSession();
+export default function VerifyEmail() {
+  const { user } = useUser({ required: true });
+  const { update, data: session } = useSession();
+  const router = useRouter();
+  const [code, setCode] = useState("");
+  const [inputValue, setInputValue] = useState("");
+  const [canSend, setCanSend] = useState(false);
+  console.log(user);
 
-    this.data = data;
-    this.user = user;
-    this.status = status;
-    this.avatar = avatar;
-    this.setUserAvatar = setUserAvatar;
-    this.update = update;
+  useEffect(() => {
+    if (!user) return;
+    checkVerifiedEmail();
+  }, [user?.email_verified, router]);
+
+  useEffect(() => {
+    if (!user) return;
+    sendCode();
+  }, [user?.email, canSend]);
+
+  function sendCode() {
+    if (!user.email || !canSend) return;
+    type TData = {
+      email: string
+    }
+    type TResponse = {
+      data: {
+        code: string
+      }
+    }
+    useFetch<TData, TResponse>("/api/email-verification", "POST", {
+      email: user.email,
+    }).then((res) => {
+      setCode(res.data.code);
+    });
   }
-  handleMaxLength(
-    e: React.ChangeEvent<HTMLInputElement>,
-    setInputValue: React.Dispatch<React.SetStateAction<string>>
-  ) {
-    if (e.target.value.split("").length > 4) {
-      let newValue = e.target.value.split("").slice(0, 4).join("");
+
+  function handleMaxLength(e: any) {
+    const target = e.target;
+    if (target.value.split("").length > 4) {
+      let newValue = target.value.split("").slice(0, 4).join("");
       setInputValue(newValue);
     } else {
       setInputValue(e.target.value);
     }
   }
-  checkCode(inputValue: string, code: string) {
+
+  function checkCode(inputValue: string, code: string) {
     if (inputValue !== code) {
       return toast("الكود الذي أدخلته غير صحيح", { type: "error" });
     }
     toast("تم توثيق الحساب بنجاح", { type: "success" });
-    this.update({
-      ...this.data,
-      user: { ...this.data?.user, email_verified: true },
+    update({
+      ...session,
+      user: { ...(session?.user || {}), email_verified: true },
     });
     setTimeout(() => {
-      this.router.push("/");
+      router.push("/");
     }, 1400);
   }
-  sendCode(
-    canSend: boolean,
-    setCode: React.Dispatch<React.SetStateAction<string>>
-  ) {
-    if (!this.user.email || !canSend) return;
-    axios
-      .post("/api/email-verification", {
-        email: this.user.email,
-      })
-      .then((res) => {
-        setCode(res.data.code);
-      });
-  }
-  checkVerifiedEmail(
-    setCanSend: React.Dispatch<React.SetStateAction<boolean>>
-  ) {
-    if (this.user.email_verified) {
-      return this.router.replace("/");
+
+  function checkVerifiedEmail() {
+    if (user.email_verified) {
+      return router.replace("/");
     }
     setCanSend(true);
   }
-}
-
-export default function VerifyEmail() {
-  const { user } = useUser({ required: true });
-  const router = useRouter();
-  const [code, setCode] = useState("");
-  const [inputValue, setInputValue] = useState("");
-  const [canSend, setCanSend] = useState(false);
-
-  const { checkVerifiedEmail, checkCode, handleMaxLength, sendCode } =
-    new verifyEmailController(router);
-  useEffect(() => {
-    checkVerifiedEmail(setCanSend);
-  }, [user.email_verified, router]);
-
-  useEffect(() => {
-    sendCode(canSend, setCode);
-  }, [user.email, canSend]);
 
   return (
     <Container className="my-[100px] flex flex-col items-center">
-      <h1 className="text-white text-4xl">مرحبا بك, {user.firstName}!</h1>
+      <h1 className="text-white text-4xl">مرحبا بك, {user?.firstName}!</h1>
       <h2 className="text-[#ccc] text-2xl mt-3">
         تم إرسال كود علي البريد الإلكتروني الذي أدخلته
       </h2>
@@ -105,7 +88,7 @@ export default function VerifyEmail() {
         <input
           type="number"
           className="mx-auto block bg-sub-card rounded-lg p-2 w-full text-white text-lg text-center outline-none"
-          onChange={(e) => handleMaxLength(e, setInputValue)}
+          onChange={(e) => handleMaxLength(e)}
           value={inputValue}
         />
         <Button

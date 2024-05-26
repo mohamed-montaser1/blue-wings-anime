@@ -32,7 +32,7 @@ export default function AccountInfo() {
   return (
     <div className="personal-info">
       <div
-        className="avatar relative w-48 aspect-square flex justify-center mx-auto mt-10 mb-4"
+        className="account-avatar relative w-48 aspect-square flex justify-center mx-auto mt-10 mb-4"
         onMouseOver={() => setShowEditAvatar(true)}
         onMouseOut={() => setShowEditAvatar(false)}
       >

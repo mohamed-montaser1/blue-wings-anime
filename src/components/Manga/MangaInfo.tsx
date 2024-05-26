@@ -5,9 +5,18 @@ import { Button, Container, Input } from "@components";
 import Image from "next/image";
 import Star from "@icons/star";
 import Bookmark from "@icons/bookmark";
+import Rater from "react-rater";
 
 export default function MangaInfo() {
   const [chapter, setChapter] = useState<"default" | number>("default");
+  const keywords: string[] = [
+    "أكشن",
+    "خارق للطبيعة",
+    "دراما",
+    "حسر",
+    "شونين",
+    "فانتازيا",
+  ];
   return (
     <div className="mt-[105px]">
       <Container className="flex gap-10">
@@ -31,11 +40,14 @@ export default function MangaInfo() {
             </div>
             <div className="rate bg-sub-card p-4 rounded-lg flex items-center justify-between my-6">
               <div className="flex">
-                <Star fill="#9128FF" />
-                <Star fill="#9128FF" />
-                <Star fill="#9128FF" />
-                <Star fill="#9128FF" />
-                <Star fill="#9128FF" />
+                <Rater
+                  interactive={false}
+                  total={5}
+                  rating={3}
+                  key={Math.random()}
+                >
+                  <Star fill="#9128FF" />
+                </Rater>
               </div>
               <span className="text-white">9.40</span>
             </div>
@@ -71,6 +83,9 @@ export default function MangaInfo() {
               <span className="keyword">سحر</span>
               <span className="keyword">شونين</span>
               <span className="keyword">فانتازيا</span>
+              {keywords.map((keyword, idx) => (
+                <span className="keyword" key={idx}>{keyword}</span>
+              ))}
             </div>
             <div className="story mt-5">
               <h2 className="text-lg font-bold">قصة المانجا</h2>

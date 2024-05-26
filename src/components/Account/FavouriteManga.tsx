@@ -39,7 +39,6 @@ export default function FavouriteManga() {
     <section className="mt-16">
       <SectionHeader id="5" title="المانجا المفضلة" />
       <SectionSwiper
-        data={data}
         slidesPerView={4}
         id="5"
         key={5}

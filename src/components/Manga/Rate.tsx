@@ -20,17 +20,19 @@ export default function Rate() {
     <div>
       <Container className="mt-24">
         <Title className="mx-auto">قيم العمل الآن</Title>
-        <Rater
-          interactive
-          total={5}
-          rating={0}
-          onRate={({ rating }) => {
-            dispatch({
-              type: "SET_RATING",
-              payload: { text: state.text, rating },
-            });
-          }}
-        />
+        <div className="large">
+          <Rater
+            interactive
+            total={5}
+            rating={0}
+            onRate={({ rating }) => {
+              dispatch({
+                type: "SET_RATING",
+                payload: { text: state.text, rating },
+              });
+            }}
+          />
+        </div>
         <Input className="!w-fit mx-auto mt-5">
           <textarea
             placeholder="أكتب سبب تقييمك"

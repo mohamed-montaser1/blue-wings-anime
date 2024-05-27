@@ -13,7 +13,7 @@ export interface TAnime {
   image: string;
   title: string;
   chaptersNumber: number;
-  rate: number[];
+  rate: number;
 }
 
 interface Props {

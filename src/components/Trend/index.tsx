@@ -5,38 +5,37 @@ import { TAnime } from "@components/SectionSwiper";
 import Slide from "../SectionSwiper/Slide";
 import Rater from "react-rater";
 import { SwiperSlide } from "swiper/react";
-import { Fragment } from "react";
 
 export default function Trend() {
   const data: TAnime[] = [
     {
       chaptersNumber: 640,
       image: "https://placehold.co/393C4C/white",
-      rate: [1, 1, 1, 0.5, 0],
+      rate: 5,
       title: "Star Martial God Technique",
     },
     {
       chaptersNumber: 640,
       image: "https://placehold.co/393C4C/white",
-      rate: [1, 1, 1, 1, 0],
+      rate: 4.9,
       title: "Star Martial God Technique",
     },
     {
       chaptersNumber: 640,
       image: "https://placehold.co/393C4C/white",
-      rate: [1, 1, 1, 1, 0],
+      rate: 5,
       title: "Star Martial God Technique",
     },
     {
       chaptersNumber: 640,
       image: "https://placehold.co/393C4C/white",
-      rate: [1, 1, 1, 1, 0],
+      rate: 4,
       title: "Star Martial God Technique",
     },
     {
       chaptersNumber: 640,
       image: "https://placehold.co/393C4C/white",
-      rate: [1, 1, 1, 1, 0],
+      rate: 4.5,
       title: "Star Martial God Technique",
     },
   ];
@@ -52,7 +51,6 @@ export default function Trend() {
           slidesPerView={4}
         >
           {data.map((el, i) => {
-            let sum = el.rate.reduce((sum, el) => sum + el, 0);
             return (
               <SwiperSlide className="mr-3" key={i}>
                 <Slide>
@@ -67,12 +65,12 @@ export default function Trend() {
                       <div className="stars flex gap-2 items-center">
                         <Rater
                           total={5}
-                          rating={sum}
+                          rating={el.rate}
                           interactive={false}
-                          key={Math.random()}
+                          key={1}
                         />
                       </div>
-                      <span className="text-white">{sum}</span>
+                      <span className="text-white">{el.rate}</span>
                     </div>
                   </div>
                 </Slide>

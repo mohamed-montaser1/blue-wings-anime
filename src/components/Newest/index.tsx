@@ -21,7 +21,6 @@ export default function Newest() {
           }}
         >
           {data.map((el, i) => {
-            let sum = el.rate.reduce((sum, el) => sum + el, 0);
             return (
               <SwiperSlide key={i} className="mr-3">
                 <Slide>
@@ -40,7 +39,7 @@ export default function Newest() {
                     <div className="flex justify-between items-center mt-4 mb-5 flex-col lg:flex-row gap-2">
                       <div className="creation-time flex gap-2">
                         <Image src={ClockIcon} alt="clock icon" />
-                        <span className="text-slate-100 text-sm lg:text-base">
+                        <span className="text-slate-100 text-sm" dir="ltr">
                           10 Jun 2024
                         </span>
                       </div>
@@ -48,16 +47,16 @@ export default function Newest() {
                         <div className="stars flex gap-2 items-center">
                           <Rater
                             total={5}
-                            rating={sum}
+                            rating={el.rate}
                             interactive={false}
-                            key={Math.random()}
+                            key={i}
                           />
                         </div>
-                        <span className="text-white">{sum}</span>
+                        <span className="text-white">{el.rate}</span>
                       </div>
                     </div>
                     <Button variant="main" className="px-11 mt-4">
-                      إقرأ الآن
+                      الإنتقال إلى الفصل
                     </Button>
                   </div>
                 </Slide>

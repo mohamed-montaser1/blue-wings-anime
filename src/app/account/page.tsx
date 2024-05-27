@@ -4,7 +4,7 @@ import { Container } from "@/components";
 import {
   AccountInfo,
   LastReadedChapters,
-  FavouriteManga,
+  FavoriteManga,
   ReadingLater,
 } from "@components/Account";
 
@@ -13,7 +13,7 @@ export default function AccountPage() {
     <Container>
       <AccountInfo />
       <LastReadedChapters />
-      <FavouriteManga />
+      <FavoriteManga />
       <ReadingLater />
     </Container>
   );

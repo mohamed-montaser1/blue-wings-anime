@@ -2,33 +2,33 @@ import { TAnime } from "@components/SectionSwiper";
 
 const data: TAnime[] = [
   {
-    chaptersNumber: 640,
+    chaptersNumber: 390,
     image: "https://placehold.co/393C4C/white",
-    rate: [1, 1, 1, 0.5, 0],
+    rate: 5,
     title: "Star Martial God Technique",
   },
   {
-    chaptersNumber: 640,
+    chaptersNumber: 420,
     image: "https://placehold.co/393C4C/white",
-    rate: [1, 1, 1, 1, 0],
+    rate: 3,
     title: "Star Martial God Technique",
   },
   {
-    chaptersNumber: 640,
+    chaptersNumber: 23,
     image: "https://placehold.co/393C4C/white",
-    rate: [1, 1, 1, 1, 0],
+    rate: 4.2,
     title: "Star Martial God Technique",
   },
   {
-    chaptersNumber: 640,
+    chaptersNumber: 150,
     image: "https://placehold.co/393C4C/white",
-    rate: [1, 1, 1, 1, 0],
+    rate: 3.5,
     title: "Star Martial God Technique",
   },
   {
-    chaptersNumber: 640,
+    chaptersNumber: 55,
     image: "https://placehold.co/393C4C/white",
-    rate: [1, 1, 1, 1, 0],
+    rate: 3.2,
     title: "Star Martial God Technique",
   },
 ];

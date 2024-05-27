@@ -2,6 +2,7 @@
 
 import { Hero, Trend, FilterBar, Newest } from "@components";
 import "@/app/globals.css";
+import MostSkilledArtists from "@/components/SkilledArtists";
 
 export default async function Home() {
   return (
@@ -10,6 +11,7 @@ export default async function Home() {
       <FilterBar />
       <Trend />
       <Newest />
+      <MostSkilledArtists />
     </>
   );
 }

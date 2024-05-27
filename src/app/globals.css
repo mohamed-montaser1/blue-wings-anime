@@ -72,6 +72,10 @@ img {
   @apply bg-sub-card px-5 py-2 rounded-md cursor-default select-none hover:bg-primary duration-300 transition-colors ease-out;
 }
 
+.main-gradient {
+  @apply from-primary to-secondary bg-gradient-to-br;
+}
+
 /* Change Autocomplete styles in Chrome*/
 input:-webkit-autofill,
 input:-webkit-autofill:hover,

@@ -7,19 +7,10 @@ type Props = React.DetailedHTMLProps<
   HTMLHeadingElement
 > & {
   children: React.ReactNode;
-  lineSize?: "small" | "medium" | "large";
   center?: boolean;
 };
 
-export default function Title({ children, lineSize, center, ...props }: Props) {
-  let size;
-  if (lineSize === "small") {
-    size = "w-1/2";
-  } else if (lineSize === "medium") {
-    size = "w-3/4";
-  } else {
-    size = "w-[90%]";
-  }
+export default function Title({ children, center, ...props }: Props) {
   return (
     <div
       {...props}
@@ -28,11 +19,15 @@ export default function Title({ children, lineSize, center, ...props }: Props) {
       }`}
     >
       <h2
-        className={`text-xl sm:text-3xl md:text-[40px] text-white text-center mb-2 md:mb-4 font-bold`}
+        className={`text-2xl sm:text-3xl md:text-[40px] text-white text-center mb-2 md:mb-4 font-bold`}
       >
         {children}
       </h2>
-      <Image src={TitleLine} alt="title-line" className={`self-end ${size}`} />
+      <Image
+        src={TitleLine}
+        alt="title-line"
+        className={`self-center w-1/2 md:w-3/4 lg:w-[90%]`}
+      />
     </div>
   );
 }

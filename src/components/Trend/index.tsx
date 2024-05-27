@@ -67,7 +67,7 @@ export default function Trend() {
                           total={5}
                           rating={el.rate}
                           interactive={false}
-                          key={1}
+                          key={i}
                         />
                       </div>
                       <span className="text-white">{el.rate}</span>

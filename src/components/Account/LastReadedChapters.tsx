@@ -4,9 +4,7 @@ import React from "react";
 export default function LastReadedChapters() {
   return (
     <Container className="mt-24">
-      <Title lineSize="small" className="mx-auto">
-        آخر الفصول المقروءة
-      </Title>
+      <Title className="mx-auto">آخر الفصول المقروءة</Title>
 
       <div className="rounded-md border-secondary border-[1px] p-3 mt-10">
         <ul>

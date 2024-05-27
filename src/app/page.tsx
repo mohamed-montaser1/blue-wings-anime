@@ -7,6 +7,7 @@ import PremiumMember from "@/components/MemberShip";
 import MangaWatchingHistory from "@/components/MangaHistory";
 import Ads from "@components/Ads";
 import SocialMediaAccounts from "@/components/SocialMediaAccounts";
+import Recommendations from "@/components/Recommendations";
 
 export default async function Home() {
   return (
@@ -22,6 +23,7 @@ export default async function Home() {
         <Ads />
         <SocialMediaAccounts />
       </Container>
+      <Recommendations />
     </>
   );
 }

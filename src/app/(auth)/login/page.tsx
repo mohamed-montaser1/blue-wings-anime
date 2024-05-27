@@ -68,7 +68,7 @@ export default function Login() {
 
   return (
     <Container className="flex flex-col items-center my-16">
-      <Title lineSize={"medium"}>تسجيل الدخول</Title>
+      <Title>تسجيل الدخول</Title>
       <form
         className="mt-[80px] flex flex-col w-[603px] max-w-full items-center"
         ref={formRef}

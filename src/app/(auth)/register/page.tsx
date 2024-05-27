@@ -78,7 +78,7 @@ export default function Register() {
 
   return (
     <Container className="flex flex-col items-center my-[100px]">
-      <Title lineSize={"medium"}>إنشاء حساب</Title>
+      <Title>إنشاء حساب</Title>
       <form
         className="mt-[80px] flex flex-col w-[603px] max-w-full items-center"
         onSubmit={handleSubmit(handleRegularSignUp)}

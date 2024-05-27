@@ -21,7 +21,7 @@ export default function MobileMenu({ active }: Props) {
         <MenuItem link="/work-list" active={page === "work-list"}>
           <span className="text-[16px] text-center">قائمة الأعمال</span>
         </MenuItem>
-        <MenuItem link="/favorite" active={page === "favorite"}>
+        <MenuItem link="/favs" active={page === "favs"}>
           <span className="text-[16px] text-center">أعمالك المفضلة</span>
         </MenuItem>
         <MenuItem link="/artists" active={page === "artists"}>

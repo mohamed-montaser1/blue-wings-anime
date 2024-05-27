@@ -162,3 +162,33 @@ button.animated::after {
     left: 120%;
   }
 }
+
+.grid-section-container {
+  grid-template-areas:
+    "membership"
+    "history"
+    "ads"
+    "social";
+}
+
+@media (min-width: 768px) {
+  .grid-section-container {
+    grid-template-areas:
+      "membership history"
+      "ads social";
+  }
+}
+@media (min-width: 992px) {
+  .grid-section-container {
+    grid-template-areas:
+      "membership membership membership history history"
+      "ads ads ads social social";
+  }
+}
+.ad {
+  @apply bg-card flex-1 min-h-80 text-white text-3xl flex items-center justify-center rounded-lg;
+}
+
+.img-banner {
+  @apply w-full cursor-pointer hover:scale-105 transition-transform ease-in-out duration-300;
+}

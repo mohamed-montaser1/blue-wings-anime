@@ -8,6 +8,7 @@ import MangaWatchingHistory from "@/components/MangaHistory";
 import Ads from "@components/Ads";
 import SocialMediaAccounts from "@/components/SocialMediaAccounts";
 import Recommendations from "@/components/Recommendations";
+import Blogs from "@/components/Blogs";
 
 export default async function Home() {
   return (
@@ -24,6 +25,7 @@ export default async function Home() {
         <SocialMediaAccounts />
       </Container>
       <Recommendations />
+      <Blogs />
     </>
   );
 }

@@ -57,7 +57,7 @@ export default function Navbar() {
             </Button>
           )}
           <Button
-            className="xl:hidden md:mr-3 !p-3 !min-w-0"
+            className="xxl:hidden md:mr-3 !p-3 !min-w-0"
             onClick={handleActiveMenu}
           >
             <Image src={MenuIcon} alt="menu-icon" className="min-w-6" />

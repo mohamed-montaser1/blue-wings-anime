@@ -13,7 +13,7 @@ export default function Recommendations() {
   const id = "recommendations";
   return (
     <Container className="mt-20">
-      <Title className="!mb-10 mx-auto">توصيات</Title>
+      <Title className="!mb-10 mx-auto md:mx-0">توصيات</Title>
       <div className="flex flex-col lg:flex-row gap-6 max-w-full items-center">
         <FilterBar />
         <div className="flex gap-2.5 mx-auto md:mx-0">

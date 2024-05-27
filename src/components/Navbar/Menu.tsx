@@ -8,7 +8,7 @@ export default function Menu() {
   let page = path === "/" ? "home" : path.substr(1);
 
   return (
-    <div className="menu hidden min-[1280px]:!block">
+    <div className="menu hidden xxl:!block">
       <ul className="flex xxl:gap-10 gap-6 items-center">
         <MenuItem link="/" active={page === "home"}>
           <Image src={Home} alt="home-icon" />

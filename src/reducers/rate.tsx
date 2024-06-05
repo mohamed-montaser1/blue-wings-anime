@@ -14,9 +14,9 @@ type TPayload = {
   slug?: string;
 };
 
-type TRatingAction<TP> = {
+type TRatingAction<T> = {
   type: Type;
-  payload: TP;
+  payload: T;
 };
 
 export function ratingReducerFn(

@@ -1,12 +1,13 @@
 "use client";
-import { Button, Container } from "@/components";
-import Slide from "@/components/SectionSwiper/Slide";
-import useUser from "@/hooks/useUser";
-import React, { useEffect, useState } from "react";
+import { Button, Container, Slide } from "@/components";
+import useUser from "@hooks/useUser";
+import { useEffect, useState } from "react";
 
 export default function FavoritesPage() {
   const { user } = useUser({ required: true });
-  const [status, setStatus] = useState<"loading" | "loaded" | "empty">("empty");
+  const [status, setStatus] = useState<"loading" | "loaded" | "empty">(
+    "loaded"
+  );
   const [count, setCount] = useState(1);
   useEffect(() => {
     // Get The Data From Server Here And Change The Status To Loaded
@@ -46,7 +47,7 @@ export default function FavoritesPage() {
         className="mx-auto mt-10"
         onClick={() => setCount((prev) => prev + 1)}
       >
-        الأعمال المفضلة
+        عرض المزيد
       </Button>
     </>
   );

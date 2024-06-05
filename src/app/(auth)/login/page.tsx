@@ -1,7 +1,7 @@
 "use client";
 import { Button, Container, Title, Input } from "@components";
 import Image from "next/image";
-import React, { useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import { GoogleIcon, LockIcon, PlainIcon, UserOutlineIcon } from "@icons";
 import Link from "next/link";
 import { useSession, signIn } from "next-auth/react";
@@ -39,7 +39,7 @@ export default function Login() {
   }, [status, router]);
 
   const handleSignInWithGoogle = () => {
-    signIn("google").then((res) => {
+    signIn("google", { callbackUrl: "/account/settings" }).then((res) => {
       if (res?.ok) {
         router.replace("/account");
       } else {

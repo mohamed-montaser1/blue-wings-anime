@@ -1,4 +1,4 @@
-import { MangaInfo, Rate, SimilarManga } from "@components/Manga";
+import { MangaInfo, Rate, SimilarManga } from "@components";
 
 type TProps = {
   params: {

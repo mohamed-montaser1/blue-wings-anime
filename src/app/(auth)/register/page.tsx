@@ -1,5 +1,5 @@
 "use client";
-import { Button, Container, Title, Input } from "@/components";
+import { Button, Container, Title, Input } from "@components";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { GoogleIcon, LockIcon, PlainIcon, UserOutlineIcon } from "@icons";
@@ -17,7 +17,7 @@ import "react-toastify/dist/ReactToastify.css";
 import "@/app/globals.css";
 
 type FormValues = {
-  username: string;
+  name: string;
   email: string;
   password: string;
   confirmPassword: string;
@@ -91,11 +91,11 @@ export default function Register() {
               placeholder="إسم المستخدم"
               className="input"
               tabIndex={1}
-              {...register("username")}
+              {...register("name")}
             />
           </Input>
-          {errors.username && (
-            <p className="error">{`${errors.username.message}`}</p>
+          {errors.name && (
+            <p className="error">{`${errors.name.message}`}</p>
           )}
         </div>
         <div className="input-container w-full">
@@ -175,12 +175,8 @@ export default function Register() {
               <option value="user" defaultChecked>
                 مستخدم
               </option>
-              <option value="editor" defaultChecked>
-                محرر
-              </option>
-              <option value="artist" defaultChecked>
-                فنان
-              </option>
+              <option value="editor">محرر</option>
+              <option value="artist">فنان</option>
             </select>
           </Input>
         </div>

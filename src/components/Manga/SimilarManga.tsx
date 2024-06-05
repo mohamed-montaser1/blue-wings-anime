@@ -2,7 +2,7 @@
 import data from "@/lib/demoSwiperData";
 import { Container, SectionSwiper, Title } from "@components";
 import { SwiperSlide } from "swiper/react";
-import Slide from "../SectionSwiper/Slide";
+import Slide from "../Swiper/SectionSwiper/Slide";
 import Rater from "react-rater";
 
 export default function SimilarManga() {
@@ -12,7 +12,7 @@ export default function SimilarManga() {
         <Title>أعمال ذات صلة</Title>
         <SectionSwiper slidesPerView={4} id="any" key={Math.random()}>
           {data.map((slide, i) => (
-            <SwiperSlide>
+            <SwiperSlide className="mr-4">
               <Slide title="مانجا" key={i}>
                 <div className="details w-full mt-3">
                   <h3 className="text-white text-right">

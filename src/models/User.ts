@@ -1,19 +1,15 @@
 import { Schema, model, models } from "mongoose";
 
-export enum UserRoles {
-  USER = "user",
-  ADMIN = "admin",
-  ARTIST = "artist",
-  EDITOR = "editor",
-}
-
+export type UserRole = "user" | "admin" | "artist" | "editor";
 export interface User {
   _id: Schema.Types.ObjectId;
-  username: string;
+  name: string;
   email: string;
-  avatar: string;
+  bio: string;
+  image: string;
+  cover: string;
   password: string;
-  role: "user" | "admin" | "artist" | "editor";
+  role: UserRole;
   discord: string;
   email_verified: boolean;
   createdAt: number;
@@ -24,15 +20,19 @@ const UserSchema = new Schema<User>(
     _id: {
       type: Schema.Types.ObjectId,
     },
-    username: {
+    name: {
       type: String,
       trim: true,
-      lowercase: true,
     },
     email: {
       type: String,
       trim: true,
       lowercase: true,
+    },
+    bio: {
+      type: String,
+      trim: true,
+      default: "",
     },
     email_verified: {
       type: Boolean,
@@ -42,9 +42,13 @@ const UserSchema = new Schema<User>(
       type: String,
       minlength: 10,
     },
-    avatar: {
+    image: {
       type: String,
       default: "default-profile.jpeg",
+    },
+    cover: {
+      type: String,
+      default: "user-default-cover.jpg",
     },
     role: {
       type: String,

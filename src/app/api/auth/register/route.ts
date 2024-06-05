@@ -32,7 +32,7 @@ export async function POST(req: Request) {
 
   const newUser = await User.create({
     _id: new mongoose.Types.ObjectId(),
-    username: body.username,
+    name: body.name,
     email: body.email,
     password: hashPassword,
     role: body.role,
@@ -48,7 +48,7 @@ export async function POST(req: Request) {
     return NextResponse.json(
       {
         user: null,
-        message: "internal server error",
+        message: `internal server error: ${error}`,
       },
       { status: 205 }
     );

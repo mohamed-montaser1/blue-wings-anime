@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import React, { useState } from "react";
-import { Button } from "..";
+import { Button } from "@components";
 
 const FILTER_ITEMS_DATA: FilterItemProps[] = [
   { query: "newest", name: "الأحدث" },
@@ -10,7 +10,7 @@ const FILTER_ITEMS_DATA: FilterItemProps[] = [
   { query: "lowest-rating", name: "الأقل تقييماً" },
 ];
 
-export default function FilterBar() {
+export default function WorkListFilterBar() {
   const searchParams = useSearchParams();
   let query = searchParams.get("query");
   const [showFilters, setShowFilters] = useState(false);

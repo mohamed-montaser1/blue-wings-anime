@@ -27,9 +27,7 @@ const authOptions: AuthOptions = {
           throw new Error("لا يوجد مستخدم بهذا البريد الإلكتروني");
         }
         if (!user.password) {
-          throw new Error(
-            "يجب ان تسجل الدخول من جوجل بهذا الحساب وليس عبر كتابته يدوياً"
-          );
+          throw new Error("يجب ان تسجل الدخول من جوجل بهذا الحساب وليس عبر كتابته يدوياً");
         }
         let validPassword = await compare(password, user.password);
 
@@ -49,49 +47,36 @@ const authOptions: AuthOptions = {
   ],
   callbacks: {
     async session({ session, token }) {
-      session.user = {
+      const { id, email_verified, role, image, email } = token;
+      let user = {
         ...session.user,
-        id: token.id,
-        email_verified: token.email_verified,
-        role: token.role,
-        image: token.avatar,
+        id,
+        email_verified,
+        role,
+        image,
       };
+      const dbUser = await User.findOne({ email });
+      user.image = dbUser.image;
+      user.cover = dbUser.cover;
+      user.bio = dbUser.bio;
+      session.user = user;
       return session;
     },
     async jwt({ token, trigger, account, user, session }) {
       await dbConnect();
       if (trigger === "update") {
-        let {
-          name: username,
-          email,
-          image: avatar,
-          email_verified,
-        } = session.user;
+        // let { name, email, image, email_verified, cover, role, discord } = session.user;
+        const user = session.user;
         try {
-          await User.findOneAndUpdate(
-            { email },
-            {
-              username,
-              email,
-              avatar,
-              email_verified,
-            }
-          );
-          console.log(
-            `${"#".repeat(15)} JWT UPDATE SUCCESSFULLY ${"#".repeat(15)}`
-          );
+          await User.findOneAndUpdate({ email: user.email }, { ...user });
+          console.log(`${"#".repeat(15)} JWT UPDATE SUCCESSFULLY ${"#".repeat(15)}`);
           token = {
             ...token,
-            username,
-            email,
-            avatar,
-            email_verified,
+            ...user,
           };
           return token;
         } catch (error) {
-          console.log(
-            `${"#".repeat(15)} ERROR WHILE JWT UPDATE ${"#".repeat(15)}`
-          );
+          console.log(`${"#".repeat(15)} ERROR WHILE JWT UPDATE ${"#".repeat(15)}`);
           console.log(error);
           console.log("#".repeat(54));
           return token;
@@ -101,17 +86,14 @@ const authOptions: AuthOptions = {
         token.accessToken = account.access_token;
         token.id = user.id;
       }
-      if (isValidObjectId(token.id)) {
-        let u = await User.findById(token.id);
-        token.email_verified = u.email_verified;
-        token.role = u.role;
-      } else {
-        token.role = "user";
-      }
-      token.image = token.picture;
+
+      let u = await User.findOne({ email: token.email });
+      token.email_verified = u.email_verified;
+      token.role = u.role;
+      token.image = u.image;
       return token;
     },
-    async signIn({ user, profile }) {
+    async signIn({ user, profile, ...props }) {
       await dbConnect();
       const isFound = await User.findOne({ email: user.email });
       if (isFound) return true;

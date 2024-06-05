@@ -1,16 +1,23 @@
 "use client";
 
-import { Hero, Trend, FilterBar, Newest, Container } from "@components";
-import MostSkilledArtists from "@/components/SkilledArtists";
-import "@/app/globals.css";
-import PremiumMember from "@/components/MemberShip";
-import MangaWatchingHistory from "@/components/MangaHistory";
-import Ads from "@components/Ads";
-import SocialMediaAccounts from "@/components/SocialMediaAccounts";
-import Recommendations from "@/components/Recommendations";
-import Blogs from "@/components/Blogs";
+import {
+  MostSkilledArtists,
+  PremiumMember,
+  MangaWatchingHistory,
+  Ads,
+  SocialMediaAccounts,
+  Recommendations,
+  Blogs,
+  Hero,
+  FilterBar,
+  Trend,
+  Newest,
+  Container,
+} from "@components";
 
-export default async function Home() {
+import "@/app/globals.css";
+
+export default function Home() {
   return (
     <>
       <Hero />

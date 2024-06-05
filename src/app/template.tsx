@@ -16,6 +16,16 @@ export default function Template({ children }: Props) {
   }, [status]);
   return (
     <>
+      {status === "loading" ? (
+        <h1 className="fixed left-1/2 -translate-x-1/2 top-1/2 text-slate-100 text-6xl z-[13013013]">
+          يرجى الإنتظار
+        </h1>
+      ) : null}
+      {status === "loading" ? (
+        <h2 className="fixed left-1/2 -translate-x-1/2 top-3/4 -translate-y-20 text-slate-300 text-2xl z-[13013013]">
+          صلي علي النبي
+        </h2>
+      ) : null}
       <div className="w-full fixed z-[50000]">
         <div id="banner-1" className="banner left-0 bg-sub-card" />
         <div id="banner-2" className="banner left-1/4 bg-card" />

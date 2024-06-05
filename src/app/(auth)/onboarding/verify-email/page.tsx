@@ -1,15 +1,14 @@
 "use client";
 
-import { Button, Container } from "@/components";
+import { Button, Container } from "@components";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "@/app/globals.css";
-import useUser from "@/hooks/useUser";
-import useFetch from "@/hooks/useFetch";
+import useUser from "@hooks/useUser";
+import useFetch from "@hooks/useFetch";
 
 export default function VerifyEmail() {
   const { user } = useUser({ required: true });
@@ -18,7 +17,6 @@ export default function VerifyEmail() {
   const [code, setCode] = useState("");
   const [inputValue, setInputValue] = useState("");
   const [canSend, setCanSend] = useState(false);
-  console.log(user);
 
   useEffect(() => {
     if (!user) return;
@@ -33,13 +31,13 @@ export default function VerifyEmail() {
   function sendCode() {
     if (!user.email || !canSend) return;
     type TData = {
-      email: string
-    }
+      email: string;
+    };
     type TResponse = {
       data: {
-        code: string
-      }
-    }
+        code: string;
+      };
+    };
     useFetch<TData, TResponse>("/api/email-verification", "POST", {
       email: user.email,
     }).then((res) => {
@@ -61,14 +59,16 @@ export default function VerifyEmail() {
     if (inputValue !== code) {
       return toast("الكود الذي أدخلته غير صحيح", { type: "error" });
     }
-    toast("تم توثيق الحساب بنجاح", { type: "success" });
     update({
       ...session,
       user: { ...(session?.user || {}), email_verified: true },
     });
-    setTimeout(() => {
-      router.push("/");
-    }, 1400);
+    toast("تم توثيق الحساب بنجاح", {
+      type: "success",
+      onClose(isOpen) {
+        if (!isOpen) router.push("/account/settings");
+      },
+    });
   }
 
   function checkVerifiedEmail() {

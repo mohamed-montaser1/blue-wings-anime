@@ -1,7 +1,7 @@
 import generateSwiperBreakPoints from "@lib/swiperOptions";
-import { TAnime } from "../SectionSwiper";
+import { TAnime } from "../Swiper/SectionSwiper";
 import { SectionHeader, SectionSwiper } from "@components";
-import Slide from "../SectionSwiper/Slide";
+import Slide from "../Swiper/SectionSwiper/Slide";
 import { SwiperSlide } from "swiper/react";
 import Rater from "react-rater";
 

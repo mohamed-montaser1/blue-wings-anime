@@ -196,3 +196,8 @@ button.animated::after {
 .img-banner {
   @apply w-full cursor-pointer hover:scale-105 transition-transform ease-in-out duration-300;
 }
+
+[data-required]::before {
+  content: "*";
+  @apply mx-1 text-red-400
+}

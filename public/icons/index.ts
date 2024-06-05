@@ -18,6 +18,8 @@ import SettingsIcon from "./settings.svg";
 import LogoutIcon from "./logout.svg";
 import CameraIcon from "./camera.svg";
 import ClockIcon from "./clock-circle.svg";
+import TrashIcon from "./trash.svg";
+import UserId from "./user-account-settings.svg";
 
 export {
   Home,
@@ -40,4 +42,6 @@ export {
   LogoutIcon,
   CameraIcon,
   ClockIcon,
+  TrashIcon,
+  UserId,
 };

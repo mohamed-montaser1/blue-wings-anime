@@ -1,8 +1,8 @@
 import generateSwiperBreakPoints from "@lib/swiperOptions";
-import { TAnime } from "../SectionSwiper";
+import { TAnime } from "../Swiper/SectionSwiper";
 import { SectionHeader, SectionSwiper } from "@components";
 import { SwiperSlide } from "swiper/react";
-import Slide from "../SectionSwiper/Slide";
+import Slide from "../Swiper/SectionSwiper/Slide";
 import Rater from "react-rater";
 
 export default function ReadingLater() {

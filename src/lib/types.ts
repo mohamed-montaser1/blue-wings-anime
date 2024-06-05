@@ -1,6 +1,8 @@
+import { UserRole } from "@/models/User";
 import { Session } from "next-auth";
 import { StaticImageData } from "next/image";
-import { HTMLAttributes } from "react";
+import { InternalLinkProps } from "next/link";
+import { AnchorHTMLAttributes, HTMLAttributes } from "react";
 
 export type TRole = "user" | "editor" | "artist" | "admin";
 
@@ -25,29 +27,36 @@ export type TRegisterError = {
   };
 };
 
-export type TDropdownOptionProps = React.DetailedHTMLProps<
-  HTMLAttributes<HTMLDivElement>,
-  HTMLDivElement
-> & {
+export type TDropdownOptionProps = Omit<AnchorHTMLAttributes<HTMLAnchorElement>, keyof InternalLinkProps> & {
   icon: any;
   text: string;
+  base?: boolean;
+  href: string;
+  onClick?: (e: any) => void;
+  imageProps?: {
+    [key: string]: any;
+  };
 };
 
 export type TDropdownMenuProps = {
   children: React.ReactNode;
+  userName: string;
+  avatar: string | StaticImageData;
 };
 
 export type TUseUserReturn = {
+  session: Session | null;
   user: Session["user"] & TUser;
-  avatar: string | null;
+  avatar: string | StaticImageData;
   status: "authenticated" | "loading" | "unauthenticated";
-  setUserAvatar: (filename: string) => void;
+  updateSession(properties: Partial<TUser>, cb?: (session: Session | null) => void): void;
 };
 
 export type TUser = {
   email: string;
   id: string;
   image: string | StaticImageData;
+  cover: string | StaticImageData;
   name: string;
   role: TRole;
 };
@@ -70,4 +79,4 @@ export type TLoginFormValues = {
   password: string;
 };
 
-export type UpdateSession = (data?: any) => Promise<Session | null>
+export type UpdateSession = (data?: any) => Promise<Session | null>;

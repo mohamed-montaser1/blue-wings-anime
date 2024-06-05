@@ -1,4 +1,4 @@
-import { TAnime } from "@components/SectionSwiper";
+import { TAnime } from "@components/Swiper/SectionSwiper";
 
 const data: TAnime[] = [
   {

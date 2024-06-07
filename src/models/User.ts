@@ -44,11 +44,11 @@ const UserSchema = new Schema<User>(
     },
     image: {
       type: String,
-      default: "default-profile.jpeg",
+      default: "/uploads/profiles-pictures/default.jpg",
     },
     cover: {
       type: String,
-      default: "user-default-cover.jpg",
+      default: "/uploads/profiles-covers/default.jpg",
     },
     role: {
       type: String,

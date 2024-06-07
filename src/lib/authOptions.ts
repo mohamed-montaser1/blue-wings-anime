@@ -47,13 +47,14 @@ const authOptions: AuthOptions = {
   ],
   callbacks: {
     async session({ session, token }) {
-      const { id, email_verified, role, image, email } = token;
+      const { id, email_verified, role, image, email, joinDate } = token;
       let user = {
         ...session.user,
         id,
         email_verified,
         role,
         image,
+        joinDate,
       };
       const dbUser = await User.findOne({ email });
       user.image = dbUser.image;
@@ -91,6 +92,7 @@ const authOptions: AuthOptions = {
       token.email_verified = u.email_verified;
       token.role = u.role;
       token.image = u.image;
+      token.joinDate = u.createdAt;
       return token;
     },
     async signIn({ user, profile, ...props }) {

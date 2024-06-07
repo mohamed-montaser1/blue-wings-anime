@@ -26,24 +26,14 @@ export default function AccountSettings() {
           onClick={handleToggleDropdown}
         >
           <div className="flex justify-center items-center gap-2">
-            <h3 className="text-white text-left text-sm hidden xs:!inline">
-              {user?.name}
-            </h3>
+            <h3 className="text-white text-left text-sm hidden xs:!inline">{user?.name}</h3>
             <Image src={UserIcon} alt="user-icon" />
           </div>
         </Button>
         {showDropdown && (
-          <DropdownMenu avatar={avatar} userName={user.name}>
-            <DropdownOption
-              icon={SettingsIcon}
-              text="عرض الملف الشخصي"
-              href="/account"
-            />
-            <DropdownOption
-              icon={UserId}
-              text="إعدادات الملف الشخصي"
-              href="/account/settings"
-            />
+          <DropdownMenu userName={user.name}>
+            <DropdownOption icon={SettingsIcon} text="عرض الملف الشخصي" href="/account" />
+            <DropdownOption icon={UserId} text="إعدادات الملف الشخصي" href="/account/settings" />
             <DropdownOption
               icon={LogoutIcon}
               text="تسجيل الخروج"

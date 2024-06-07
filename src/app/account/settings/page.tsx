@@ -33,7 +33,6 @@ const imageTypesAllowed = ["image/jpg", "image/jpeg", "image/png"] as const;
 export default function EditPage() {
   const router = useRouter();
   const { avatar, status, user, updateSession } = useUser({ required: true });
-  console.log({ role: user?.role });
   const profileBeforeChanges: TProfile = {
     image: avatar,
     cover: user?.cover,
@@ -74,32 +73,35 @@ export default function EditPage() {
       return;
     }
     console.log({ img, dir });
-    const result = await uploadImage(img, dir);
+    let result = await uploadImage(img, dir);
     if (result instanceof Object) {
       console.error({ uploadingError: result });
       toast(msg, { type: "error" });
+      cb(result);
+      return;
     }
-    cb(result);
+    cb(`/uploads/${dir}/${result}`);
+    return `/uploads/${dir}/${result}`;
   }
 
-  const setUserAvatar = (avatar: string | object) => {
+  const setUserAvatar = (image: string | object) => {
     if (avatar instanceof Object) {
-      console.log({ callbackError: "there is an error" });
+      console.log({ callbackError: "there is an error", error: image });
     }
-    updateSession({ image: `/uploads/profiles-pictures/${avatar}` });
   };
   const setUserCover = (cover: string | object) => {
     if (avatar instanceof Object) {
-      console.log({ callbackError: "there is an error" });
+      console.log({ callbackError: "there is an error", error: cover });
+      return;
     }
-    console.log({ cover });
-    updateSession({ cover: `/uploads/profiles-covers/${cover}` });
   };
 
   async function handleSaveChanges() {
-    const saveChangesPromise = new Promise(async (resolve, reject) => {
+    type TSaves = Partial<TProfile>;
+    const saveChangesPromise = new Promise<TSaves>(async (resolve) => {
       let changes: Partial<TProfile> = {};
       const keys = Object.keys(profile) as Array<keyof typeof changes>;
+      let saves: TSaves = {};
 
       for (let key of keys) {
         if (profileBeforeChanges[key] !== profile[key]) {
@@ -112,28 +114,53 @@ export default function EditPage() {
       if (changes.files) {
         const { cover, image } = changes.files;
         if (cover) {
-          await saveImage(cover, "profiles-covers", "حدث خطأ ما أثناء حفظ الصورة الشخصيه الجديده", setUserCover);
+          if (cover.toString().startsWith("default")) {
+            saves = { ...saves, cover: `/uploads/profiles-covers/default.jpg` };
+          } else {
+            const coverUrl = await saveImage(
+              cover,
+              "profiles-covers",
+              "حدث خطأ ما أثناء حفظ الصورة الشخصيه الجديده",
+              setUserCover
+            );
+            if (coverUrl) {
+              saves = { ...saves, cover: coverUrl };
+            }
+          }
         }
         if (image) {
-          await saveImage(image, "profiles-pictures", "حدث خطأ ما أثناء حفظ الصورة الشخصيه الجديده", setUserAvatar);
+          const avatarUrl = await saveImage(
+            image,
+            "profiles-pictures",
+            "حدث خطأ ما أثناء حفظ الصورة الشخصيه الجديده",
+            setUserAvatar
+          );
+          if (avatarUrl) {
+            saves = { ...saves, image: avatarUrl };
+          }
         }
       }
       // Save Username And New Role if found
       if (changes.role) {
-        updateSession({ role: changes.role as UserRole });
+        saves = { ...saves, role: changes.role };
       }
       if (changes.name) {
-        updateSession({ name: changes.name });
+        saves = { ...saves, name: changes.name };
       }
-      resolve(true);
+      if (changes.bio) {
+        saves = { ...saves, bio: changes.bio };
+      }
+      resolve(saves);
     });
 
-    saveChangesPromise.then(() => {
-      toast("تم تعديل الملف الشخصي بنجاح", { type: "success" });
-      toast("سيتم توجيهك لصفحتك الشخصيه لمعاينة النتيجه", { type: "success" });
-      setTimeout(() => {
-        router.push("/account");
-      }, 4000);
+    saveChangesPromise.then((saves) => {
+      updateSession(saves, () => {
+        toast("تم تعديل الملف الشخصي بنجاح", { type: "success" });
+        toast("سيتم توجيهك لصفحتك الشخصيه لمعاينة النتيجه", { type: "success" });
+        setTimeout(() => {
+          router.push("/account");
+        }, 3000);
+      });
     });
   }
 

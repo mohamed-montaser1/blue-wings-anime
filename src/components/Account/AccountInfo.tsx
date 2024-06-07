@@ -2,10 +2,11 @@
 import Image from "next/image";
 import { CameraIcon, UserOutlineIcon } from "@icons";
 import { TRole } from "@lib/types";
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import useUser from "@hooks/useUser";
 import axios from "axios";
 import Avatar from "@/components/Ui/Avatar";
+import DateController from "@/utils/date";
 
 export const roles = {
   user: "مستخدم",
@@ -15,30 +16,38 @@ export const roles = {
 };
 
 export default function AccountInfo() {
-  const { user, avatar, setUserAvatar } = useUser({ required: true });
-
-  async function handleChangeImage(e: FormEvent<HTMLInputElement>) {
-    e.preventDefault();
-    const target = e?.target as HTMLInputElement;
-    const img = target.files![0];
-    const form = new FormData();
-    form.append("image", img);
-    const res = await axios.post<{ image: string }>("/api/uploads/profiles-pictures", form);
-    const filename = res.data.image;
-    setUserAvatar(filename);
-  }
-
+  const { user, avatar } = useUser({ required: true });
+  const [date, setDate] = useState<string>("");
+  useEffect(() => {
+    if (!user?.joinDate) return;
+    const dateController = new DateController(user.joinDate);
+    setDate(dateController.format("DD MMM YYYY"));
+  }, [user?.joinDate]);
   return (
     <div className="personal-info">
-      <div className="account-avatar relative w-48 aspect-square flex justify-center mx-auto mt-10 mb-4">
-        <Avatar width={192} height={192} image={avatar as string} />
-      </div>
-      <div className="text-center">
-        <h1 className="text-white text-[30px]">{user?.name || user?.username}</h1>
-        <p className="text-[#ccc] md:text-xl max-w-full text-ellipsis overflow-hidden">{user?.email}</p>
-        <div className="role flex justify-center mt-4 gap-2">
-          <Image src={UserOutlineIcon} alt="role-icon" className="text-primary" />
-          <span className="text-white text-lg">{roles[user?.role as TRole]}</span>
+      <div className="relative avatar-banner__container">
+        <div className="profile-banner relative px-3 pt-5">
+          <Image
+            src={user?.cover || ""}
+            width={"1000"}
+            height={"400"}
+            className="w-full h-64 object-cover rounded-lg"
+            priority={false}
+            alt="testing-banner"
+          />
+        </div>
+        <div className="flex gap-5">
+          <div className="w-[200px] aspect-square bg-slate-500 rounded-full p-1 -translate-y-1/4 mr-7 border border-slate-900">
+            <Avatar width={200} height={200} image={avatar} />
+          </div>
+          <div className="mt-5">
+            <h1 className="text-white text-[30px]">{user?.name || user?.username}</h1>
+            <p className="text-[#ccc] md:text-xl max-w-full text-ellipsis overflow-hidden">عضو منذ: {date}</p>
+            <div className="role flex mt-4 gap-2">
+              <Image src={UserOutlineIcon} alt="role-icon" className="text-primary" />
+              <span className="text-white text-lg">{roles[user?.role as TRole]}</span>
+            </div>
+          </div>
         </div>
       </div>
     </div>

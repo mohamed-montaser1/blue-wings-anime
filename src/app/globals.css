@@ -11,6 +11,7 @@ body {
 
 img {
   user-select: none;
+  pointer-events: none;
 }
 
 .swiper-pagination-bullet {
@@ -201,3 +202,4 @@ button.animated::after {
   content: "*";
   @apply mx-1 text-red-400
 }
+

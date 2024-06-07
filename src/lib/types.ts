@@ -41,7 +41,6 @@ export type TDropdownOptionProps = Omit<AnchorHTMLAttributes<HTMLAnchorElement>,
 export type TDropdownMenuProps = {
   children: React.ReactNode;
   userName: string;
-  avatar: string | StaticImageData;
 };
 
 export type TUseUserReturn = {

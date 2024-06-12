@@ -3,19 +3,18 @@ import React from "react";
 
 type Props = {
   image: string | StaticImageData;
-  width: number;
-  height: number;
+  size: number;
   className?: string;
 };
 
-export default function Avatar({ image, width, height, className }: Props) {
+export default function Avatar({ image, size, className }: Props) {
   return (
     <Image
       src={image || "/uploads/profiles-pictures/default.jpg"}
-      width={width}
-      height={height}
+      width={size}
+      height={size}
       alt="user-image"
-      className={`rounded-full mx-auto w-full aspect-square object-cover ${className}`}
+      className={`rounded-full mx-auto aspect-square object-cover ${className}`}
     />
   );
 }

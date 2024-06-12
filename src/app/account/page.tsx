@@ -1,20 +1,16 @@
 "use client";
 
-import {
-  Container,
-  AccountInfo,
-  LastReadedChapters,
-  FavoriteManga,
-  ReadingLater,
-} from "@components";
+import { Bio, Posts } from "@components/Account";
+import { Container, AccountInfo } from "@components";
 
 export default function AccountPage() {
   return (
     <Container>
       <AccountInfo />
-      <LastReadedChapters />
-      <FavoriteManga />
-      <ReadingLater />
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 relative">
+        <Bio />
+        <Posts />
+      </div>
     </Container>
   );
 }

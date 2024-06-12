@@ -1,4 +1,4 @@
-import { TDropdownMenuProps, TDropdownOptionProps } from "@lib/types";
+import { TDropdownMenuProps, TDropdownOptionProps } from "../../../lib/types";
 import Image from "next/image";
 import parse from "html-react-parser";
 import Link from "next/link";
@@ -14,8 +14,16 @@ function DropdownMenu({ children, userName }: TDropdownMenuProps) {
         id="DropdownOption"
         className={`rounded-xl w-full p-4 bg-secondary-800 rounded-b-none select-none flex items-center gap-4`}
       >
-        <Image src={avatar} className={`rounded-full w-12 aspect-square`} alt="icon" width={50} height={50} />
-        <span className="text-white text-sm">مرحبا {userName.split(" ")[0]}</span>
+        <Image
+          src={avatar}
+          className={`rounded-full w-12 aspect-square`}
+          alt="icon"
+          width={50}
+          height={50}
+        />
+        <span className="text-white text-sm">
+          مرحبا {userName.split(" ")[0]}
+        </span>
       </Link>
       <div id="DropdownMenu" className="flex flex-col gap-2 md:p-2">
         {children}
@@ -24,7 +32,15 @@ function DropdownMenu({ children, userName }: TDropdownMenuProps) {
   );
 }
 
-function DropdownOption({ icon, text, imageProps, base, href, onClick, ...props }: TDropdownOptionProps) {
+function DropdownOption({
+  icon,
+  text,
+  imageProps,
+  base,
+  href,
+  onClick,
+  ...props
+}: TDropdownOptionProps) {
   return (
     <Link
       href={href}
@@ -35,7 +51,12 @@ function DropdownOption({ icon, text, imageProps, base, href, onClick, ...props 
       } select-none flex items-center gap-4`}
       {...props}
     >
-      <Image src={icon} className={`rounded-full ${props.className}`} alt="icon" {...imageProps} />
+      <Image
+        src={icon}
+        className={`rounded-full ${props.className}`}
+        alt="icon"
+        {...imageProps}
+      />
       <span className="text-white text-sm">{parse(text)}</span>
     </Link>
   );

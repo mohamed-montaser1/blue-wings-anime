@@ -7,11 +7,10 @@ type ObjectInterface = {
 };
 type TResponse<T> = { data: T };
 
-export default function useFetch<DT extends ObjectInterface, RS extends ObjectInterface>(
-  url: string,
-  type: RequestMethod,
-  body: DT
-): Promise<TResponse<RS>> {
+export default function useFetch<
+  DT extends ObjectInterface,
+  RS extends ObjectInterface
+>(url: string, type: RequestMethod, body: DT): Promise<TResponse<RS>> {
   return new Promise<TResponse<RS>>((resolve, reject) => {
     if (!type) reject("You Should Pass The Request Type");
     if (type === "POST" || type === "PUT") {
@@ -70,7 +69,10 @@ function handleGET<T>(url: string): Promise<TResponse<T>> {
  * @description send POST request to the {url} with data of {body} content and type
  * @returns {Promise} promise with response data or with rejection error message
  */
-function handlePOST<T extends ObjectInterface, D extends ObjectInterface>(url: string, body: T): Promise<TResponse<D>> {
+function handlePOST<T extends ObjectInterface, D extends ObjectInterface>(
+  url: string,
+  body: T
+): Promise<TResponse<D>> {
   return new Promise((resolve, reject) => {
     if (!url.trim()) reject("Please Pass a Valid Request URL");
     axios
@@ -87,7 +89,10 @@ function handlePOST<T extends ObjectInterface, D extends ObjectInterface>(url: s
  * @description send PUT request to the {url} with data of {body} content and type
  * @returns {Promise} promise with response data or with rejection error message
  */
-function handlePUT<T extends ObjectInterface, D extends ObjectInterface>(url: string, body: T): Promise<TResponse<D>> {
+function handlePUT<T extends ObjectInterface, D extends ObjectInterface>(
+  url: string,
+  body: T
+): Promise<TResponse<D>> {
   return new Promise((resolve, reject) => {
     if (!url.trim()) reject("Please Pass a Valid Request URL");
     axios

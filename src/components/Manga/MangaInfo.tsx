@@ -84,7 +84,9 @@ export default function MangaInfo() {
               <span className="keyword">شونين</span>
               <span className="keyword">فانتازيا</span>
               {keywords.map((keyword, idx) => (
-                <span className="keyword" key={idx}>{keyword}</span>
+                <span className="keyword" key={idx}>
+                  {keyword}
+                </span>
               ))}
             </div>
             <div className="story mt-5">

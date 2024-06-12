@@ -1,7 +1,8 @@
 import { Schema, model, models } from "mongoose";
+import { TPost } from "./Post";
 
 export type UserRole = "user" | "admin" | "artist" | "editor";
-export interface User {
+export interface TUser {
   _id: Schema.Types.ObjectId;
   name: string;
   email: string;
@@ -13,9 +14,10 @@ export interface User {
   discord: string;
   email_verified: boolean;
   createdAt: number;
+  posts: TPost[];
 }
 
-const UserSchema = new Schema<User>(
+const UserSchema = new Schema<TUser>(
   {
     _id: {
       type: Schema.Types.ObjectId,
@@ -28,6 +30,7 @@ const UserSchema = new Schema<User>(
       type: String,
       trim: true,
       lowercase: true,
+      required: true,
     },
     bio: {
       type: String,
@@ -59,6 +62,10 @@ const UserSchema = new Schema<User>(
       type: String,
       default: "",
     },
+    posts: {
+      type: [{ type: Schema.Types.ObjectId, ref: "Post" }],
+      default: [],
+    },
     createdAt: {
       type: Number,
       default: Date.now(),
@@ -67,4 +74,4 @@ const UserSchema = new Schema<User>(
   { versionKey: false }
 );
 
-export default models.User ?? model("User", UserSchema);
+export const User = models.User || model("User", UserSchema);

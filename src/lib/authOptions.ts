@@ -1,11 +1,12 @@
-import { AuthOptions } from "next-auth";
+import { AuthOptions, Profile } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import CredentialsProvider from "next-auth/providers/credentials";
-import User from "@models/User";
+import { TUser, User } from "@models/User";
 import { compare } from "bcrypt";
 import mongoose, { isValidObjectId } from "mongoose";
-import { TCredentials } from "@lib/types";
+import { TCredentials } from "./types";
 import { dbConnect, loginSchema } from "@lib";
+import { Post } from "@/models";
 
 const authOptions: AuthOptions = {
   providers: [
@@ -27,19 +28,32 @@ const authOptions: AuthOptions = {
           throw new Error("لا يوجد مستخدم بهذا البريد الإلكتروني");
         }
         if (!user.password) {
-          throw new Error("يجب ان تسجل الدخول من جوجل بهذا الحساب وليس عبر كتابته يدوياً");
+          throw new Error(
+            "يجب ان تسجل الدخول من جوجل بهذا الحساب وليس عبر كتابته يدوياً"
+          );
         }
         let validPassword = await compare(password, user.password);
 
         if (!validPassword) {
           throw new Error("كلمة المرور غير صحيحة");
         }
+        const {
+          name,
+          email: uEmail,
+          image,
+          cover,
+          bio,
+          _id: id,
+          email_verified,
+        } = user;
         return {
-          name: user.username,
-          email: user.email,
-          image: user.avatar,
-          id: user._id,
-          email_verified: user.email_verified,
+          name,
+          email: uEmail,
+          image,
+          cover,
+          bio,
+          id,
+          email_verified,
         };
       },
       credentials: {},
@@ -47,65 +61,83 @@ const authOptions: AuthOptions = {
   ],
   callbacks: {
     async session({ session, token }) {
-      const { id, email_verified, role, image, email, joinDate } = token;
-      let user = {
+      const userFields: Array<keyof TUser> = [
+        "name",
+        "email",
+        "bio",
+        "email_verified",
+        "image",
+        "cover",
+        "role",
+        "posts",
+        "createdAt",
+      ] as const;
+
+      const properties = userFields.reduce((acc, field) => {
+        // Dynamically access each field from token.user and assign it to the accumulator object acc
+        if ((token.user as Partial<TUser>)[field] !== undefined) {
+          acc[field] = (token.user as Partial<TUser>)[
+            field
+          ] as TUser[keyof TUser];
+        }
+        return acc; // Return the updated accumulator for the next iteration
+      }, {} as Record<string, TUser[keyof TUser]>); // Initialize acc as an empty object
+
+      session.user = {
         ...session.user,
-        id,
-        email_verified,
-        role,
-        image,
-        joinDate,
+        ...properties,
+        joinDate: properties.createdAt,
       };
-      const dbUser = await User.findOne({ email });
-      user.image = dbUser.image;
-      user.cover = dbUser.cover;
-      user.bio = dbUser.bio;
-      session.user = user;
       return session;
     },
     async jwt({ token, trigger, account, user, session }) {
       await dbConnect();
       if (trigger === "update") {
-        // let { name, email, image, email_verified, cover, role, discord } = session.user;
-        const user = session.user;
+        const sessionUser = session.user;
+        console.log({ sessionUser });
         try {
-          await User.findOneAndUpdate({ email: user.email }, { ...user });
-          console.log(`${"#".repeat(15)} JWT UPDATE SUCCESSFULLY ${"#".repeat(15)}`);
-          token = {
-            ...token,
-            ...user,
-          };
-          return token;
+          const updatedUser = await User.findOneAndUpdate(
+            { email: sessionUser.email },
+            sessionUser,
+            {
+              new: true,
+            }
+          );
+          console.log(
+            `${"#".repeat(15)} JWT UPDATE SUCCESSFULLY ${"#".repeat(15)}`
+          );
+          console.log({ updatedUser });
+          token = { ...token, ...sessionUser };
         } catch (error) {
-          console.log(`${"#".repeat(15)} ERROR WHILE JWT UPDATE ${"#".repeat(15)}`);
+          console.log(
+            `${"#".repeat(15)} ERROR WHILE JWT UPDATE ${"#".repeat(15)}`
+          );
           console.log(error);
           console.log("#".repeat(54));
-          return token;
+          throw new Error(error as string);
         }
       }
       if (account) {
         token.accessToken = account.access_token;
         token.id = user.id;
       }
-
-      let u = await User.findOne({ email: token.email });
-      token.email_verified = u.email_verified;
-      token.role = u.role;
-      token.image = u.image;
-      token.joinDate = u.createdAt;
+      await Post.init();
+      token.user = await User.findOne({ email: token.email }).populate("posts");
       return token;
     },
-    async signIn({ user, profile, ...props }) {
+    async signIn({ user, profile }) {
       await dbConnect();
       const isFound = await User.findOne({ email: user.email });
       if (isFound) return true;
 
       const newUser = await User.create({
         _id: new mongoose.Types.ObjectId(),
-        username: user.name,
+        name: user.name,
         email: user.email,
-        avatar: user.image,
-        email_verified: (profile as any)?.email_verified,
+        image: user.image,
+        email_verified:
+          (profile as Profile & { email_verified: boolean }).email_verified ??
+          false,
       });
 
       try {

@@ -11,7 +11,10 @@ type TGenerateSaveImageRoute = NextResponse<{
   image: string | null;
 }>;
 
-export async function generateSaveImageRoute(req: Request, uploadsDir: string): Promise<TGenerateSaveImageRoute> {
+export async function generateSaveImageRoute(
+  req: Request,
+  uploadsDir: string,
+): Promise<TGenerateSaveImageRoute> {
   const form = await req.formData();
   const image: File | null = form.get("image") as unknown as File;
   const type = image.type.split("/")[1];

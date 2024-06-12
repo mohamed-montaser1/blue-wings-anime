@@ -20,6 +20,7 @@ import CameraIcon from "./camera.svg";
 import ClockIcon from "./clock-circle.svg";
 import TrashIcon from "./trash.svg";
 import UserId from "./user-account-settings.svg";
+import PostHeart from "./post-heart.svg";
 
 export {
   Home,
@@ -44,4 +45,5 @@ export {
   ClockIcon,
   TrashIcon,
   UserId,
+  PostHeart,
 };

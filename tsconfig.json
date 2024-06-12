@@ -27,6 +27,7 @@
       "@lib/*": ["./src/lib/*"],
       "@lib": ["./src/lib/index.ts"],
       "@models/*": ["./src/models/*"],
+      "@models": ["./src/models/index.ts"],
       "@reducers/*": ["./src/reducers/*"],
       "@utils/*": ["./src/utils/*"],
       "@public/*": ["./public/*"]

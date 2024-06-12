@@ -1,0 +1,304 @@
+import useUser from "@hooks/useUser";
+import { Avatar, Button, Input } from "../Ui";
+import Image from "next/image";
+import {
+  ChangeEvent,
+  Dispatch,
+  SetStateAction,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
+import { FaComment, FaShare, FaTimes } from "react-icons/fa";
+import {
+  imageTypesAllowed,
+  imageTypesAllowedKey,
+} from "@/app/account/settings/page";
+import { ToastContainer, toast } from "react-toastify";
+import uploadImage from "@utils/uploadImage";
+import useFetch from "@/hooks/useFetch";
+import { type TPost as TPost } from "@/models/Post";
+import DateController from "@/utils/date";
+import { Heart, PostHeart, TrashIcon } from "@icons/index";
+
+export default function Posts() {
+  const [posts, setPosts] = useState<TPost[]>([]);
+  const { user } = useUser({ required: true });
+  useEffect(() => {
+    if (!user) return;
+    setPosts((user.posts as TPost[]).sort((a, b) => b.createdAt - a.createdAt));
+  }, [user]);
+  return (
+    <div>
+      <CreatePost setPosts={setPosts} />
+      <PostedPosts posts={posts} />
+    </div>
+  );
+}
+
+type TCreatePostProps = {
+  setPosts: Dispatch<SetStateAction<TPost[]>>;
+};
+
+function CreatePost({ setPosts }: TCreatePostProps) {
+  const { user, avatar } = useUser({ required: true });
+  const PostImageRef = useRef<HTMLInputElement>(null);
+  const [files, setFiles] = useState<File[]>([]);
+  const [postText, setPostText] = useState("");
+
+  function handleChangeImage(e: ChangeEvent<HTMLInputElement>) {
+    if (e.target.files) {
+      const fileList = e.target.files;
+      const filesArray = Array.from(fileList);
+      for (let file of filesArray) {
+        if (!imageTypesAllowed.includes(file.type as imageTypesAllowedKey)) {
+          toast("يجب عليك إدخال صورة بإمتداد jpg او png او jpeg", {
+            type: "error",
+          });
+          return;
+        }
+      }
+      setFiles((prev) => [...prev, ...filesArray]);
+    }
+  }
+  function uploadImages() {
+    return new Promise<string[]>((resolve, reject) => {
+      const imagesURLs: string[] = [];
+
+      if (files.length > 0) {
+        const uploadPromises = files.map((file) => {
+          return uploadImage(file, "posts-images")
+            .then((newUrl) => `/uploads/posts-images/${newUrl}`)
+            .catch((err) => {
+              console.log({ errorWhileUploadImagesToServer: err });
+              throw err; // This will make Promise.all reject if any single upload fails
+            });
+        });
+
+        Promise.all(uploadPromises)
+          .then((results) => {
+            resolve(results);
+          })
+          .catch((err) => {
+            reject(err);
+          });
+      } else {
+        resolve(imagesURLs);
+      }
+    });
+  }
+  async function handlePost() {
+    const images = await uploadImages();
+    if (postText.trim() === "") {
+      console.log({ msg: "its empty :(" });
+      if (images.length < 1) {
+        toast("يجب عليك أن تدخل صور او نص علي الأقل لرفع المنشور", {
+          type: "error",
+        });
+        return;
+      }
+    }
+    const form = new FormData();
+    form.set("post-text", postText);
+    form.set("post-images", JSON.stringify(images));
+    form.set("email", user.email);
+    const res = await useFetch<FormData, { data: TPost[] }>(
+      "/api/posts/create",
+      "POST",
+      form
+    );
+    setPosts(res.data.data.reverse());
+    setPostText("");
+    setFiles([]);
+  }
+  return (
+    <div className="bg-card rounded-lg p-4">
+      <div className="bg-sub-card p-2 rounded-lg flex">
+        <Avatar image={avatar} size={48} className="!w-12 h-12" />
+        <Input className="bg-sub-card">
+          <textarea
+            className="resize-none input !h-24 leading-7"
+            placeholder={`ما اللذي يدور في ذهنك, ${user?.name.split(" ")[0]} ؟`}
+            value={postText}
+            onChange={(e) => setPostText(e.target.value)}
+          ></textarea>
+        </Input>
+      </div>
+      <div className="mt-4">
+        {files.length > 0 &&
+          files.map((file, i) => (
+            <div className="flex items-center justify-between" key={i}>
+              <p className="text-slate-200 my-2">
+                {file.name.length > 20
+                  ? file.name.substr(0, 30) + "..."
+                  : file.name}
+              </p>
+              <button
+                className="text-slate-200 flex items-center bg-red-600 px-1 hover:bg-red-700 transition-colors duration-300 ease-linear"
+                onClick={() => {
+                  setFiles(files.filter((f) => f !== file));
+                }}
+              >
+                <span>حذف</span>
+                <FaTimes />
+              </button>
+            </div>
+          ))}
+      </div>
+      <div className="flex justify-between items-center">
+        <Button
+          variant="light-form-btn"
+          className="mt-5 !text-lg"
+          onClick={() => PostImageRef.current?.click()}
+        >
+          <input
+            type="file"
+            hidden
+            id="post-img"
+            multiple
+            accept=".jpg, .png, .jpeg"
+            ref={PostImageRef}
+            onChange={handleChangeImage}
+          />
+          <Image
+            src={"/icons/image-icon.png"}
+            alt="image-icon"
+            width={25}
+            height={25}
+          />
+          إرفع صورة
+        </Button>
+        <Button
+          variant="main"
+          className="mt-5 !px-9 min-h-11 !text-lg"
+          onClick={handlePost}
+        >
+          نشر
+        </Button>
+      </div>
+      <ToastContainer
+        theme="dark"
+        position="bottom-right"
+        closeOnClick
+        closeButton={false}
+      />
+    </div>
+  );
+}
+
+type PostedPosts = { posts: TPost[] };
+
+function PostedPosts({ posts }: PostedPosts) {
+  const { user, avatar } = useUser({ required: true });
+  return (
+    <>
+      {posts.map((post, i) => (
+        <div key={i} className="bg-card mt-4 p-3 rounded-lg">
+          <div className="user-info flex items-center justify-between">
+            <div className="flex gap-2">
+              <Avatar
+                image={avatar}
+                size={50}
+                className="!w-[50px] !h-[50px] !mx-0"
+              />
+              <div className="flex flex-col gap-1">
+                <h3 className="text-slate-200 text-lg">{user.name}</h3>
+                <span className="text-slate-400 text-sm">
+                  {new DateController(post.createdAt).fromNow()}
+                </span>
+              </div>
+            </div>
+            <Button variant="light-form-btn">
+              <Image src={TrashIcon} alt="trash-icon" />
+            </Button>
+          </div>
+          <div className="content mt-4 flex flex-col gap-2">
+            <p className="text-slate-300">{post.text}</p>
+            <div
+              className={`images grid grid-cols-1 md:grid-cols-2 gap-1 max-w-full`}
+            >
+              {post.images.map((image, i) => {
+                if (i >= 4) return;
+                return (
+                  <div
+                    className={`relative ${
+                      post.images.length === 1 ||
+                      (post.images.length === 3 && i === 2)
+                        ? "col-span-2"
+                        : ""
+                    }`}
+                  >
+                    <Image
+                      src={image}
+                      alt={`${i + 1}th image in post`}
+                      key={i}
+                      width={300}
+                      height={300}
+                      className={`w-full h-full object-cover`}
+                    />
+                    {i === 3 && (
+                      <div className="bg-slate-900 w-full h-full absolute z-20 top-0 opacity-75 text-slate-100 text-4xl flex items-center justify-center">
+                        +{post.images.length - 3}
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+          <div className="post-info flex items-center justify-between border-b-2 border-b-sub-card py-2">
+            <div className="reacts flex gap-1 items-center">
+              <Image src={PostHeart} alt="post-heart" />
+              <span className="text-slate-200">{post.likes.length}</span>
+            </div>
+            <span className="text-slate-200">{post.comments.length} تعليق</span>
+          </div>
+          <div className="interactions mt-3 pb-3 border-b-2 border-sub-card grid grid-cols-3 gap-2">
+            <Button
+              variant="light-form-btn"
+              className="flex-grow"
+              style={{ maxWidth: "unset" }}
+            >
+              <Image src={Heart} alt="heart" />
+            </Button>
+            <Button
+              variant="light-form-btn"
+              className="flex-grow"
+              style={{ maxWidth: "unset" }}
+            >
+              <FaComment color="#9128FF" />
+            </Button>
+            <Button
+              variant="light-form-btn"
+              className="flex-grow"
+              style={{ maxWidth: "unset" }}
+            >
+              <FaShare color="#9128FF" />
+            </Button>
+          </div>
+          <div className="comments block">
+            {post.comments.map((comment, i) => (
+              <div
+                key={i}
+                className="flex gap-2 my-2 bg-sub-card rounded-lg p-3"
+              >
+                <Avatar
+                  image={comment.author.image}
+                  // image={"/uploads/profiles-pictures/default.jpg"}
+                  size={40}
+                  className="!h-12 !w-12"
+                />
+                <div className="flex-grow">
+                  <span className="text-slate-200">{comment.author.name}</span>
+                  {/* <span className="text-slate-200">mohamed montaser</span> */}
+                  <p className="text-slate-400">{comment.content}</p>
+                  {/* <p className="text-slate-400">هذا المنشرو رائع للغاية</p>  */}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      ))}
+    </>
+  );
+}

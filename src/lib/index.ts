@@ -5,4 +5,11 @@ import registerSchema from "./registerSchema";
 import swiperOptions from "./swiperOptions";
 import data from "./demoSwiperData";
 
-export { authOptions, dbConnect, loginSchema, registerSchema, swiperOptions, data as demoSwiperData };
+export {
+  authOptions,
+  dbConnect,
+  loginSchema,
+  registerSchema,
+  swiperOptions,
+  data as demoSwiperData,
+};

@@ -3,7 +3,7 @@
 import { Button, Container } from "@components";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "@/app/globals.css";
@@ -34,9 +34,7 @@ export default function VerifyEmail() {
       email: string;
     };
     type TResponse = {
-      data: {
-        code: string;
-      };
+      code: string;
     };
     useFetch<TData, TResponse>("/api/email-verification", "POST", {
       email: user.email,
@@ -45,7 +43,7 @@ export default function VerifyEmail() {
     });
   }
 
-  function handleMaxLength(e: any) {
+  function handleMaxLength(e: ChangeEvent<HTMLInputElement>) {
     const target = e.target;
     if (target.value.split("").length > 4) {
       let newValue = target.value.split("").slice(0, 4).join("");

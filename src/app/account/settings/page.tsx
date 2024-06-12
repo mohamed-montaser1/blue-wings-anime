@@ -9,7 +9,6 @@ import "react-toastify/dist/ReactToastify.css";
 import { UserRole } from "@models/User";
 import useAsk from "@/hooks/useAsk";
 import uploadImage from "@/utils/uploadImage";
-import { useRouter } from "next/navigation";
 
 type TProfile = {
   image: string | StaticImageData;
@@ -28,10 +27,15 @@ const defaultProfileValues = {
   role: "user",
 } as const;
 
-const imageTypesAllowed = ["image/jpg", "image/jpeg", "image/png"] as const;
+export const imageTypesAllowed = [
+  "image/jpg",
+  "image/jpeg",
+  "image/png",
+] as const;
+
+export type imageTypesAllowedKey = (typeof imageTypesAllowed)[number];
 
 export default function EditPage() {
-  const router = useRouter();
   const { avatar, status, user, updateSession } = useUser({ required: true });
   const profileBeforeChanges: TProfile = {
     image: avatar,
@@ -54,22 +58,29 @@ export default function EditPage() {
     if (status === "loading") return;
     const defaultProfile: TProfile = {
       image: avatar,
-      cover: user.cover,
-      name: user.name,
-      role: user.role,
-      bio: user.bio,
+      cover: user?.cover,
+      name: user?.name,
+      role: user?.role,
+      bio: user?.bio,
     };
     setProfile(defaultProfile);
   }, [status, avatar, user?.name]);
 
-  async function saveImage(img: File | string, dir: string, msg: string, cb: (result: string | object) => void) {
+  async function saveImage(
+    img: File | string,
+    dir: string,
+    msg: string,
+    cb: (result: string | object) => void
+  ) {
     if (typeof img === "string") {
       cb(img);
       return;
     }
 
-    if (!imageTypesAllowed.includes(img.type as (typeof imageTypesAllowed)[number])) {
-      toast("يجب عليك إدخال صورة بإمتداد jpg او png او jpeg", { type: "error" });
+    if (!imageTypesAllowed.includes(img.type as imageTypesAllowedKey)) {
+      toast("يجب عليك إدخال صورة بإمتداد jpg او png او jpeg", {
+        type: "error",
+      });
       return;
     }
     console.log({ img, dir });
@@ -154,22 +165,25 @@ export default function EditPage() {
     });
 
     saveChangesPromise.then((saves) => {
-      updateSession(saves, () => {
+      updateSession(saves, (newSession) => {
+        setProfile(newSession?.user);
         toast("تم تعديل الملف الشخصي بنجاح", { type: "success" });
-        toast("سيتم توجيهك لصفحتك الشخصيه لمعاينة النتيجه", { type: "success" });
-        setTimeout(() => {
-          router.push("/account");
-        }, 3000);
       });
     });
   }
 
-  function handleChangeImage(e: ChangeEvent<HTMLInputElement>, prop: "cover" | "image") {
+  function handleChangeImage(
+    e: ChangeEvent<HTMLInputElement>,
+    prop: "cover" | "image"
+  ) {
     e.preventDefault();
     setIsDirty(true);
     const image = e.target.files?.[0] as File;
     if (image) {
-      setProfile((p) => ({ ...p, files: { ...p.files, [prop]: image } as typeof p.files }));
+      setProfile((p) => ({
+        ...p,
+        files: { ...p.files, [prop]: image } as typeof p.files,
+      }));
       const reader = new FileReader();
       reader.onload = (event) => {
         const newImage = event.target?.result as string;
@@ -199,7 +213,10 @@ export default function EditPage() {
               id="cover-file"
               onChange={(e) => handleChangeImage(e, "cover")}
             />
-            <Button variant="form-btn" onClick={() => document.getElementById("cover-file")?.click()}>
+            <Button
+              variant="form-btn"
+              onClick={() => document.getElementById("cover-file")?.click()}
+            >
               <Image src={CameraIcon} alt="camera-icon" />
             </Button>
             <Button
@@ -220,7 +237,10 @@ export default function EditPage() {
           </div>
         </div>
         <div className="w-[200px] aspect-square bg-slate-500 rounded-full p-1 -translate-y-1/2 ml-7 border border-slate-900">
-          <Avatar width={200} height={200} image={profile.image || defaultProfileValues.image} />
+          <Avatar
+            image={profile.image || defaultProfileValues.image}
+            size={200}
+          />
           <input
             type="file"
             hidden
@@ -241,8 +261,8 @@ export default function EditPage() {
         <p className="text-slate-400 mb-5" data-required>
           لن يتم حفظ اي تعديلات حتى تضغط علي زر حفظ التغييرات
         </p>
-        <div className="row flex gap-20">
-          <Input className="bg-sub-card flex-1">
+        <div className="row grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+          <Input className="bg-sub-card">
             <Image src={UserIcon} alt="lock-icon" />
             <input
               type="text"
@@ -250,13 +270,14 @@ export default function EditPage() {
               className="input"
               dir="rtl"
               value={profile.name}
+              maxLength={15}
               onChange={(e) => {
                 setProfile((prev) => ({ ...prev, name: e.target.value }));
                 setIsDirty(true);
               }}
             />
           </Input>
-          <Input className="items-center py-0 flex-1 bg-sub-card">
+          <Input className="items-center py-0 bg-sub-card">
             <select
               dir="rtl"
               tabIndex={4}
@@ -277,7 +298,7 @@ export default function EditPage() {
               <option value="artist">فنان</option>
             </select>
           </Input>
-          <Input className="bg-sub-card flex-1">
+          <Input className="bg-sub-card md:col-span-2 lg:col-span-1">
             <Image src={UserIcon} alt="lock-icon" />
             <input
               type="text"
@@ -293,6 +314,7 @@ export default function EditPage() {
           <textarea
             className="resize-none input !h-36 leading-7"
             placeholder="نبذة مختصرة"
+            maxLength={200}
             value={profile.bio}
             onChange={(e) => {
               setProfile((prev) => ({ ...prev, bio: e.target.value }));
@@ -304,7 +326,12 @@ export default function EditPage() {
           حفظ التغييرات
         </Button>
       </div>
-      <ToastContainer theme="dark" position="bottom-right" closeOnClick closeButton={false} />
+      <ToastContainer
+        theme="dark"
+        position="bottom-right"
+        closeOnClick
+        closeButton={false}
+      />
     </Container>
   );
 }

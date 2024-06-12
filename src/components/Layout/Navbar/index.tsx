@@ -8,19 +8,14 @@ import { Button, Container } from "@components";
 import { usePathname, useRouter } from "next/navigation";
 import AccountSettings from "./AccountSettings";
 import useUser from "@hooks/useUser";
-import { TUseUserReturn } from "@lib/types";
 import { animatePageOut } from "@utils/animations";
+import Link from "next/link";
 
 export default function Navbar() {
   const router = useRouter();
   const pathname = usePathname();
   const { status } = useUser({ required: false });
   const [activeMobileMenu, setActiveMobileMenu] = useState(false);
-  const [isAuth, setIsAuth] = useState<TUseUserReturn["status"]>();
-
-  useEffect(() => {
-    setIsAuth(status);
-  }, [status]);
 
   function handleActiveMenu() {
     setActiveMobileMenu((prev) => !prev);
@@ -30,20 +25,24 @@ export default function Navbar() {
     <nav className="bg-card shadow-2xl h-[120px] flex items-center fixed right-0 left-0 top-0 z-[10000]">
       <Container className="flex justify-between items-center relative">
         <div className="flex items-center">
-          <Image
-            src={Logo}
-            width={190}
-            height={90}
-            alt="Logo"
-            className="h-[90px] aspect-video cursor-pointer ml-4"
+          <Link
+            href={"#"}
             onClick={() => {
               if (pathname !== "/") animatePageOut("/", router);
             }}
-          />
+          >
+            <Image
+              src={Logo}
+              width={190}
+              height={90}
+              alt="Logo"
+              className="h-[90px] aspect-video cursor-pointer ml-4"
+            />
+          </Link>
           <Menu />
         </div>
         <div className="btn-container flex">
-          {isAuth === "authenticated" ? (
+          {status === "authenticated" ? (
             <AccountSettings />
           ) : (
             <Button

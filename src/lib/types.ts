@@ -2,7 +2,10 @@ import { UserRole } from "@/models/User";
 import { Session } from "next-auth";
 import { StaticImageData } from "next/image";
 import { InternalLinkProps } from "next/link";
-import { AnchorHTMLAttributes, HTMLAttributes } from "react";
+import { NextResponse } from "next/server";
+import { AnchorHTMLAttributes } from "react";
+import { type TPost as TPost } from "@models/Post";
+import DateController from "@/utils/date";
 
 export type TRole = "user" | "editor" | "artist" | "admin";
 
@@ -27,12 +30,15 @@ export type TRegisterError = {
   };
 };
 
-export type TDropdownOptionProps = Omit<AnchorHTMLAttributes<HTMLAnchorElement>, keyof InternalLinkProps> & {
-  icon: any;
+export type TDropdownOptionProps = Omit<
+  AnchorHTMLAttributes<HTMLAnchorElement>,
+  keyof InternalLinkProps
+> & {
+  icon: React.ReactNode;
   text: string;
   base?: boolean;
   href: string;
-  onClick?: (e: any) => void;
+  onClick?: (e: React.MouseEvent<HTMLAnchorElement>) => void;
   imageProps?: {
     [key: string]: any;
   };
@@ -48,7 +54,10 @@ export type TUseUserReturn = {
   user: Session["user"] & TUser;
   avatar: string | StaticImageData;
   status: "authenticated" | "loading" | "unauthenticated";
-  updateSession(properties: Partial<TUser>, cb?: (session: Session | null) => void): void;
+  updateSession(
+    properties: Partial<TUser>,
+    cb?: (session: Session | null) => void
+  ): void;
 };
 
 export type TUser = {
@@ -58,6 +67,7 @@ export type TUser = {
   cover: string | StaticImageData;
   name: string;
   role: TRole;
+  createdAt: number;
 };
 
 export type TUseUserProps = {
@@ -79,3 +89,17 @@ export type TLoginFormValues = {
 };
 
 export type UpdateSession = (data?: any) => Promise<Session | null>;
+
+export type TCreateNewPostBody = {
+  email: string;
+  post: {
+    text: string;
+    images: string[];
+  };
+};
+
+export type TCreateNewPostResponse = NextResponse<{
+  success: boolean;
+  error: string | null;
+  data: TPost[] | null;
+}>;

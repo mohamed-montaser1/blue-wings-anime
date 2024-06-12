@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 export default function FavoritesPage() {
   const { user } = useUser({ required: true });
   const [status, setStatus] = useState<"loading" | "loaded" | "empty">(
-    "loaded"
+    "loaded",
   );
   const [count, setCount] = useState(1);
   useEffect(() => {

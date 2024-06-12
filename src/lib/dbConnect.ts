@@ -1,28 +1,36 @@
 import mongoose, { ConnectOptions } from "mongoose";
-import { TGlobalMongoose } from "@lib/types";
+import { TGlobalMongoose } from "./types";
 
-const { MONGODB_URI } = process.env;
+const MONGODB_URI = process.env.MONGODB_URI;
 
 if (!MONGODB_URI) {
   throw new Error(
     "Please define the MONGODB_URI environment variable inside .env.local"
   );
 }
-let global = globalThis as TGlobalMongoose;
+
+declare const global: TGlobalMongoose;
 
 let cached = global.mongoose;
 
 if (!cached) {
-  cached = global.mongoose = { conn: null, prmoise: null };
+  cached = global.mongoose = { conn: null, promise: null };
 }
 
 async function dbConnect() {
-  if (cached.conn) return cached.conn;
-  const opts: ConnectOptions = {
-    dbName: "Anime-DB",
-  };
-  cached.prmoise = mongoose.connect(MONGODB_URI as string, opts);
-  cached.conn = await cached.prmoise;
+  if (cached.conn) {
+    return cached.conn;
+  }
+
+  if (!cached.promise) {
+    const opts: ConnectOptions = { dbName: "Anime-DB" };
+    cached.promise = mongoose
+      .connect(MONGODB_URI as string, opts)
+      .then((mongoose) => {
+        return mongoose;
+      });
+  }
+  cached.conn = await cached.promise;
   return cached.conn;
 }
 

@@ -10,7 +10,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 
 export default function AccountSettings() {
-  const { user, avatar } = useUser({ required: true });
+  const { user } = useUser({ required: true });
   const router = useRouter();
   const [showDropdown, setShowDropdown] = useState(false);
 
@@ -26,14 +26,24 @@ export default function AccountSettings() {
           onClick={handleToggleDropdown}
         >
           <div className="flex justify-center items-center gap-2">
-            <h3 className="text-white text-left text-sm hidden xs:!inline">{user?.name}</h3>
+            <h3 className="text-white text-left text-sm hidden xs:!inline">
+              {user?.name}
+            </h3>
             <Image src={UserIcon} alt="user-icon" />
           </div>
         </Button>
         {showDropdown && (
           <DropdownMenu userName={user.name}>
-            <DropdownOption icon={SettingsIcon} text="عرض الملف الشخصي" href="/account" />
-            <DropdownOption icon={UserId} text="إعدادات الملف الشخصي" href="/account/settings" />
+            <DropdownOption
+              icon={SettingsIcon}
+              text="عرض الملف الشخصي"
+              href="/account"
+            />
+            <DropdownOption
+              icon={UserId}
+              text="إعدادات الملف الشخصي"
+              href="/account/settings"
+            />
             <DropdownOption
               icon={LogoutIcon}
               text="تسجيل الخروج"

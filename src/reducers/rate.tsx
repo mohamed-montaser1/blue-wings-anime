@@ -21,7 +21,7 @@ type TRatingAction<T> = {
 
 export function ratingReducerFn(
   state: TRatingState,
-  action: TRatingAction<TPayload>
+  action: TRatingAction<TPayload>,
 ): TRatingState {
   switch (action.type) {
     case "SET_RATING":

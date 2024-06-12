@@ -3,7 +3,7 @@ import { Button, Container, Title, Input } from "@components";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { GoogleIcon, LockIcon, PlainIcon, UserOutlineIcon } from "@icons";
-import { TRegisterError } from "@lib/types";
+import { TRegisterError } from "../../../lib/types";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useSession, signIn } from "next-auth/react";
@@ -50,7 +50,7 @@ export default function Register() {
   }, [status, router]);
 
   const handleSignInWithGoogle = async () => {
-    await signIn("google", { callbackUrl: "/onboarding/role" });
+    await signIn("google", { callbackUrl: "/account/settings" });
   };
   async function handleRegularSignUp(_: FormValues) {
     try {
@@ -94,9 +94,7 @@ export default function Register() {
               {...register("name")}
             />
           </Input>
-          {errors.name && (
-            <p className="error">{`${errors.name.message}`}</p>
-          )}
+          {errors.name && <p className="error">{`${errors.name.message}`}</p>}
         </div>
         <div className="input-container w-full">
           <Input>

@@ -1,11 +1,11 @@
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 
 type RequestMethod = "GET" | "POST" | "PUT" | "DELETE";
 
 type ObjectInterface = {
   [key: string]: any;
 };
-type TResponse<T> = { data: T };
+type TResponse<T> = AxiosResponse & { data: T };
 
 export default function useFetch<
   DT extends ObjectInterface,

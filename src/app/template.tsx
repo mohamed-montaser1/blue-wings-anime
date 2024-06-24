@@ -13,6 +13,13 @@ export default function Template({ children }: Props) {
   useEffect(() => {
     if (status === "loading") return;
     animatePageIn();
+    if (!window.location.pathname.startsWith("/dashboard")) {
+      document.body.classList.remove("dashboard-page");
+    } else {
+      if (!document.body.classList.contains("dashboard-page")) {
+        document.body.classList.add("dashboard-page");
+      }
+    }
   }, [status]);
   return (
     <>

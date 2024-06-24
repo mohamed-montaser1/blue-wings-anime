@@ -9,6 +9,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { UserRole } from "@models/User";
 import useAsk from "@/hooks/useAsk";
 import uploadImage from "@/utils/uploadImage";
+import { roles } from "@/components/Account/AccountInfo";
 
 type TProfile = {
   image: string | StaticImageData;
@@ -277,26 +278,13 @@ export default function EditPage() {
               }}
             />
           </Input>
-          <Input className="items-center py-0 bg-sub-card">
-            <select
-              dir="rtl"
-              tabIndex={4}
-              className="py-2.5 w-full bg-sub-card outline-none text-white"
-              value={profile.role}
-              onChange={(e) => {
-                setProfile((prev) => ({
-                  ...prev,
-                  role: e.target.value as UserRole,
-                }));
-                setIsDirty(true);
-              }}
-            >
-              <option value="user" defaultChecked>
-                مستخدم
-              </option>
-              <option value="editor">محرر</option>
-              <option value="artist">فنان</option>
-            </select>
+          <Input className="items-center bg-sub-card">
+            <input
+              type="text"
+              value={roles[profile.role]}
+              className="input opacity-50"
+              readOnly
+            />
           </Input>
           <Input className="bg-sub-card md:col-span-2 lg:col-span-1">
             <Image src={UserIcon} alt="lock-icon" />

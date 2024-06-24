@@ -156,7 +156,7 @@ button::after {
 }
 
 button.animated::after {
-  animation: shine 0.8s ease-in-out forwards;
+  animation: shine 500ms linear forwards;
 }
 
 @keyframes shine {
@@ -201,4 +201,16 @@ button.animated::after {
 [data-required]::before {
   content: "*";
   @apply mx-1 text-red-400;
+}
+
+.dashboard-page > nav {
+  display: none;
+}
+
+.dashboard-page {
+  padding: 0;
+}
+
+.overlay {
+  @apply w-full h-full fixed inset-0 flex justify-center items-center bg-card backdrop-blur-xl bg-opacity-60 z-[9999999999];
 }

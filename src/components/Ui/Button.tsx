@@ -14,6 +14,7 @@ type TStyles = Readonly<typeof styles>;
 
 let styles = {
   main: "from-primary to-secondary bg-gradient-to-br",
+  danger: "bg-red-500",
   "form-btn": "bg-card text-primary",
   "light-form-btn": "bg-sub-card text-primary",
 } as const;
@@ -27,12 +28,13 @@ export default function Button({ children, variant, type, ...props }: Props) {
       type={type}
       className={`text-white text-xl px-4 max-w-fit min-h-14 justify-center rounded-xl flex items-center gap-2.5 ${style} ${
         props.className
-      } ${animated ? "animated" : ""} outline-none`}
+      } ${animated ? "animated" : ""} outline-none relative`}
       onMouseEnter={() => {
+        if (animated) return;
         setAnimated(true);
         setTimeout(() => {
           setAnimated(false);
-        }, 800);
+        }, 500);
       }}
     >
       {children}

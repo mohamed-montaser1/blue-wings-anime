@@ -3,7 +3,7 @@ import { Button, Container, Title, Input } from "@components";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { GoogleIcon, LockIcon, PlainIcon, UserOutlineIcon } from "@icons";
-import { TRegisterError } from "../../../lib/types";
+import { TRegisterError } from "@lib/types";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useSession, signIn } from "next-auth/react";

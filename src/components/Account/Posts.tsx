@@ -20,18 +20,26 @@ import useFetch from "@/hooks/useFetch";
 import { type TPost as TPost } from "@/models/Post";
 import DateController from "@/utils/date";
 import { Heart, PostHeart, TrashIcon } from "@icons/index";
+import { usePathname } from "next/navigation";
 
-export default function Posts() {
+type TPosts = {
+  children: React.ReactNode;
+};
+
+export default function Posts({ children }: TPosts) {
   const [posts, setPosts] = useState<TPost[]>([]);
   const { user } = useUser({ required: true });
+  const pathname = usePathname();
   useEffect(() => {
+    console.log({ pathname });
     if (!user) return;
+    console.log({ userPosts: user.posts });
     setPosts((user.posts as TPost[]).sort((a, b) => b.createdAt - a.createdAt));
   }, [user]);
   return (
     <div>
-      <CreatePost setPosts={setPosts} />
-      <PostedPosts posts={posts} />
+      {/* <CreatePost setPosts={setPosts} /> */}
+      {/* <PostedPosts posts={posts} /> */}
     </div>
   );
 }
@@ -188,117 +196,131 @@ function CreatePost({ setPosts }: TCreatePostProps) {
 
 type PostedPosts = { posts: TPost[] };
 
-function PostedPosts({ posts }: PostedPosts) {
-  const { user, avatar } = useUser({ required: true });
+export function PostedPosts({ posts }: PostedPosts) {
   return (
     <>
       {posts.map((post, i) => (
-        <div key={i} className="bg-card mt-4 p-3 rounded-lg">
-          <div className="user-info flex items-center justify-between">
-            <div className="flex gap-2">
-              <Avatar
-                image={avatar}
-                size={50}
-                className="!w-[50px] !h-[50px] !mx-0"
-              />
-              <div className="flex flex-col gap-1">
-                <h3 className="text-slate-200 text-lg">{user.name}</h3>
-                <span className="text-slate-400 text-sm">
-                  {new DateController(post.createdAt).fromNow()}
-                </span>
-              </div>
-            </div>
-            <Button variant="light-form-btn">
-              <Image src={TrashIcon} alt="trash-icon" />
-            </Button>
-          </div>
-          <div className="content mt-4 flex flex-col gap-2">
-            <p className="text-slate-300">{post.text}</p>
-            <div
-              className={`images grid grid-cols-1 md:grid-cols-2 gap-1 max-w-full`}
-            >
-              {post.images.map((image, i) => {
-                if (i >= 4) return;
-                return (
-                  <div
-                    className={`relative ${
-                      post.images.length === 1 ||
-                      (post.images.length === 3 && i === 2)
-                        ? "col-span-2"
-                        : ""
-                    }`}
-                  >
-                    <Image
-                      src={image}
-                      alt={`${i + 1}th image in post`}
-                      key={i}
-                      width={300}
-                      height={300}
-                      className={`w-full h-full object-cover`}
-                    />
-                    {i === 3 && (
-                      <div className="bg-slate-900 w-full h-full absolute z-20 top-0 opacity-75 text-slate-100 text-4xl flex items-center justify-center">
-                        +{post.images.length - 3}
-                      </div>
-                    )}
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-          <div className="post-info flex items-center justify-between border-b-2 border-b-sub-card py-2">
-            <div className="reacts flex gap-1 items-center">
-              <Image src={PostHeart} alt="post-heart" />
-              <span className="text-slate-200">{post.likes.length}</span>
-            </div>
-            <span className="text-slate-200">{post.comments.length} تعليق</span>
-          </div>
-          <div className="interactions mt-3 pb-3 border-b-2 border-sub-card grid grid-cols-3 gap-2">
-            <Button
-              variant="light-form-btn"
-              className="flex-grow"
-              style={{ maxWidth: "unset" }}
-            >
-              <Image src={Heart} alt="heart" />
-            </Button>
-            <Button
-              variant="light-form-btn"
-              className="flex-grow"
-              style={{ maxWidth: "unset" }}
-            >
-              <FaComment color="#9128FF" />
-            </Button>
-            <Button
-              variant="light-form-btn"
-              className="flex-grow"
-              style={{ maxWidth: "unset" }}
-            >
-              <FaShare color="#9128FF" />
-            </Button>
-          </div>
-          <div className="comments block">
-            {post.comments.map((comment, i) => (
-              <div
-                key={i}
-                className="flex gap-2 my-2 bg-sub-card rounded-lg p-3"
-              >
-                <Avatar
-                  image={comment.author.image}
-                  // image={"/uploads/profiles-pictures/default.jpg"}
-                  size={40}
-                  className="!h-12 !w-12"
-                />
-                <div className="flex-grow">
-                  <span className="text-slate-200">{comment.author.name}</span>
-                  {/* <span className="text-slate-200">mohamed montaser</span> */}
-                  <p className="text-slate-400">{comment.content}</p>
-                  {/* <p className="text-slate-400">هذا المنشرو رائع للغاية</p>  */}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
+        <Post post={post} i={i} />
       ))}
     </>
+  );
+}
+
+type PostProps = {
+  post: TPost;
+  i: number;
+};
+
+function Post({ post, i }: PostProps) {
+  const { user, avatar } = useUser({ required: true });
+
+  useEffect(() => {
+    if (!user) return;
+    console.log({ post });
+  }, [user]);
+
+  return (
+    <div key={i} className="bg-card mt-4 p-3 rounded-lg">
+      <div className="user-info flex items-center justify-between">
+        <div className="flex gap-2">
+          <Avatar
+            image={avatar}
+            size={50}
+            className="!w-[50px] !h-[50px] !mx-0"
+          />
+          <div className="flex flex-col gap-1">
+            <h3 className="text-slate-200 text-lg">{user?.name}</h3>
+            <span className="text-slate-400 text-sm">
+              {new DateController(post.createdAt).fromNow()}
+            </span>
+          </div>
+        </div>
+        <Button variant="light-form-btn">
+          <Image src={TrashIcon} alt="trash-icon" />
+        </Button>
+      </div>
+      <div className="content mt-4 flex flex-col gap-2">
+        <p className="text-slate-300">{post.text}</p>
+        <div
+          className={`images grid grid-cols-1 md:grid-cols-2 gap-1 max-w-full`}
+        >
+          {post.images.map((image, i) => {
+            if (i >= 4) return;
+            return (
+              <div
+                className={`relative ${
+                  post.images.length === 1 ||
+                  (post.images.length === 3 && i === 2)
+                    ? "col-span-2"
+                    : ""
+                }`}
+              >
+                <Image
+                  src={image}
+                  alt={`${i + 1}th image in post`}
+                  key={i}
+                  width={300}
+                  height={300}
+                  className={`w-full h-full object-cover`}
+                />
+                {i === 3 && (
+                  <div className="bg-slate-900 w-full h-full absolute z-20 top-0 opacity-75 text-slate-100 text-4xl flex items-center justify-center">
+                    +{post.images.length - 3}
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </div>
+      </div>
+      <div className="post-info flex items-center justify-between border-b-2 border-b-sub-card py-2">
+        <div className="reacts flex gap-1 items-center">
+          <Image src={PostHeart} alt="post-heart" />
+          <span className="text-slate-200">{post.likes.length}</span>
+        </div>
+        <span className="text-slate-200">{post.comments.length} تعليق</span>
+      </div>
+      <div className="interactions mt-3 pb-3 border-b-2 border-sub-card grid grid-cols-3 gap-2">
+        <Button
+          variant="light-form-btn"
+          className="flex-grow"
+          style={{ maxWidth: "unset" }}
+        >
+          <Image src={Heart} alt="heart" />
+        </Button>
+        <Button
+          variant="light-form-btn"
+          className="flex-grow"
+          style={{ maxWidth: "unset" }}
+        >
+          <FaComment color="#9128FF" />
+        </Button>
+        <Button
+          variant="light-form-btn"
+          className="flex-grow"
+          style={{ maxWidth: "unset" }}
+        >
+          <FaShare color="#9128FF" />
+        </Button>
+      </div>
+      <div className="comments block">
+        {post.comments.map((comment, i) => (
+          <div key={i} className="flex gap-2 my-2 bg-sub-card rounded-lg p-3">
+            <Avatar
+              image={comment.author.image}
+              // image={"/uploads/profiles-pictures/default.jpg"}
+              size={40}
+              className="!h-12 !w-12"
+            />
+            <div className="flex-grow">
+              <span className="text-slate-200">{comment.author.name}</span>
+              {/* <span className="text-slate-200">mohamed montaser</span> */}
+              <p className="text-slate-400">{comment.content}</p>
+              {/* <p className="text-slate-400">هذا المنشرو رائع للغاية</p> */}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
   );
 }

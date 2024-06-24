@@ -12,7 +12,7 @@ export const roles = {
   editor: "محرر",
   artist: "فنان",
   admin: "مسؤول",
-};
+} as const;
 
 export default function AccountInfo() {
   const { user, avatar } = useUser({ required: true });

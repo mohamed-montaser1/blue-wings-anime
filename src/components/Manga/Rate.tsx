@@ -17,8 +17,8 @@ export default function Rate() {
   const slug = paths.at(-1);
 
   return (
-    <div>
-      <Container className="mt-24">
+    <div className="my-24">
+      <Container className="">
         <Title className="mx-auto">قيم العمل الآن</Title>
         <div className="large">
           <Rater

@@ -21,6 +21,7 @@ import ClockIcon from "./clock-circle.svg";
 import TrashIcon from "./trash.svg";
 import UserId from "./user-account-settings.svg";
 import PostHeart from "./post-heart.svg";
+import DashboardIcon from "./dashboard.svg"
 
 export {
   Home,
@@ -46,4 +47,5 @@ export {
   TrashIcon,
   UserId,
   PostHeart,
+  DashboardIcon
 };

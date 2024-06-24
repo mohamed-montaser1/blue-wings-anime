@@ -1,6 +1,7 @@
 import mongoose, { ConnectOptions } from "mongoose";
 import { TGlobalMongoose } from "./types";
 
+mongoose.set("strictPopulate", false);
 const MONGODB_URI = process.env.MONGODB_URI;
 
 if (!MONGODB_URI) {

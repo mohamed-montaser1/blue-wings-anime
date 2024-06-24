@@ -34,4 +34,4 @@ const CommentSchema = new Schema<TComment>(
   { versionKey: false }
 );
 
-export const Comment = models.Post || model("Post", CommentSchema);
+export const Comment = models.Comment || model("Comment", CommentSchema);

@@ -7,6 +7,7 @@ import mongoose, { isValidObjectId } from "mongoose";
 import { TCredentials } from "./types";
 import { dbConnect, loginSchema } from "@lib";
 import { Post } from "@/models";
+import { Comment } from "@/models/Comment";
 
 const authOptions: AuthOptions = {
   providers: [
@@ -122,7 +123,18 @@ const authOptions: AuthOptions = {
         token.id = user.id;
       }
       await Post.init();
-      token.user = await User.findOne({ email: token.email }).populate("posts");
+      await Comment.init();
+
+      token.user = await User.findOne({ email: token.email });
+      // .populate({
+      //   path: "posts",
+      //   populate: [
+      //     { path: "likes", model: "User", select: "_id name image" },
+      //     { path: "comments", model: "Comment" },
+      //     { path: "author", model: "User" },
+      //   ],
+      // })
+      // .exec();
       return token;
     },
     async signIn({ user, profile }) {

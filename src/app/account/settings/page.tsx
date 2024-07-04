@@ -12,12 +12,14 @@ import {
   useState,
 } from "react";
 import { ToastContainer, toast } from "react-toastify";
+import { TUser } from "@models/User";
 import "react-toastify/dist/ReactToastify.css";
 import { UserRole } from "@models/User";
 import useAsk from "@/hooks/useAsk";
 import uploadImage from "@/utils/uploadImage";
 import { roles } from "@/components/Account/AccountInfo";
 import useFetch from "@/hooks/useFetch";
+import slugify from "slugify";
 
 type TProfile = {
   image: string | StaticImageData;
@@ -120,7 +122,7 @@ export default function EditPage() {
   };
 
   async function handleSaveChanges() {
-    type TSaves = Partial<TProfile>;
+    type TSaves = Partial<TUser>;
     const saveChangesPromise = new Promise<TSaves>(async (resolve) => {
       let changes: Partial<TProfile> = {};
       const keys = Object.keys(profile) as Array<keyof typeof changes>;
@@ -168,7 +170,15 @@ export default function EditPage() {
         saves = { ...saves, role: changes.role };
       }
       if (changes.name) {
-        saves = { ...saves, name: changes.name };
+        saves = {
+          ...saves,
+          name: changes.name,
+          slug_name: slugify(changes.name, {
+            lower: true,
+            trim: true,
+            replacement: "-",
+          }),
+        };
       }
       if (changes.bio) {
         saves = { ...saves, bio: changes.bio };
@@ -289,7 +299,7 @@ export default function EditPage() {
               className="input"
               dir="rtl"
               value={profile.name}
-              maxLength={15}
+              maxLength={25}
               onChange={(e) => {
                 setProfile((prev) => ({ ...prev, name: e.target.value }));
                 setIsDirty(true);

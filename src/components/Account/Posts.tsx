@@ -337,7 +337,7 @@ function Post({ post: p, i }: PostProps) {
             <Input className="bg-sub-card">
               <input
                 type="text"
-                placeholder="اكتب ما يدور في ذهنك"
+                placeholder="أكتب تعليق علي هذا المنشور"
                 className="w-full h-full bg-sub-card border-none outline-none text-slate-300"
                 value={comment}
                 onChange={(e) => setComment(e.target.value)}

@@ -23,6 +23,7 @@ import UserId from "./user-account-settings.svg";
 import PostHeart from "./post-heart.svg";
 import DashboardIcon from "./dashboard.svg";
 import NewsIcon from "./news.svg";
+import NewIcon from "./new.svg";
 
 export {
   Home,
@@ -50,4 +51,5 @@ export {
   PostHeart,
   DashboardIcon,
   NewsIcon,
+  NewIcon,
 };

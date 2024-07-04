@@ -8,6 +8,7 @@ import {
   DashboardIcon,
   Heart,
   LogoutIcon,
+  NewIcon,
   SettingsIcon,
   UserIcon,
   UserId,
@@ -56,6 +57,13 @@ export default function AccountSettings() {
                 icon={DashboardIcon}
                 text="لوحة التحكم"
                 href="/dashboard/users"
+              />
+            )}
+            {user.role === "editor" && (
+              <DropdownOption
+                icon={NewIcon}
+                text="إنشاء مانجا"
+                href="/manga/create"
               />
             )}
             <DropdownOption icon={Heart} text="أعمالك المفضلة" href="/favs" />

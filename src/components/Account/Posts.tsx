@@ -1,14 +1,7 @@
 import useUser from "@hooks/useUser";
 import { Avatar, Button, Input } from "../Ui";
 import Image from "next/image";
-import {
-  ChangeEvent,
-  Dispatch,
-  SetStateAction,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import { ChangeEvent, Dispatch, SetStateAction, useRef, useState } from "react";
 import { FaComment, FaShare, FaTimes } from "react-icons/fa";
 import {
   imageTypesAllowed,
@@ -20,38 +13,33 @@ import useFetch from "@/hooks/useFetch";
 import { type TPost as TPost } from "@/models/Post";
 import DateController from "@/utils/date";
 import { Heart, PlainIcon, PostHeart, TrashIcon } from "@icons/index";
-import { usePathname } from "next/navigation";
 import { nanoid } from "nanoid";
 import { TUser } from "@/models/User";
 
-type TPosts = {
-  children?: React.ReactNode;
-};
-
-export default function Posts({ children }: TPosts) {
-  const [posts, setPosts] = useState<TPost[]>([]);
-  const { user } = useUser({ required: true });
-  const pathname = usePathname();
-  useEffect(() => {
-    console.log({ pathname });
-    if (!user) return;
-    console.log({ userPosts: user.posts });
-    setPosts((user.posts as TPost[]).sort((a, b) => b.createdAt - a.createdAt));
-  }, [user]);
-  return (
-    <div>
-      <CreatePost setPosts={setPosts} />
-      <PostedPosts posts={posts} />
-    </div>
-  );
-}
+// export default function Posts({ children }: TPosts) {
+//   const [posts, setPosts] = useState<TPost[]>([]);
+//   const { user } = useUser({ required: true });
+//   const pathname = usePathname();
+//   useEffect(() => {
+//     console.log({ pathname });
+//     if (!user) return;
+//     console.log({ userPosts: user.posts });
+//     setPosts((user.posts as TPost[]).sort((a, b) => b.createdAt - a.createdAt));
+//   }, [user]);
+//   return (
+//     <div>
+//       <CreatePost setPosts={setPosts} user={user as TUser} />
+//       <PostedPosts posts={posts} />
+//     </div>
+//   );
+// }
 
 type TCreatePostProps = {
   setPosts: Dispatch<SetStateAction<TPost[]>>;
+  user: TUser;
 };
 
-export function CreatePost({ setPosts }: TCreatePostProps) {
-  const { user, avatar } = useUser({ required: false });
+export function CreatePost({ setPosts, user }: TCreatePostProps) {
   const PostImageRef = useRef<HTMLInputElement>(null);
   const [files, setFiles] = useState<File[]>([]);
   const [postText, setPostText] = useState("");
@@ -100,7 +88,6 @@ export function CreatePost({ setPosts }: TCreatePostProps) {
   async function handlePost() {
     const images = await uploadImages();
     if (postText.trim() === "") {
-      console.log({ msg: "its empty :(" });
       if (images.length < 1) {
         toast("يجب عليك أن تدخل صور او نص علي الأقل لرفع المنشور", {
           type: "error",
@@ -117,14 +104,15 @@ export function CreatePost({ setPosts }: TCreatePostProps) {
       "POST",
       form
     );
-    setPosts(res.data.data.reverse());
+    setPosts(res.data.data.slice().reverse());
     setPostText("");
     setFiles([]);
   }
+
   return (
     <div className="bg-card rounded-lg p-4">
       <div className="bg-sub-card p-2 rounded-lg flex">
-        <Avatar image={avatar} size={48} className="!w-12 h-12" />
+        <Avatar image={user?.image} size={48} className="!w-12 h-12" />
         <Input className="bg-sub-card">
           <textarea
             className="resize-none input !h-24 leading-7"
@@ -198,7 +186,7 @@ export function CreatePost({ setPosts }: TCreatePostProps) {
 
 type PostedPosts = { posts: TPost[] };
 
-export function PostedPosts({ posts }: PostedPosts) {
+export function Posts({ posts }: PostedPosts) {
   return (
     <>
       {posts.map((post, i) => (
@@ -252,7 +240,7 @@ function Post({ post: p, i }: PostProps) {
       <div className="user-info flex items-center justify-between">
         <div className="flex gap-2">
           <Avatar
-            image={post.author.image}
+            image={post.author?.image}
             size={50}
             className="!w-[50px] !h-[50px] !mx-0"
           />
@@ -310,30 +298,32 @@ function Post({ post: p, i }: PostProps) {
         </div>
         <span className="text-slate-200">{post.comments.length} تعليق</span>
       </div>
-      <div className="interactions mt-3 pb-3 border-b-2 border-sub-card grid grid-cols-3 gap-2">
-        <Button
-          variant="light-form-btn"
-          className="flex-grow"
-          style={{ maxWidth: "unset" }}
-          onClick={handleAddOneLike}
-        >
-          <Image src={Heart} alt="heart" />
-        </Button>
-        <Button
-          variant="light-form-btn"
-          className="flex-grow"
-          style={{ maxWidth: "unset" }}
-        >
-          <FaComment color="#9128FF" />
-        </Button>
-        <Button
-          variant="light-form-btn"
-          className="flex-grow"
-          style={{ maxWidth: "unset" }}
-        >
-          <FaShare color="#9128FF" />
-        </Button>
-      </div>
+      {user && (
+        <div className="interactions mt-3 pb-3 border-b-2 border-sub-card grid grid-cols-3 gap-2">
+          <Button
+            variant="light-form-btn"
+            className="flex-grow"
+            style={{ maxWidth: "unset" }}
+            onClick={handleAddOneLike}
+          >
+            <Image src={Heart} alt="heart" />
+          </Button>
+          <Button
+            variant="light-form-btn"
+            className="flex-grow"
+            style={{ maxWidth: "unset" }}
+          >
+            <FaComment color="#9128FF" />
+          </Button>
+          <Button
+            variant="light-form-btn"
+            className="flex-grow"
+            style={{ maxWidth: "unset" }}
+          >
+            <FaShare color="#9128FF" />
+          </Button>
+        </div>
+      )}
       <div className="comments block">
         {user && (
           <div className="create-comment mt-5 flex items-center gap-4">
@@ -342,7 +332,7 @@ function Post({ post: p, i }: PostProps) {
               alt={`user-image-${nanoid()}`}
               width={40}
               height={40}
-              className="rounded-full"
+              className="rounded-full !w-10 !h-10"
             />
             <Input className="bg-sub-card">
               <input

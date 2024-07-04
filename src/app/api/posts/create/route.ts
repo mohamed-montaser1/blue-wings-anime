@@ -1,6 +1,6 @@
 import { dbConnect } from "@/lib";
 import { TCreateNewPostResponse } from "@lib/types";
-import { TPost, Post } from "@models/Post";
+import { Post } from "@models/Post";
 import { User } from "@models/User";
 import mongoose from "mongoose";
 import { Session } from "next-auth";
@@ -51,13 +51,35 @@ export async function POST(req: Req): Promise<TCreateNewPostResponse> {
   });
   // Update User Posts By Adding The New Post
   try {
-    await User.findByIdAndUpdate(user._id, {
-      $push: { posts: newPost._id },
-    });
+    const updatedUser = await User.findByIdAndUpdate(
+      user._id,
+      {
+        $push: { posts: newPost._id },
+      },
+      { new: true }
+    )
+      .populate({
+        path: "posts",
+        populate: [
+          {
+            path: "author",
+            model: "User",
+          },
+          {
+            path: "likes",
+            model: "User",
+          },
+          {
+            path: "comments",
+            model: "User",
+          },
+        ],
+      })
+      .exec();
     return NextResponse.json({
       success: true,
       error: null,
-      data: [...user.posts, newPost],
+      data: updatedUser.posts,
     });
   } catch (error) {
     return NextResponse.json({

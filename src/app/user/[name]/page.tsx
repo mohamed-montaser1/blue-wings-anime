@@ -5,7 +5,7 @@ import useFetch from "@hooks/useFetch";
 import { TUser } from "@models/User";
 import { useEffect, useState } from "react";
 import { Bio } from "@/components/Account";
-import { CreatePost, PostedPosts } from "@/components/Account/Posts";
+import { CreatePost, Posts } from "@/components/Account/Posts";
 import useUser from "@/hooks/useUser";
 import { TPost } from "@/models/Post";
 
@@ -41,6 +41,12 @@ export default function Page({ params: { name } }: TProps) {
     });
   }, []);
 
+  useEffect(() => {
+    console.log("#".repeat(30));
+    console.log({ posts });
+    console.log("#".repeat(30));
+  }, [posts]);
+
   if (error) {
     return (
       <h1 className="text-slate-200 text-4xl text-center mt-10">{error}</h1>
@@ -54,9 +60,9 @@ export default function Page({ params: { name } }: TProps) {
         <Bio user={user as TUser} />
         <div>
           {session_user?.email === user?.email && (
-            <CreatePost setPosts={setPosts} />
+            <CreatePost setPosts={setPosts} user={user as TUser} />
           )}
-          <PostedPosts posts={posts || []} />
+          <Posts posts={posts || []} />
         </div>
       </div>
     </Container>

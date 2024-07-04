@@ -4,7 +4,6 @@ import LastReadedChapters from "./LastReadedChapters";
 import ReadingLater from "./ReadingLater";
 import SavedManga from "./SavedManga";
 import Bio from "./Bio";
-import Posts from "./Posts";
 
 export {
   AccountInfo,
@@ -13,5 +12,4 @@ export {
   ReadingLater,
   SavedManga,
   Bio,
-  Posts,
 };

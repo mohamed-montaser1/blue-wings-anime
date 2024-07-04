@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 import slugify from "slugify";
 import { NextResponse } from "next/server";
 import { dbConnect } from "@/lib";
+import { User } from "@/models";
 /*
   _id: Schema.Types.ObjectId;
   slug: string;
@@ -20,7 +21,7 @@ export async function POST(req: Request) {
   await dbConnect();
   const body = await req.formData();
   const name = body.get("name") as string;
-  const keywords = body.get("keywords") || [];
+  const keywords = body.get("keywords") as string;
   const chapters = body.get("chapters") || [];
   const rating = body.get("rating") || [];
   const type = body.get("type") as TManga["type"];
@@ -38,18 +39,24 @@ export async function POST(req: Request) {
     errors.push("يجب إدخال حالة المانجا");
   }
   if (!author) {
-    errors.push("يجب إدخال المعرف الخاص (id) الخاص بالمنتج");
+    errors.push("يجب إدخال البريد الإلكتروني الخاص بصانع المانجا");
   }
 
   if (errors.length >= 1) {
-    return NextResponse.json({
-      success: false,
-      error: true,
-      messages: errors,
-    });
+    return NextResponse.json(
+      {
+        success: false,
+        error: true,
+        messages: errors,
+      },
+      { status: 400 }
+    );
   }
 
   const isExisted = await Manga.findOne({ name }).exec();
+  const authorId = await User.findOne({ email: author })
+    .exec()
+    .then((author) => author._id);
 
   if (isExisted) {
     return NextResponse.json({
@@ -57,6 +64,17 @@ export async function POST(req: Request) {
       error: true,
       message: "يوجد مانجا بالفعل بهذا الإسم",
     });
+  }
+
+  if (!authorId) {
+    return NextResponse.json(
+      {
+        success: false,
+        error: true,
+        message: "لا يوجد مستخدم بالبريد الإلكتروني الذي ادخلته",
+      },
+      { status: 404 }
+    );
   }
 
   try {
@@ -68,12 +86,12 @@ export async function POST(req: Request) {
         replacement: "-",
         trim: true,
       }),
-      keywords,
+      keywords: JSON.parse(keywords) as string[],
       chapters,
       rating,
       type,
       status,
-      author,
+      author: authorId,
     });
     return NextResponse.json(
       {

@@ -15,12 +15,6 @@ export type TProfile = {
   avatar: string;
 };
 
-export type TAuthenticatedUser = {
-  name: string;
-  email: string;
-  image: string;
-};
-
 export type TRegisterError = {
   response: {
     data: {
@@ -103,3 +97,9 @@ export type TCreateNewPostResponse = NextResponse<{
   error: string | null;
   data: TPost[] | null;
 }>;
+
+export type TDynamicAPIParams<Keys extends string[]> = {
+  params: {
+    [K in Keys[number]]: string;
+  };
+};

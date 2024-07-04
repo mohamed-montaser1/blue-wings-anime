@@ -1,9 +1,11 @@
 import registerSchema from "@/lib/registerSchema";
+import { slugifyOptions } from "@/lib/slugifyOptions";
 import dbConnect from "@lib/dbConnect";
 import { User } from "@models/User";
 import { hash } from "bcrypt";
 import mongoose from "mongoose";
 import { NextResponse } from "next/server";
+import slugify from "slugify";
 
 export async function POST(req: Request) {
   await dbConnect();
@@ -33,6 +35,7 @@ export async function POST(req: Request) {
   const newUser = await User.create({
     _id: new mongoose.Types.ObjectId(),
     name: body.name,
+    slug_name: slugify(body.name, slugifyOptions),
     email: body.email,
     password: hashPassword,
     role: body.role,

@@ -1,12 +1,13 @@
 "use client";
-import { Avatar, Container } from "@components";
-import AccountInfo, { roles } from "@components/Account/AccountInfo";
+import { Container } from "@components";
+import AccountInfo, { TAccountInfoUser } from "@components/Account/AccountInfo";
 import useFetch from "@hooks/useFetch";
-import { TRole } from "@lib/types";
 import { TUser } from "@models/User";
 import { useEffect, useState } from "react";
 import { Bio } from "@/components/Account";
-import { PostedPosts } from "@/components/Account/Posts";
+import { CreatePost, PostedPosts } from "@/components/Account/Posts";
+import useUser from "@/hooks/useUser";
+import { TPost } from "@/models/Post";
 
 type TProps = {
   params: {
@@ -17,6 +18,13 @@ type TProps = {
 export default function Page({ params: { name } }: TProps) {
   const [user, setUser] = useState<TUser | null>(null);
   const [error, setError] = useState("");
+  const [posts, setPosts] = useState<TPost[]>([]);
+  const { user: session_user } = useUser({ required: false });
+
+  useEffect(() => {
+    if (!user) return;
+    setPosts((user.posts as TPost[]).sort((a, b) => b.createdAt - a.createdAt));
+  }, [user]);
 
   useEffect(() => {
     useFetch<{}, { user: TUser; error?: string }>(
@@ -41,10 +49,15 @@ export default function Page({ params: { name } }: TProps) {
 
   return (
     <Container>
-      <AccountInfo />
+      <AccountInfo user={user as TAccountInfoUser} />
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 relative">
-        <Bio />
-        <PostedPosts posts={user?.posts || []} />
+        <Bio user={user as TUser} />
+        <div>
+          {session_user?.email === user?.email && (
+            <CreatePost setPosts={setPosts} />
+          )}
+          <PostedPosts posts={posts || []} />
+        </div>
       </div>
     </Container>
   );

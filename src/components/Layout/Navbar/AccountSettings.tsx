@@ -6,6 +6,7 @@ import { Button } from "@components";
 import { DropdownMenu, DropdownOption } from "./DropdownMenu";
 import {
   DashboardIcon,
+  Heart,
   LogoutIcon,
   SettingsIcon,
   UserIcon,
@@ -43,7 +44,7 @@ export default function AccountSettings() {
             <DropdownOption
               icon={SettingsIcon}
               text="عرض الملف الشخصي"
-              href={`/user/${user.name}`}
+              href={`/user/${user.slug_name}`}
             />
             <DropdownOption
               icon={UserId}
@@ -57,6 +58,7 @@ export default function AccountSettings() {
                 href="/dashboard/users"
               />
             )}
+            <DropdownOption icon={Heart} text="أعمالك المفضلة" href="/favs" />
             <DropdownOption
               icon={LogoutIcon}
               text="تسجيل الخروج"

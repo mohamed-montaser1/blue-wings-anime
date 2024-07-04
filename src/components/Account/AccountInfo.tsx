@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import useUser from "@hooks/useUser";
 import Avatar from "@/components/Ui/Avatar";
 import DateController from "@/utils/date";
+import { TUser } from "@/models/User";
 
 export const roles = {
   user: "مستخدم",
@@ -13,18 +14,22 @@ export const roles = {
   artist: "فنان",
   admin: "مسؤول",
 } as const;
+export type TAccountInfoUser = TUser | null;
 
-export default function AccountInfo() {
-  const { user, avatar } = useUser({ required: true });
+type Props = {
+  user: TAccountInfoUser;
+};
+
+export default function AccountInfo({ user }: Props) {
   const [date, setDate] = useState<string>("");
 
   useEffect(() => {
-    if (!user?.joinDate) return;
+    if (!user?.createdAt) return;
     fromJoinDate();
-  }, [user?.joinDate]);
+  }, [user?.createdAt]);
 
   function fromJoinDate() {
-    const dateController = new DateController(user.joinDate);
+    const dateController = new DateController(user?.createdAt as number);
     setDate(dateController.format("DD MMM YYYY"));
   }
   return (
@@ -42,7 +47,11 @@ export default function AccountInfo() {
         </div>
         <div className="flex flex-col xs:flex-row items-center xs:items-start xs:gap-5">
           <div className="w-[200px] aspect-square bg-slate-500 rounded-full p-1 -translate-y-1/4 md:mr-7 border border-slate-900">
-            <Avatar size={200} image={avatar} className="w-full h-full" />
+            <Avatar
+              size={200}
+              image={user?.image as string}
+              className="w-full h-full"
+            />
           </div>
           <div className="xs:mt-5 -translate-y-1/4 xs:translate-y-0 flex items-center xs:items-start flex-col md:block">
             <h1 className="text-slate-100 text-[30px]">{user?.name}</h1>

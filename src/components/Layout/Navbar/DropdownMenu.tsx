@@ -1,4 +1,4 @@
-import { TDropdownMenuProps, TDropdownOptionProps } from "../../../lib/types";
+import { TDropdownMenuProps, TDropdownOptionProps } from "@lib/types";
 import Image from "next/image";
 import parse from "html-react-parser";
 import Link from "next/link";
@@ -53,7 +53,7 @@ function DropdownOption({
     >
       <Image
         src={icon}
-        className={`rounded-full ${props.className}`}
+        className={`${props.className}`}
         alt="icon"
         {...imageProps}
       />

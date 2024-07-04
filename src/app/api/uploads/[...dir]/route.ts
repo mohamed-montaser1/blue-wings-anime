@@ -5,7 +5,7 @@ import { readFile, readdir, writeFile } from "fs/promises";
 import { join } from "path";
 import { nanoid } from "nanoid";
 
-const imageTypesAllowed = ["image/jpg", "image/jpeg", "image/png"];
+const imageTypesAllowed = ["image/jpg", "image/jpeg", "image/png", "image/gif"];
 
 type TParams = {
   params: {
@@ -29,6 +29,7 @@ const POST = async (req: Request, { params }: TParams) => {
       error: "You Should Enter One of these types .jpeg , .jpg or .png",
       success: false,
       image: null,
+      type,
     });
   }
 

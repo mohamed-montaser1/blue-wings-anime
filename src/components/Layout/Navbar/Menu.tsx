@@ -1,6 +1,6 @@
 import Image from "next/image";
 import MenuItem from "./MenuItem";
-import { Home, ArtPen, Heart, WorkList } from "@icons";
+import { Home, ArtPen, Heart, WorkList, NewsIcon } from "@icons";
 import { usePathname } from "next/navigation";
 
 export default function Menu() {
@@ -18,9 +18,9 @@ export default function Menu() {
           <Image src={WorkList} alt="worklist-icon" />
           <span>قائمة الأعمال</span>
         </MenuItem>
-        <MenuItem link="/favs" active={page === "favs"}>
-          <Image src={Heart} alt="heart-icon" />
-          <span>أعمالك المفضلة</span>
+        <MenuItem link="/news" active={page === "news"}>
+          <Image src={NewsIcon} alt="news-icon" />
+          <span>آخر الأخبار</span>
         </MenuItem>
         <MenuItem link="/artists" active={page === "artists"}>
           <Image src={ArtPen} alt="pen-icon" />

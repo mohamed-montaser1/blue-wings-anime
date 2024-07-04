@@ -3,13 +3,21 @@ import { Avatar, Button, Container, Input } from "@components";
 import Image, { StaticImageData } from "next/image";
 import { CameraIcon, TrashIcon, UserIcon } from "@icons/index";
 import useUser from "@hooks/useUser";
-import { ChangeEvent, useEffect, useState } from "react";
+import {
+  ChangeEvent,
+  Dispatch,
+  MouseEvent,
+  SetStateAction,
+  useEffect,
+  useState,
+} from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { UserRole } from "@models/User";
 import useAsk from "@/hooks/useAsk";
 import uploadImage from "@/utils/uploadImage";
 import { roles } from "@/components/Account/AccountInfo";
+import useFetch from "@/hooks/useFetch";
 
 type TProfile = {
   image: string | StaticImageData;
@@ -32,6 +40,7 @@ export const imageTypesAllowed = [
   "image/jpg",
   "image/jpeg",
   "image/png",
+  "image/gif",
 ] as const;
 
 export type imageTypesAllowedKey = (typeof imageTypesAllowed)[number];
@@ -46,6 +55,7 @@ export default function EditPage() {
     bio: user?.bio,
   };
   const [isDirty, setIsDirty] = useState<boolean>(false);
+  const [showChangeRoleRequest, setShowChangeRoleRequest] = useState(false);
   useAsk(isDirty);
   const [profile, setProfile] = useState<TProfile>({
     image: "",
@@ -101,6 +111,7 @@ export default function EditPage() {
       console.log({ callbackError: "there is an error", error: image });
     }
   };
+
   const setUserCover = (cover: string | object) => {
     if (avatar instanceof Object) {
       console.log({ callbackError: "there is an error", error: cover });
@@ -194,6 +205,13 @@ export default function EditPage() {
     }
   }
 
+  function handleClosePopup(e: MouseEvent<HTMLDivElement, MouseEvent>) {
+    const target = e.target as HTMLDivElement;
+    if (target.classList.contains("overlay")) {
+      setShowChangeRoleRequest(false);
+    }
+  }
+
   return (
     <Container className="my-20 bg-card rounded-lg">
       <div className="relative avatar-banner__container" dir="ltr">
@@ -245,13 +263,13 @@ export default function EditPage() {
           <input
             type="file"
             hidden
-            accept=".png, .jpg, .jpeg"
+            accept=".png, .jpg, .jpeg, .gif"
             id="file"
             onChange={(e) => handleChangeImage(e, "image")}
           />
           <Button
             variant="light-form-btn"
-            className="absolute top-3/4 right-0 shadow-md"
+            className="!absolute top-3/4 right-0 shadow-md"
             onClick={() => document.getElementById("file")?.click()}
           >
             <Image src={CameraIcon} alt="camera-icon" />
@@ -278,11 +296,14 @@ export default function EditPage() {
               }}
             />
           </Input>
-          <Input className="items-center bg-sub-card">
+          <Input
+            className="items-center bg-sub-card cursor-pointer hover:bg-page transition-colors duration-300 ease-in-out"
+            onClick={() => setShowChangeRoleRequest((p) => !p)}
+          >
             <input
               type="text"
               value={roles[profile.role]}
-              className="input opacity-50"
+              className="input opacity-50 cursor-pointer"
               readOnly
             />
           </Input>
@@ -320,6 +341,80 @@ export default function EditPage() {
         closeOnClick
         closeButton={false}
       />
+      {showChangeRoleRequest && user.role !== "admin" && (
+        <ChangeRole setShowChangeRoleRequest={setShowChangeRoleRequest} />
+      )}
     </Container>
+  );
+}
+
+type ChangeRoleProps = {
+  setShowChangeRoleRequest: Dispatch<SetStateAction<boolean>>;
+};
+
+function ChangeRole({ setShowChangeRoleRequest }: ChangeRoleProps) {
+  const { user } = useUser({ required: true });
+  const [role, setRole] = useState(user?.role || "");
+  useEffect(() => {
+    setRole(user?.role);
+  }, [user]);
+  function handleClosePopup(e: MouseEvent<HTMLDivElement, MouseEvent>) {
+    const target = e.target as HTMLDivElement;
+    if (target.classList.contains("overlay")) {
+      setShowChangeRoleRequest(false);
+    }
+  }
+  async function handleChangeUserRole() {
+    console.log({ role, userRole: user.role });
+    if (role === user.role) {
+      setShowChangeRoleRequest(false);
+      return;
+    }
+
+    // TODO: Send Request To API
+    type TResponse = {
+      success: boolean;
+      error: string | null;
+      data: string | null;
+    };
+    type TBody = {
+      role: UserRole;
+      email: string;
+    };
+
+    await useFetch<TBody, TResponse>("/api/request-new-role", "POST", {
+      email: user.email,
+      role: role,
+    });
+    // TODO: Give User Feedback about his request
+    toast("تم إرسال طلب تغيير المنصب بنجاح سيتم مراجعته في اقرب وقت", {
+      type: "success",
+    });
+    setShowChangeRoleRequest(false);
+  }
+  return (
+    <div className="overlay" onClick={handleClosePopup}>
+      <Container>
+        <Input className="bg-card shadow-2xl">
+          <select
+            className="bg-card text-slate-300 p-2 rounded-xl w-full border-none outline-none"
+            onChange={(e) => setRole(e.target.value as UserRole)}
+            value={role}
+          >
+            <option value="user">مستخدم</option>
+            <option value="artist">فنان</option>
+            <option value="editor">محرر</option>
+            <option value="admin">مسؤول</option>
+          </select>
+        </Input>
+        <Button
+          variant="danger"
+          className="mx-auto mt-5"
+          onClick={() => handleChangeUserRole()}
+        >
+          إرسال طلب تعديل المنصب
+        </Button>
+      </Container>
+    </div>
   );
 }

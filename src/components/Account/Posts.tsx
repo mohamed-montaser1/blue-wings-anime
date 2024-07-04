@@ -19,11 +19,13 @@ import uploadImage from "@utils/uploadImage";
 import useFetch from "@/hooks/useFetch";
 import { type TPost as TPost } from "@/models/Post";
 import DateController from "@/utils/date";
-import { Heart, PostHeart, TrashIcon } from "@icons/index";
+import { Heart, PlainIcon, PostHeart, TrashIcon } from "@icons/index";
 import { usePathname } from "next/navigation";
+import { nanoid } from "nanoid";
+import { TUser } from "@/models/User";
 
 type TPosts = {
-  children: React.ReactNode;
+  children?: React.ReactNode;
 };
 
 export default function Posts({ children }: TPosts) {
@@ -38,8 +40,8 @@ export default function Posts({ children }: TPosts) {
   }, [user]);
   return (
     <div>
-      {/* <CreatePost setPosts={setPosts} /> */}
-      {/* <PostedPosts posts={posts} /> */}
+      <CreatePost setPosts={setPosts} />
+      <PostedPosts posts={posts} />
     </div>
   );
 }
@@ -48,8 +50,8 @@ type TCreatePostProps = {
   setPosts: Dispatch<SetStateAction<TPost[]>>;
 };
 
-function CreatePost({ setPosts }: TCreatePostProps) {
-  const { user, avatar } = useUser({ required: true });
+export function CreatePost({ setPosts }: TCreatePostProps) {
+  const { user, avatar } = useUser({ required: false });
   const PostImageRef = useRef<HTMLInputElement>(null);
   const [files, setFiles] = useState<File[]>([]);
   const [postText, setPostText] = useState("");
@@ -211,33 +213,61 @@ type PostProps = {
   i: number;
 };
 
-function Post({ post, i }: PostProps) {
-  const { user, avatar } = useUser({ required: true });
+function Post({ post: p, i }: PostProps) {
+  const { user } = useUser({ required: false });
+  const [post, setPost] = useState(p);
+  const [comments, setComments] = useState(p.comments.slice().reverse());
+  const [comment, setComment] = useState("");
 
-  useEffect(() => {
-    if (!user) return;
-    console.log({ post });
-  }, [user]);
+  async function handleAddOneLike() {
+    const form = new FormData();
+    form.set("userId", user._id);
+    const res = await useFetch(
+      `/api/posts/info/${post._id}/like`,
+      "POST",
+      form
+    );
+    setPost(res.data.data);
+    console.log("#".repeat(30));
+    console.log({ res });
+    console.log("#".repeat(30));
+  }
+
+  async function handleAddComment() {
+    const form = new FormData();
+    form.set("userId", user._id);
+    form.set("content", comment);
+    const res = await useFetch(
+      `/api/posts/info/${post._id}/comment`,
+      "POST",
+      form
+    );
+    setPost(res.data.data);
+    setComments(res.data.data.comments.reverse());
+    setComment("");
+  }
 
   return (
     <div key={i} className="bg-card mt-4 p-3 rounded-lg">
       <div className="user-info flex items-center justify-between">
         <div className="flex gap-2">
           <Avatar
-            image={avatar}
+            image={post.author.image}
             size={50}
             className="!w-[50px] !h-[50px] !mx-0"
           />
           <div className="flex flex-col gap-1">
-            <h3 className="text-slate-200 text-lg">{user?.name}</h3>
+            <h3 className="text-slate-200 text-lg">{post.author?.name}</h3>
             <span className="text-slate-400 text-sm">
               {new DateController(post.createdAt).fromNow()}
             </span>
           </div>
         </div>
-        <Button variant="light-form-btn">
-          <Image src={TrashIcon} alt="trash-icon" />
-        </Button>
+        {(user as TUser)?._id === post.author?._id && (
+          <Button variant="light-form-btn">
+            <Image src={TrashIcon} alt="trash-icon" />
+          </Button>
+        )}
       </div>
       <div className="content mt-4 flex flex-col gap-2">
         <p className="text-slate-300">{post.text}</p>
@@ -263,9 +293,9 @@ function Post({ post, i }: PostProps) {
                   height={300}
                   className={`w-full h-full object-cover`}
                 />
-                {i === 3 && (
+                {i === 3 && post.images.length > 4 && (
                   <div className="bg-slate-900 w-full h-full absolute z-20 top-0 opacity-75 text-slate-100 text-4xl flex items-center justify-center">
-                    +{post.images.length - 3}
+                    +{post.images.length - 4}
                   </div>
                 )}
               </div>
@@ -285,6 +315,7 @@ function Post({ post, i }: PostProps) {
           variant="light-form-btn"
           className="flex-grow"
           style={{ maxWidth: "unset" }}
+          onClick={handleAddOneLike}
         >
           <Image src={Heart} alt="heart" />
         </Button>
@@ -304,22 +335,49 @@ function Post({ post, i }: PostProps) {
         </Button>
       </div>
       <div className="comments block">
-        {post.comments.map((comment, i) => (
-          <div key={i} className="flex gap-2 my-2 bg-sub-card rounded-lg p-3">
-            <Avatar
-              image={comment.author.image}
-              // image={"/uploads/profiles-pictures/default.jpg"}
-              size={40}
-              className="!h-12 !w-12"
+        {user && (
+          <div className="create-comment mt-5 flex items-center gap-4">
+            <Image
+              src={user?.image}
+              alt={`user-image-${nanoid()}`}
+              width={40}
+              height={40}
+              className="rounded-full"
             />
-            <div className="flex-grow">
-              <span className="text-slate-200">{comment.author.name}</span>
-              {/* <span className="text-slate-200">mohamed montaser</span> */}
-              <p className="text-slate-400">{comment.content}</p>
-              {/* <p className="text-slate-400">هذا المنشرو رائع للغاية</p> */}
-            </div>
+            <Input className="bg-sub-card">
+              <input
+                type="text"
+                placeholder="اكتب ما يدور في ذهنك"
+                className="w-full h-full bg-sub-card border-none outline-none text-slate-300"
+                value={comment}
+                onChange={(e) => setComment(e.target.value)}
+              />
+              <button onClick={handleAddComment}>
+                <Image src={PlainIcon} alt="send" />
+              </button>
+            </Input>
           </div>
-        ))}
+        )}
+        <div className="mt-5">
+          {comments.map((comment, i) => (
+            <div key={i} className="flex gap-2 my-2 bg-sub-card rounded-lg p-3">
+              <Avatar
+                image={comment.author?.image}
+                size={40}
+                className="!h-12 !w-12"
+              />
+              <div className="flex-grow">
+                <div className="flex justify-between">
+                  <span className="text-slate-200">{comment.author?.name}</span>
+                  <span className="text-slate-300 text-sm">
+                    {new DateController(comment.createdAt).fromNow()}
+                  </span>
+                </div>
+                <p className="text-slate-400 mt-2">{comment.content}</p>
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );

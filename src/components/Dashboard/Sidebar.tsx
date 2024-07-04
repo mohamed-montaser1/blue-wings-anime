@@ -16,13 +16,38 @@ export default function Sidebar() {
           key={nanoid()}
         />
         <SidebarLink
+          href="/dashboard/users"
+          content={"تعديل أسماء الأقسام"}
+          key={nanoid()}
+        />
+        <SidebarLink
           href="/dashboard/manga/create"
           content={"إنشاء مانجا"}
           key={nanoid()}
         />
         <SidebarLink
+          href="/dashboard/manga/create"
+          content={"حذف مانجا"}
+          key={nanoid()}
+        />
+        <SidebarLink
           href="/dashboard/posts"
-          content={"آخر منشورات الرسامين"}
+          content={"منشورات الرسامين"}
+          key={nanoid()}
+        />
+        <SidebarLink
+          href="/dashboard/new-role-requests"
+          content={"طلبات تعديل المنصب"}
+          key={nanoid()}
+        />
+        <SidebarLink
+          href="/dashboard/new-role-requests"
+          content={"تعديل الأعمال الأولية"}
+          key={nanoid()}
+        />
+        <SidebarLink
+          href="/dashboard/new-role-requests"
+          content={"تعديل المدونه"}
           key={nanoid()}
         />
       </ul>

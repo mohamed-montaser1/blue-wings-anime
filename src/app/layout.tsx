@@ -31,10 +31,8 @@ export default function RootLayout({ children }: TProps) {
     <html lang="ar" dir="rtl">
       <body className={`${cairo.className} bg-page`}>
         <NextAuthProvider>
-          {/* <Suspense fallback={<Loading />}> */}
           <Navbar />
           {children}
-          {/* </Suspense> */}
         </NextAuthProvider>
       </body>
     </html>

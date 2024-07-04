@@ -17,6 +17,7 @@ let styles = {
   danger: "bg-red-500",
   "form-btn": "bg-card text-primary",
   "light-form-btn": "bg-sub-card text-primary",
+  primary: "bg-primary",
 } as const;
 
 export default function Button({ children, variant, type, ...props }: Props) {

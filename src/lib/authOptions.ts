@@ -8,6 +8,8 @@ import { TCredentials } from "./types";
 import { dbConnect, loginSchema } from "@lib";
 import { Post } from "@/models";
 import { Comment } from "@/models/Comment";
+import slugify from "slugify";
+import { slugifyOptions } from "./slugifyOptions";
 
 const authOptions: AuthOptions = {
   providers: [
@@ -62,32 +64,33 @@ const authOptions: AuthOptions = {
   ],
   callbacks: {
     async session({ session, token }) {
-      const userFields: Array<keyof TUser> = [
-        "name",
-        "email",
-        "bio",
-        "email_verified",
-        "image",
-        "cover",
-        "role",
-        "posts",
-        "createdAt",
-      ] as const;
+      // const userFields: Array<keyof TUser> = [
+      //   "name",
+      //   "_id",
+      //   "slug_name",
+      //   "email",
+      //   "bio",
+      //   "email_verified",
+      //   "image",
+      //   "cover",
+      //   "role",
+      //   "posts",
+      //   "createdAt",
+      // ] as const;
 
-      const properties = userFields.reduce((acc, field) => {
-        // Dynamically access each field from token.user and assign it to the accumulator object acc
-        if ((token.user as Partial<TUser>)[field] !== undefined) {
-          acc[field] = (token.user as Partial<TUser>)[
-            field
-          ] as TUser[keyof TUser];
-        }
-        return acc; // Return the updated accumulator for the next iteration
-      }, {} as Record<string, TUser[keyof TUser]>); // Initialize acc as an empty object
+      // const properties = userFields.reduce((acc, field) => {
+      //   // Dynamically access each field from token.user and assign it to the accumulator object acc
+      //   if ((token.user as Partial<TUser>)[field] !== undefined) {
+      //     acc[field] = (token.user as Partial<TUser>)[
+      //       field
+      //     ] as TUser[keyof TUser];
+      //   }
+      //   return acc; // Return the updated accumulator for the next iteration
+      // }, {} as Record<string, TUser[keyof TUser]>); // Initialize acc as an empty object
 
       session.user = {
         ...session.user,
-        ...properties,
-        joinDate: properties.createdAt,
+        ...(token.user as TUser & { _doc: TUser })._doc,
       };
       return session;
     },
@@ -119,7 +122,7 @@ const authOptions: AuthOptions = {
         }
       }
       if (account) {
-        token.accessToken = account.access_token;
+        // token.accessToken = account.access_token;
         token.id = user.id;
       }
       await Post.init();
@@ -145,6 +148,7 @@ const authOptions: AuthOptions = {
       const newUser = await User.create({
         _id: new mongoose.Types.ObjectId(),
         name: user.name,
+        slug_name: slugify(user.name as string, slugifyOptions),
         email: user.email,
         image: user.image,
         email_verified:

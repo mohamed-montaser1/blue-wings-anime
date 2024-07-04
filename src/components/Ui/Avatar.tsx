@@ -1,3 +1,4 @@
+import { nanoid } from "nanoid";
 import Image, { StaticImageData } from "next/image";
 import React from "react";
 
@@ -13,8 +14,9 @@ export default function Avatar({ image, size, className }: Props) {
       src={image || "/uploads/profiles-pictures/default.jpg"}
       width={size}
       height={size}
-      alt="user-image"
+      alt={`user-image-${nanoid()}`}
       className={`rounded-full mx-auto aspect-square object-cover ${className}`}
+      style={{ width: size, height: size }}
     />
   );
 }

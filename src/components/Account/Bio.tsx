@@ -1,9 +1,16 @@
-import useUser from "@hooks/useUser";
+import { TUser } from "@/models/User";
+import { useEffect } from "react";
 
-export default function Bio() {
-  const { user } = useUser({ required: true });
+type Props = {
+  user: TUser;
+};
+
+export default function Bio({ user }: Props) {
+  useEffect(() => {
+    if (!user) return;
+  }, [user]);
   return (
-    <div  >
+    <div>
       <div className="rounded-lg bg-card p-4 w-full flex flex-col gap-3 h-fit pb-10 sticky top-32">
         <h2 className="text-slate-200 text-xl font-bold">النبذه التعريفية</h2>
         <p className="text-slate-300 break-words">

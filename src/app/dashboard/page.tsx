@@ -9,7 +9,6 @@ export default function Dashboard() {
 
   useEffect(() => {
     if (!user) return;
-    // console.log({ user });
     if (user.role !== "admin") {
       redirect("/");
     }

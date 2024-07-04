@@ -1,10 +1,12 @@
 import { Schema, model, models } from "mongoose";
 import { TPost } from "./Post";
+import DateController from "@/utils/date";
 
 export type UserRole = "user" | "admin" | "artist" | "editor";
 export interface TUser {
   _id: Schema.Types.ObjectId;
   name: string;
+  slug_name: string;
   email: string;
   bio: string;
   image: string;
@@ -25,6 +27,11 @@ const UserSchema = new Schema<TUser>(
     name: {
       type: String,
       trim: true,
+    },
+    slug_name: {
+      type: String,
+      trim: true,
+      lower: true,
     },
     email: {
       type: String,
@@ -74,4 +81,10 @@ const UserSchema = new Schema<TUser>(
   { versionKey: false }
 );
 
+UserSchema.methods.createdFromNow = function (createdAt: number) {
+  const date_controller = new DateController(createdAt);
+  return date_controller.fromNow();
+};
+
 export const User = models.User || model("User", UserSchema);
+// export const User = model("User", UserSchema);

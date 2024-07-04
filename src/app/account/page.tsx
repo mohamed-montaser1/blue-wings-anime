@@ -1,16 +1,19 @@
 "use client";
 
-import { Bio, Posts } from "@components/Account";
-import { Container, AccountInfo } from "@components";
+import useUser from "@/hooks/useUser";
+import { redirect } from "next/navigation";
+import { useEffect } from "react";
 
 export default function AccountPage() {
+  const { user } = useUser({ required: true });
+  useEffect(() => {
+    if (!user) return;
+    console.log({ user });
+    redirect(`/user/${user.name}`);
+  }, [user]);
   return (
-    <Container>
-      <AccountInfo />
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 relative">
-        <Bio />
-        <Posts />
-      </div>
-    </Container>
+    <h1 className="text-slate-300 text-center mt-20 text-4xl">
+      This is no longer a page
+    </h1>
   );
 }

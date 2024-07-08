@@ -59,7 +59,7 @@ export default function Artists() {
                     {user.bio.substr(0, 100)}
                     {user.bio.length > 100 ? "..." : ""}
                   </p>
-                  <Link href={`/user/${user._id}`}>
+                  <Link href={`/user/${user.slug_name}`}>
                     <Button variant="main" className="text-base mt-4">
                       زيارة الملف الشخصي
                     </Button>

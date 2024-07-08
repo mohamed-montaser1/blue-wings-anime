@@ -104,6 +104,10 @@ export function CreatePost({ setPosts, user }: TCreatePostProps) {
       "POST",
       form
     );
+    if (res.data.error) {
+      toast.error(res.data.error);
+      return;
+    }
     setPosts(res.data.data.slice().reverse());
     setPostText("");
     setFiles([]);
@@ -215,6 +219,9 @@ function Post({ post: p, i }: PostProps) {
       "POST",
       form
     );
+    if (res.data.error) {
+      toast.error(res.data.error);
+    }
     setPost(res.data.data);
     console.log("#".repeat(30));
     console.log({ res });
@@ -230,6 +237,11 @@ function Post({ post: p, i }: PostProps) {
       "POST",
       form
     );
+    if (res.data.error) {
+      toast.error(res.data.error);
+      return;
+    }
+
     setPost(res.data.data);
     setComments(res.data.data.comments.reverse());
     setComment("");

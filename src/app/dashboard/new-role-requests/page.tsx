@@ -22,8 +22,12 @@ export default function NewRoleRequests() {
 
   useEffect(() => {
     (async function () {
-      const response = await useFetch("/api/request-new-role", "GET", {});
-      setRequests(response.data.data);
+      const res = await useFetch("/api/request-new-role", "GET", {});
+      if (res.data.error) {
+        toast(res.data.error, { type: "error" });
+        return;
+      }
+      setRequests(res.data.data);
     })();
   }, [render]);
 

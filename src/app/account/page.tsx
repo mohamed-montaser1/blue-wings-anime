@@ -9,7 +9,7 @@ export default function AccountPage() {
   useEffect(() => {
     if (!user) return;
     console.log({ user });
-    redirect(`/user/${user.name}`);
+    redirect(`/user/${user.slug_name}`);
   }, [user]);
   return (
     <h1 className="text-slate-300 text-center mt-20 text-4xl">

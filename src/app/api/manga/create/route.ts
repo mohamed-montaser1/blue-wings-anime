@@ -19,17 +19,11 @@ import { User } from "@/models";
 
 export async function POST(req: Request) {
   await dbConnect();
-  const body = await req.formData();
-  const name = body.get("name") as string;
-  const keywords = body.get("keywords") as string;
-  const chapters = body.get("chapters") || [];
-  const rating = body.get("rating") || [];
-  const type = body.get("type") as TManga["type"];
-  const status = body.get("status") as TManga["status"];
-  const author = body.get("author") as unknown as string;
+  const body = await req.json();
+  const { title, type, author, status, story, credit, keywords } = body;
 
   const errors = [];
-  if (!name) {
+  if (!title) {
     errors.push("يجب إدخال إسم المانجا");
   }
   if (!type) {
@@ -46,32 +40,47 @@ export async function POST(req: Request) {
     return NextResponse.json(
       {
         success: false,
-        error: true,
-        messages: errors,
+        error: errors,
+        data: null,
       },
       { status: 400 }
     );
   }
 
-  const isExisted = await Manga.findOne({ name }).exec();
-  const authorId = await User.findOne({ email: author })
-    .exec()
-    .then((author) => author._id);
+  const isExisted = await Manga.findOne({ name: title }).exec();
+  let authorId;
+  try {
+    authorId = await User.findOne({ email: author })
+      .exec()
+      .then((author) => author._id);
+  } catch (error) {
+    return NextResponse.json(
+      {
+        success: false,
+        error: "يجب أن يكون المستخدم مسجل",
+        data: null,
+      },
+      { status: 404 }
+    );
+  }
 
-  if (isExisted) {
-    return NextResponse.json({
-      success: false,
-      error: true,
-      message: "يوجد مانجا بالفعل بهذا الإسم",
-    });
+  if (isExisted !== null) {
+    return NextResponse.json(
+      {
+        success: false,
+        error: "يوجد مانجا بالفعل بهذا الإسم",
+        data: null,
+      },
+      { status: 409 }
+    );
   }
 
   if (!authorId) {
     return NextResponse.json(
       {
         success: false,
-        error: true,
-        message: "لا يوجد مستخدم بالبريد الإلكتروني الذي ادخلته",
+        error: "لا يوجد مستخدم بالبريد الإلكتروني الذي ادخلته",
+        data: null,
       },
       { status: 404 }
     );
@@ -80,15 +89,13 @@ export async function POST(req: Request) {
   try {
     await Manga.create({
       _id: new mongoose.Types.ObjectId(),
-      name,
-      slug: slugify(name, {
+      name: title,
+      slug: slugify(title, {
         lower: true,
         replacement: "-",
         trim: true,
       }),
-      keywords: JSON.parse(keywords) as string[],
-      chapters,
-      rating,
+      keywords,
       type,
       status,
       author: authorId,
@@ -102,9 +109,6 @@ export async function POST(req: Request) {
       { status: 201 }
     );
   } catch (error: any) {
-    console.log("*".repeat(30));
-    console.log({ error });
-    console.log("*".repeat(30));
     return NextResponse.json(
       {
         success: false,

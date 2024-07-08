@@ -392,10 +392,18 @@ function ChangeRole({ setShowChangeRoleRequest }: ChangeRoleProps) {
       email: string;
     };
 
-    await useFetch<TBody, TResponse>("/api/request-new-role", "POST", {
-      email: user.email,
-      role: role,
-    });
+    const res = await useFetch<TBody, TResponse>(
+      "/api/request-new-role",
+      "POST",
+      {
+        email: user.email,
+        role: role,
+      }
+    );
+    if (res.data.error) {
+      toast(res.data.error, { type: "error" });
+      return;
+    }
     // TODO: Give User Feedback about his request
     toast("تم إرسال طلب تغيير المنصب بنجاح سيتم مراجعته في اقرب وقت", {
       type: "success",

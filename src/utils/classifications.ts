@@ -1,10 +1,6 @@
-export type TClassification = {
-  [key: string]: {
-    value: string;
-  };
-};
+export type TClassification = typeof classifications;
 
-export const classifications: TClassification = {
+export const classifications = {
   Shounen: {
     value: "شونين",
   },
@@ -77,4 +73,4 @@ export const classifications: TClassification = {
   Superhero: {
     value: "بطل خارق",
   },
-};
+} as const;

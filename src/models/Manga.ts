@@ -14,6 +14,7 @@ export interface TManga {
   status: "Ongoing" | "Completed" | "Hiatus";
   author: TUser;
   createdAt: number;
+  credit: string;
 }
 
 const MangaSchema = new Schema<TManga>(

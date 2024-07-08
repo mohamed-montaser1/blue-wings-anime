@@ -64,30 +64,6 @@ const authOptions: AuthOptions = {
   ],
   callbacks: {
     async session({ session, token }) {
-      // const userFields: Array<keyof TUser> = [
-      //   "name",
-      //   "_id",
-      //   "slug_name",
-      //   "email",
-      //   "bio",
-      //   "email_verified",
-      //   "image",
-      //   "cover",
-      //   "role",
-      //   "posts",
-      //   "createdAt",
-      // ] as const;
-
-      // const properties = userFields.reduce((acc, field) => {
-      //   // Dynamically access each field from token.user and assign it to the accumulator object acc
-      //   if ((token.user as Partial<TUser>)[field] !== undefined) {
-      //     acc[field] = (token.user as Partial<TUser>)[
-      //       field
-      //     ] as TUser[keyof TUser];
-      //   }
-      //   return acc; // Return the updated accumulator for the next iteration
-      // }, {} as Record<string, TUser[keyof TUser]>); // Initialize acc as an empty object
-
       session.user = {
         ...session.user,
         ...(token.user as TUser & { _doc: TUser })._doc,

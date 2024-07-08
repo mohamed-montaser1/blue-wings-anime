@@ -37,15 +37,8 @@ export default function Page({ params: { name } }: TProps) {
         return;
       }
       setUser(res.data.user);
-      console.log({ posts: res.data.user.posts, user: res.data.user });
     });
   }, []);
-
-  useEffect(() => {
-    console.log("#".repeat(30));
-    console.log({ posts });
-    console.log("#".repeat(30));
-  }, [posts]);
 
   if (error) {
     return (

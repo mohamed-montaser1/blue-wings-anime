@@ -113,12 +113,15 @@ function RolePopup({ selectedUser, setShowRolePopup, setRender }: Props) {
     const res = await useFetch(`/api/user/edit/${selectedUser?.email}`, "PUT", {
       role,
     });
+    if (res.data.error) {
+      toast.error(res.data.error);
+      return;
+    }
     if (res.status === 201) {
       setShowRolePopup(false);
       toast(`تم تعديل بيانات ${selectedUser?.name.split(" ")[0]} بنجاح`, {
         type: "success",
       });
-      console.log({ updateRoleResponse: res });
       setRender((prev) => prev + 1);
       return;
     }
@@ -233,8 +236,14 @@ function UserData({
           >
             تعديل المنصب
           </Button>
-          <Link href={`/user/${user.slug_name}`} className="max-w-full inline-block">
-            <Button variant="light-form-btn" className="!text-base !w-full !max-w-full">
+          <Link
+            href={`/user/${user.slug_name}`}
+            className="max-w-full inline-block"
+          >
+            <Button
+              variant="light-form-btn"
+              className="!text-base !w-full !max-w-full"
+            >
               زيارة الحساب
             </Button>
           </Link>

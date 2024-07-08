@@ -1,6 +1,7 @@
 import { Schema, model, models } from "mongoose";
 import { TPost } from "./Post";
 import DateController from "@/utils/date";
+import { TManga } from "./Manga";
 
 export type UserRole = "user" | "admin" | "artist" | "editor";
 export interface TUser {
@@ -17,6 +18,7 @@ export interface TUser {
   email_verified: boolean;
   createdAt: number;
   posts: TPost[];
+  favoriteManga: TManga[];
 }
 
 const UserSchema = new Schema<TUser>(
@@ -78,6 +80,10 @@ const UserSchema = new Schema<TUser>(
     createdAt: {
       type: Number,
       default: Date.now(),
+    },
+    favoriteManga: {
+      type: [{ type: Schema.Types.ObjectId, ref: "Manga" }],
+      default: [],
     },
   },
   { versionKey: false }

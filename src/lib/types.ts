@@ -1,7 +1,7 @@
 import { UserRole } from "@/models/User";
 import { Session } from "next-auth";
 import { StaticImageData } from "next/image";
-import { InternalLinkProps } from "next/link";
+import InternalLinkProps from "next/link";
 import { NextResponse } from "next/server";
 import { AnchorHTMLAttributes } from "react";
 import { type TPost as TPost } from "@models/Post";
@@ -26,7 +26,7 @@ export type TRegisterError = {
 
 export type TDropdownOptionProps = Omit<
   AnchorHTMLAttributes<HTMLAnchorElement>,
-  keyof InternalLinkProps
+  keyof typeof InternalLinkProps
 > & {
   icon: React.ReactNode;
   text: string;

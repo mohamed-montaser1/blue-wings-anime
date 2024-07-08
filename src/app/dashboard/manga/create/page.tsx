@@ -1,8 +1,5 @@
 "use client";
-import {
-  imageTypesAllowed,
-  imageTypesAllowedKey,
-} from "@/app/account/settings/page";
+import { imageTypesAllowed } from "@/app/account/settings/page";
 import { Button, Container, Input } from "@/components";
 import useFetch from "@/hooks/useFetch";
 import useUser from "@/hooks/useUser";
@@ -16,16 +13,6 @@ import { useForm } from "react-hook-form";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { z } from "zod";
-
-type Manga = {
-  title: string;
-  status: string;
-  author: string;
-  type: string;
-  keywords: string[];
-  story: string;
-  credit: File | null;
-};
 
 type FieldsType = {
   title: string;

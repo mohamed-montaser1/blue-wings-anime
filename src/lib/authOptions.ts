@@ -26,7 +26,7 @@ const authOptions: AuthOptions = {
         if (!success) {
           throw new Error("البيانات المدخله غير صالحة");
         }
-        const user = await User.findOne({ email });
+        const user = await User.findOne({ email }).exec();
         if (!user) {
           throw new Error("لا يوجد مستخدم بهذا البريد الإلكتروني");
         }

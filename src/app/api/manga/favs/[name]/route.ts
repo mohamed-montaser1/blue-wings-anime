@@ -1,15 +1,19 @@
 import { dbConnect } from "@/lib";
 import { TDynamicAPIParams } from "@/lib/types";
 import { User } from "@/models";
+import { Manga } from "@/models/Manga";
 import { NextResponse } from "next/server";
 
-export async function POST(
+export async function GET(
   req: Request,
-  { params }: TDynamicAPIParams<["slug_name"]>
+  { params }: TDynamicAPIParams<["name"]>
 ) {
   await dbConnect();
-  const { slug_name } = params;
-  const user = await User.findOne({ slug_name }).populate("favoriteManga").exec();
+  await Manga.init();
+  const { name } = params;
+  const user = await User.findOne({ slug_name: name })
+    .populate("favoriteManga")
+    .exec();
 
   if (!user) {
     return NextResponse.json(

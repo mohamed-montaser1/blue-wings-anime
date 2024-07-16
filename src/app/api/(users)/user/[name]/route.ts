@@ -1,11 +1,12 @@
 import { dbConnect } from "@/lib";
+import { TDynamicAPIParams } from "@/lib/types";
 import { Comment } from "@/models/Comment";
 import { User } from "@/models/User";
 import { NextResponse } from "next/server";
 
-type Props = { params: { name: string } };
+type TParams = TDynamicAPIParams<["name"]>;
 
-export async function GET(req: Request, { params }: Props) {
+export async function GET(req: Request, { params }: TParams) {
   await dbConnect();
   const slug_name = params.name;
   await Comment.init();
@@ -33,4 +34,40 @@ export async function GET(req: Request, { params }: Props) {
   return NextResponse.json({
     user,
   });
+}
+
+export async function DELETE(req: Request, { params }: TParams) {
+  const { name } = params;
+
+  const user = await User.findOne({ slug_name: name }).exec();
+
+  if (!user) {
+    return NextResponse.json(
+      {
+        success: false,
+        error: "لا يوجد مستخدم بهذا الإسم",
+        data: null,
+      },
+      { status: 404 }
+    );
+  }
+
+  try {
+    await User.findOneAndDelete({ slug_name: name }).exec();
+    return NextResponse.json({
+      success: true,
+      error: null,
+      data: null,
+    });
+  } catch (error) {
+    return NextResponse.json(
+      {
+        success: false,
+        message: "حدث خطأ ما أثناء حذف المستخدم",
+        error,
+        data: null,
+      },
+      { status: 500 }
+    );
+  }
 }

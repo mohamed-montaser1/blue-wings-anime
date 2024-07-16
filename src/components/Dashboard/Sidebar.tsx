@@ -15,18 +15,18 @@ export default function Sidebar() {
           content={"المستخدمين"}
           key={nanoid()}
         />
-        <SidebarLink
+        {/* <SidebarLink
           href="/dashboard/users"
           content={"تعديل أسماء الأقسام"}
           key={nanoid()}
-        />
+        /> */}
         <SidebarLink
           href="/dashboard/manga/create"
           content={"إنشاء مانجا"}
           key={nanoid()}
         />
         <SidebarLink
-          href="/dashboard/manga/create"
+          href="/dashboard/manga/delete"
           content={"حذف مانجا"}
           key={nanoid()}
         />
@@ -42,12 +42,12 @@ export default function Sidebar() {
         />
         <SidebarLink
           href="/dashboard/new-role-requests"
-          content={"تعديل الأعمال الأولية"}
+          content={"تعديل الصفحة الرئيسية"}
           key={nanoid()}
         />
         <SidebarLink
           href="/dashboard/new-role-requests"
-          content={"تعديل المدونه"}
+          content={"إضافة مقالة"}
           key={nanoid()}
         />
       </ul>

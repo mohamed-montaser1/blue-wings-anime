@@ -1,21 +1,10 @@
-import { Manga, TManga } from "@/models/Manga";
+import { Manga } from "@/models/Manga";
 import mongoose from "mongoose";
 import slugify from "slugify";
 import { NextResponse } from "next/server";
 import { dbConnect } from "@/lib";
 import { User } from "@/models";
-/*
-  _id: Schema.Types.ObjectId;
-  slug: string;
-  name: string;
-  keywords: string[];
-  chapters: TChapter[];
-  rating: TRating[];
-  type: "Manga" | "Manhwa" | "Manhua" | "Comic" | "Novel";
-  status: "Ongoing" | "Completed" | "Hiatus";
-  author: TUser;
-  createdAt: number;
-*/
+import { slugifyOptions } from "@/lib/slugifyOptions";
 
 export async function POST(req: Request) {
   await dbConnect();
@@ -35,6 +24,12 @@ export async function POST(req: Request) {
   if (!author) {
     errors.push("يجب إدخال البريد الإلكتروني الخاص بصانع المانجا");
   }
+  if (!credit) {
+    errors.push("يجب إدخال صورة الكريديت");
+  }
+  if (!story) {
+    errors.push("يجب إدخال قصة المانجا");
+  }
 
   if (errors.length >= 1) {
     return NextResponse.json(
@@ -47,7 +42,10 @@ export async function POST(req: Request) {
     );
   }
 
-  const isExisted = await Manga.findOne({ name: title }).exec();
+  const isExisted = await Manga.findOne({
+    slug_name: slugify(title, slugifyOptions),
+  }).exec();
+
   let authorId;
   try {
     authorId = await User.findOne({ email: author })
@@ -99,6 +97,8 @@ export async function POST(req: Request) {
       type,
       status,
       author: authorId,
+      credit,
+      story,
     });
     return NextResponse.json(
       {

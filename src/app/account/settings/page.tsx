@@ -77,6 +77,20 @@ export default function EditPage() {
       bio: user?.bio,
     };
     setProfile(defaultProfile);
+
+    (async () => {
+      const isAnyUserWithSameName = await useFetch(
+        `/api/user/${user?.slug_name}/exists`,
+        "GET",
+        {}
+      );
+      const error = isAnyUserWithSameName.data?.error;
+      if (error) {
+        toast.error(error);
+        toast.error("يجب عليك تغيير إسمك ليظهر حسابك");
+      }
+      console.log({ isAnyUserWithSameName, error });
+    })();
   }, [status, avatar, user?.name]);
 
   async function saveImage(
@@ -96,7 +110,6 @@ export default function EditPage() {
       });
       return;
     }
-    console.log({ img, dir });
     let result = await uploadImage(img, dir);
     if (result instanceof Object) {
       console.error({ uploadingError: result });
@@ -215,13 +228,6 @@ export default function EditPage() {
     }
   }
 
-  function handleClosePopup(e: MouseEvent<HTMLDivElement, MouseEvent>) {
-    const target = e.target as HTMLDivElement;
-    if (target.classList.contains("overlay")) {
-      setShowChangeRoleRequest(false);
-    }
-  }
-
   return (
     <Container className="my-20 bg-card rounded-lg">
       <div className="relative avatar-banner__container" dir="ltr">
@@ -301,7 +307,10 @@ export default function EditPage() {
               value={profile.name}
               maxLength={25}
               onChange={(e) => {
-                setProfile((prev) => ({ ...prev, name: e.target.value }));
+                setProfile((prev: TProfile) => ({
+                  ...prev,
+                  name: e.target.value,
+                }));
                 setIsDirty(true);
               }}
             />
@@ -336,7 +345,10 @@ export default function EditPage() {
             maxLength={200}
             value={profile.bio}
             onChange={(e) => {
-              setProfile((prev) => ({ ...prev, bio: e.target.value }));
+              setProfile((prev: TProfile) => ({
+                ...prev,
+                bio: e.target.value,
+              }));
               setIsDirty(true);
             }}
           ></textarea>
@@ -432,6 +444,13 @@ function ChangeRole({ setShowChangeRoleRequest }: ChangeRoleProps) {
         >
           إرسال طلب تعديل المنصب
         </Button>
+
+        <ToastContainer
+          theme="dark"
+          position="bottom-right"
+          closeButton={false}
+          closeOnClick={true}
+        />
       </Container>
     </div>
   );

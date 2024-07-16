@@ -1,19 +1,22 @@
-import { slugifyOptions } from "@/lib/slugifyOptions";
+import { dbConnect } from "@/lib";
 import { Manga } from "@/models/Manga";
+import { isValidSlug } from "@/utils/isValidSlug";
 import { NextResponse } from "next/server";
-import slugify from "slugify";
 
 type Props = { params: { slug: string } };
 
 export async function GET(req: Request, { params }: Props) {
   const slug = params.slug;
-  const isValidSlug = slugify(slug, slugifyOptions) === slug;
-  if (!isValidSlug) {
-    return NextResponse.json({
-      success: false,
-      error: "This Is Not Valid Slug!",
-      data: null,
-    });
+  const is_valid_slug_name = isValidSlug(slug);
+  if (!is_valid_slug_name) {
+    return NextResponse.json(
+      {
+        success: false,
+        error: `${slug} Is Not Valid Slug!`,
+        data: null,
+      },
+      { status: 400 }
+    );
   }
 
   const manga = await Manga.findOne({ slug })
@@ -21,11 +24,53 @@ export async function GET(req: Request, { params }: Props) {
     .exec();
 
   if (!manga) {
+    return NextResponse.json(
+      {
+        success: false,
+        error: `There Is No Manga With (${slug}) slug`,
+        data: null,
+      },
+      { status: 404 }
+    );
+  }
+  return NextResponse.json({ manga });
+}
+
+export async function DELETE(req: Request, { params }: Props) {
+  await dbConnect();
+  const slug = params.slug;
+  const is_valid_slug_name = isValidSlug(slug);
+  if (!is_valid_slug_name) {
+    return NextResponse.json(
+      {
+        success: false,
+        error: `${slug} Is Not Valid Slug!`,
+        data: null,
+      },
+      { status: 400 }
+    );
+  }
+  const manga = await Manga.findOne({ slug }).exec();
+  if (!manga) {
     return NextResponse.json({
       success: false,
       error: `There Is No Manga With (${slug}) slug`,
       data: null,
     });
   }
-  return NextResponse.json({ manga });
+
+  try {
+    await Manga.findOneAndDelete({ slug }).exec();
+    return NextResponse.json({
+      success: true,
+      error: null,
+      data: null,
+    });
+  } catch (error) {
+    return NextResponse.json({
+      success: false,
+      error,
+      data: null,
+    });
+  }
 }

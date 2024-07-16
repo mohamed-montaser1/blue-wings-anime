@@ -29,13 +29,13 @@ const UserSchema = new Schema<TUser>(
     name: {
       type: String,
       trim: true,
-      unique: true,
+      // unique: true,
     },
     slug_name: {
       type: String,
       trim: true,
       lower: true,
-      unique: true,
+      // unique: true,
     },
     email: {
       type: String,

@@ -1,9 +1,13 @@
 "use client";
 import { Button, Container, Slide } from "@/components";
 import useFetch from "@/hooks/useFetch";
+import { TManga } from "@/models/Manga";
 import useUser from "@hooks/useUser";
 import { AxiosError } from "axios";
+import { nanoid } from "nanoid";
+import Link from "next/link";
 import { useEffect, useState } from "react";
+import Rater from "react-rater";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -12,27 +16,18 @@ export default function FavoritesPage() {
   const [status, setStatus] = useState<"loading" | "loaded" | "empty">(
     "loaded"
   );
-  const [data, setData] = useState([]);
+  const [data, setData] = useState<TManga[]>([]);
   useEffect(() => {
     // Get The Data From Server Here And Change The Status To Loaded
     (async () => {
       if (!user) return;
-      try {
-        const res = await useFetch(
-          `/api/manga/favs/${user.slug_name}`,
-          "POST",
-          {}
-        );
-        if (res.status === 200) {
-          setStatus("loaded");
-          setData(res.data.data);
-        }
-      } catch (error) {
-        let e = error as unknown as AxiosError;
-        if (e.response?.status === 404) {
-          toast.error("لا يوجد مستخدم بهذا الإسم");
-        }
-      }
+      const res = await useFetch(
+        `/api/manga/favs/${user.slug_name}`,
+        "GET",
+        {}
+      );
+      setStatus("loaded");
+      setData(res.data.data);
     })();
   }, [user]);
   if (status === "loading") {
@@ -52,15 +47,27 @@ export default function FavoritesPage() {
   return (
     <>
       <Container className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-20">
-        {Array.from({ length: 3 }).map((el) => (
-          <Slide key={Math.random()} title="مفضلة">
-            <div className="text-white w-full mt-2">
-              <h3 className="text-lg font-bold">هذا النص هو مثال لنص يمكن</h3>
+        {data.map((el) => (
+          <Slide key={Math.random()} title="مفضلة" image={el.credit}>
+            <div className="text-white w-full mt-2 flex flex-col items-start">
+              <h3 className="text-lg font-bold">{el.name}</h3>
               <p className="my-1">
-                هذا النص هو مثال لنص يمكن أن يستبدل في نفس المساحة، لقد تم توليد
-                هذا النص من مولد النص العربى، حيث
+                {el.story.substr(0, 100)}
+                {el.story.length > 100 && "..."}
               </p>
-              <div>Rating Rating Rating</div>
+              <div className="stars flex gap-2 items-center">
+                <Rater
+                  total={5}
+                  rating={el.rating.length}
+                  interactive={false}
+                  key={nanoid()}
+                />
+              </div>
+              <Link href={`/manga/${el.slug}`}>
+                <Button variant="light-form-btn" className="mt-4">
+                  زيارة
+                </Button>
+              </Link>
             </div>
           </Slide>
         ))}

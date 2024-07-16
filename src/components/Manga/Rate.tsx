@@ -8,13 +8,36 @@ import Plain from "@icons/plain";
 import { defaultState, ratingReducerFn } from "@reducers/rate";
 import useUser from "@hooks/useUser";
 import { usePathname } from "next/navigation";
+import { TManga } from "@/models/Manga";
+import { toast } from "react-toastify";
+import useFetch from "@/hooks/useFetch";
 
-export default function Rate() {
+type TProps = {
+  data: TManga;
+};
+
+export default function Rate({ data }: TProps) {
   const [state, dispatch] = useReducer(ratingReducerFn, defaultState);
   const { user } = useUser({ required: false });
-  const pathname = usePathname();
-  const paths = pathname.split("/");
-  const slug = paths.at(-1);
+
+  async function handleSaveRate() {
+    if (!state.rating) {
+      toast.error("يجب عليك تحديد عدد النجوم في التقييم");
+      return;
+    }
+    if (state.text.trim().length < 1) {
+      toast.error("يجب عليك كتابة ما لا يقل عن 10 حروف في نص التقييم");
+      return;
+    }
+
+    const res = await useFetch(`/api/manga/${data.slug}/rate`, "POST", {
+      stars: state.rating,
+      text: state.text,
+      user_name: user.slug_name,
+    });
+
+    console.log({ res })
+  }
 
   return (
     <div className="my-24">
@@ -50,12 +73,7 @@ export default function Rate() {
           variant="form-btn"
           className="mx-auto mt-4 px-16"
           // onClick={() => console.log("DONE ===>", state)}
-          onClick={() =>
-            dispatch({
-              type: "SAVE",
-              payload: { rating: state.rating, text: state.text, user, slug },
-            })
-          }
+          onClick={handleSaveRate}
         >
           <span>تقييم</span>
           <Plain color="white" />

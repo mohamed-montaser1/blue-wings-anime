@@ -2,7 +2,7 @@ import registerSchema from "@/lib/registerSchema";
 import { slugifyOptions } from "@/lib/slugifyOptions";
 import dbConnect from "@lib/dbConnect";
 import { User } from "@models/User";
-import { hash } from "bcrypt";
+import { genSalt, hash } from "bcrypt";
 import mongoose from "mongoose";
 import { NextResponse } from "next/server";
 import slugify from "slugify";
@@ -30,7 +30,8 @@ export async function POST(req: Request) {
     );
   }
 
-  let hashPassword = await hash(body.password, 10);
+  const SALT = await genSalt(10, "b");
+  let hashPassword = await hash(body.password, SALT);
 
   const newUser = await User.create({
     _id: new mongoose.Types.ObjectId(),
@@ -39,6 +40,7 @@ export async function POST(req: Request) {
     email: body.email,
     password: hashPassword,
     role: body.role,
+    favoriteManga: [],
   });
 
   try {

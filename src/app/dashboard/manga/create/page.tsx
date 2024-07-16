@@ -40,10 +40,6 @@ const createMangaSchema = z.object({
     .any()
     .refine((files) => files?.length == 1, "يجب إدخال صورة الكريديت")
     .refine(
-      (files) => files?.[0]?.size <= 500000,
-      `الحد الأعلى لحجم الصوره 5 ميجا بايت`
-    )
-    .refine(
       (files) => imageTypesAllowed.includes(files?.[0]?.type),
       `الإمتدادات المتاحه للصور: ${imageTypesAllowed.join(" , ")}`
     ),

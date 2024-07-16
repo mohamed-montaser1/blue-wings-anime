@@ -15,6 +15,7 @@ export interface TManga {
   author: TUser;
   createdAt: number;
   credit: string;
+  story: string;
 }
 
 const MangaSchema = new Schema<TManga>(
@@ -60,6 +61,14 @@ const MangaSchema = new Schema<TManga>(
     author: {
       type: Schema.Types.ObjectId,
       ref: "User",
+    },
+    credit: {
+      type: String,
+      required: true,
+    },
+    story: {
+      type: String,
+      required: true,
     },
     createdAt: {
       type: Number,

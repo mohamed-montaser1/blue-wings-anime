@@ -1,5 +1,5 @@
 type Props = {
-  className: string;
+  className?: string;
   fill: string | "#18B2FF";
 };
 

@@ -5,6 +5,7 @@ import useFetch from "@/hooks/useFetch";
 import useUser from "@/hooks/useUser";
 import { TUser, UserRole } from "@/models/User";
 import { SettingsIcon } from "@icons/index";
+import { AxiosError } from "axios";
 import { nanoid } from "nanoid";
 import Image from "next/image";
 import Link from "next/link";
@@ -45,38 +46,45 @@ export default function Users() {
   }, [user]);
 
   return (
-    <div className="flex justify-center flex-1">
+    <div className="flex items-center flex-1 flex-col my-11 gap-6">
       {users.length < 1 && (
         <h1 className="text-slate-200 text-4xl text-center mt-5">
           لا يوجد أي مستخدمين
         </h1>
       )}
       {users.length > 0 && (
-        <table className="container my-16 h-fit">
-          <thead className="border">
-            <tr>
-              <TableHeadData content="الصوره الشخصيه" key={nanoid()} />
-              <TableHeadData content="الإسم" key={nanoid()} />
-              <TableHeadData content="البريد الإلكتروني" key={nanoid()} />
-              <TableHeadData content="المنصب" key={nanoid()} />
-              <TableHeadData content="الملف الشخصي" key={nanoid()} />
-            </tr>
-          </thead>
-          <tbody className="border">
-            {users.map((u, i) => {
-              if (u?.email === user?.email) return;
-              return (
-                <UserData
-                  user={u}
-                  index={i}
-                  key={i}
-                  setShowRolePopup={setShowRolePopup}
-                  setSelectedUser={setSelectedUser}
-                />
-              );
-            })}
-          </tbody>
-        </table>
+        <>
+          <h1 className="text-slate-200 text-xl text-center">
+            <span>عدد المستخدمين غير المسؤولين:</span>
+            <span> {users.filter((user) => user.role !== "admin").length}</span>
+          </h1>
+          <table className="container h-fit">
+            <thead className="border">
+              <tr>
+                <TableHeadData content="الصوره الشخصيه" key={nanoid()} />
+                <TableHeadData content="الإسم" key={nanoid()} />
+                <TableHeadData content="البريد الإلكتروني" key={nanoid()} />
+                <TableHeadData content="المنصب" key={nanoid()} />
+                <TableHeadData content="الملف الشخصي" key={nanoid()} />
+              </tr>
+            </thead>
+            <tbody className="border">
+              {users.map((u, i) => {
+                if (u?.email === user?.email) return;
+                return (
+                  <UserData
+                    user={u}
+                    index={i}
+                    key={i}
+                    setShowRolePopup={setShowRolePopup}
+                    setSelectedUser={setSelectedUser}
+                    setRender={setRender}
+                  />
+                );
+              })}
+            </tbody>
+          </table>
+        </>
       )}
       {showRolePopup && (
         <RolePopup
@@ -191,6 +199,7 @@ type UserDataProps = {
   index: number;
   setShowRolePopup: Dispatch<SetStateAction<boolean>>;
   setSelectedUser: Dispatch<SetStateAction<TUser | null>>;
+  setRender: Dispatch<SetStateAction<number>>;
 };
 
 function UserData({
@@ -198,6 +207,7 @@ function UserData({
   index,
   setShowRolePopup,
   setSelectedUser,
+  setRender,
 }: UserDataProps) {
   const SettingsRef = useRef<HTMLDivElement | null>(null);
   const [isActive, setIsActive] = useState(false);
@@ -205,6 +215,27 @@ function UserData({
   async function handleEditRole(e: any, user: TUser) {
     setShowRolePopup(true);
     setSelectedUser(user);
+  }
+
+  async function handleRemoveAccount() {
+    try {
+      await useFetch(`/api/user/${user.slug_name}`, "DELETE", {});
+      setRender((prev) => prev + 1);
+      toast.success("تم حذف الحساب بنجاح");
+    } catch (error) {
+      let e = error as unknown as AxiosError;
+      console.log({ error });
+      switch (e.response?.status) {
+        case 404:
+          toast.error("لا يوجد مستخدم بهذا الإسم !");
+          break;
+        case 500:
+          toast.error(
+            "حدث خطأ ما في الخادم أثناء محاولة حذف هذا المستخدم يرجى المحاوله لاحقاً"
+          );
+          break;
+      }
+    }
   }
 
   return (
@@ -247,7 +278,11 @@ function UserData({
               زيارة الحساب
             </Button>
           </Link>
-          <Button variant="danger" className="!text-base max-w-full">
+          <Button
+            variant="danger"
+            className="!text-base max-w-full"
+            onClick={handleRemoveAccount}
+          >
             حذف الحساب
           </Button>
         </div>

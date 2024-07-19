@@ -1,5 +1,4 @@
 import { Schema, model, models } from "mongoose";
-import { TComment } from "./Comment";
 
 export interface TArticle {
   _id: Schema.Types.ObjectId;

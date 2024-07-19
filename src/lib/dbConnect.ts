@@ -1,38 +1,22 @@
 import mongoose, { ConnectOptions } from "mongoose";
-import { TGlobalMongoose } from "./types";
 
 mongoose.set("strictPopulate", false);
 const MONGODB_URI = process.env.MONGODB_URI;
 
 if (!MONGODB_URI) {
   throw new Error(
-    "Please define the MONGODB_URI environment variable inside .env.local"
+    "Please define the 'MONGODB_URI' environment variable inside env file"
   );
 }
 
-declare const global: TGlobalMongoose;
-
-let cached = global.mongoose;
-
-if (!cached) {
-  cached = global.mongoose = { conn: null, promise: null };
-}
-
 async function dbConnect() {
-  if (cached.conn) {
-    return cached.conn;
+  if (mongoose.connection.readyState >= 1) {
+    return; // Already connected
   }
 
-  if (!cached.promise) {
-    const opts: ConnectOptions = { dbName: "Anime-DB" };
-    cached.promise = mongoose
-      .connect(MONGODB_URI as string, opts)
-      .then((mongoose) => {
-        return mongoose;
-      });
-  }
-  cached.conn = await cached.promise;
-  return cached.conn;
+  await mongoose.connect(process.env.MONGODB_URI as string, {
+    dbName: "Anime-DB",
+  });
 }
 
 export default dbConnect;

@@ -46,7 +46,7 @@ export default function Sidebar() {
           key={nanoid()}
         />
         <SidebarLink
-          href="/dashboard/new-role-requests"
+          href="/dashboard/blog/create"
           content={"إضافة مقالة"}
           key={nanoid()}
         />

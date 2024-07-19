@@ -207,12 +207,6 @@ export default function CreateManga() {
                       ) || "يجب أن يكون الملف صورة",
                   },
                 })}
-                // onChange={(e) =>
-                //   setManga((p) => ({
-                //     ...p,
-                //     credit: e.target.files![0] || null,
-                //   }))
-                // }
               />
             </label>
           </Input>
@@ -234,12 +228,7 @@ export default function CreateManga() {
             <span className="text-primary">{getValues().author}</span>
           </h3>
 
-          <Button
-            variant="main"
-            className="mx-auto my-6"
-            type="submit"
-            // onClick={handleSubmit}
-          >
+          <Button variant="main" className="mx-auto my-6" type="submit">
             إنشاء المانجا
           </Button>
         </div>

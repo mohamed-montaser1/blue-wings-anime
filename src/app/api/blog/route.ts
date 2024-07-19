@@ -10,16 +10,18 @@ type TBody = {
 };
 
 // Create New Article
-const bodySchema = z.object({
+export const createBlogSchema = z.object({
   title: z
     .string()
     .min(5, { message: "يجب إدخال عنوان مكون من 5 أحرف علي الأقل" }),
   content: z
     .string()
     .min(100, { message: "يجب إدخال محتوى المقاله مكون من 100 حرف علي الأقل" }),
-  image: z.string().regex(/\/uploads\/.*\.(?:jpg|jpeg|gif|png)/, {
-    message: "يجب ان يكون رابط الصوره من السيرفر",
-  }),
+  image: z
+    .string({ message: "يجب إدخال رابط الصوره" })
+    .regex(/\/uploads\/.*\.(?:jpg|jpeg|gif|png)/, {
+      message: "يجب ان يكون رابط الصوره من السيرفر",
+    }),
 });
 
 export async function POST(req: Request) {
@@ -38,18 +40,23 @@ export async function POST(req: Request) {
     );
   }
 
+  console.log({ body });
+
   try {
-    const parsedVersion = bodySchema.parse(body);
+    const parsedVersion = createBlogSchema.parse(body);
     const article = await Article.create({
       _id: new mongoose.Types.ObjectId(),
       ...parsedVersion,
     });
     article.save();
-    return NextResponse.json({
-      success: true,
-      error: null,
-      data: article,
-    });
+    return NextResponse.json(
+      {
+        success: true,
+        error: null,
+        data: article,
+      },
+      { status: 201 }
+    );
   } catch (error) {
     let e = error as unknown as ZodError;
     return NextResponse.json(

@@ -3,6 +3,7 @@ import { Button, Container, Slide } from "@/components";
 import useFetch from "@/hooks/useFetch";
 import { TManga } from "@/models/Manga";
 import useUser from "@hooks/useUser";
+import { AxiosError } from "axios";
 import { nanoid } from "nanoid";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -27,11 +28,14 @@ export default function FavoritesPage() {
       );
       setStatus("loaded");
       setData(res.data.data);
-      console.log({ data: res.data.data });
     })();
   }, [user]);
   if (status === "loading") {
-    toast.done("جاري التحميل إنتظر قليلاً");
+    return (
+      <h1 className="text-white mt-20 text-2xl text-center">
+        جاري التحميل إنتظر قليلاً
+      </h1>
+    );
   }
   if (status === "empty") {
     return (
@@ -82,7 +86,7 @@ export default function FavoritesPage() {
           </Slide>
         ))}
       </Container>
-      {data.length > 3 && (
+      {data.length > 0 && (
         <>
           <Button variant="main" className="mx-auto mt-10">
             عرض المزيد

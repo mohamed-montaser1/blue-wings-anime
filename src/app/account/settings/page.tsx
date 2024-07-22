@@ -362,6 +362,7 @@ export default function EditPage() {
         position="bottom-right"
         closeOnClick
         closeButton={false}
+        rtl
       />
       {showChangeRoleRequest && user.role !== "admin" && (
         <ChangeRole setShowChangeRoleRequest={setShowChangeRoleRequest} />
@@ -450,6 +451,7 @@ function ChangeRole({ setShowChangeRoleRequest }: ChangeRoleProps) {
           position="bottom-right"
           closeButton={false}
           closeOnClick={true}
+        rtl
         />
       </Container>
     </div>

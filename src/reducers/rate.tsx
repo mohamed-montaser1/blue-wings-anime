@@ -5,7 +5,7 @@ export type TRatingState = {
   text: string;
 };
 
-type Type = "SET_RATING" | "SET_TEXT" | "SAVE";
+type Type = "SET_RATING" | "SET_TEXT";
 
 type TPayload = {
   rating: number;
@@ -21,7 +21,7 @@ type TRatingAction<T> = {
 
 export function ratingReducerFn(
   state: TRatingState,
-  action: TRatingAction<TPayload>,
+  action: TRatingAction<TPayload>
 ): TRatingState {
   switch (action.type) {
     case "SET_RATING":
@@ -34,12 +34,7 @@ export function ratingReducerFn(
         ...state,
         text: action.payload.text,
       };
-    case "SAVE":
-      saveRating(action.payload);
-      return {
-        ...state,
-        text: action.payload.text,
-      };
+
     default:
       return state;
   }
@@ -49,11 +44,3 @@ export const defaultState: TRatingState = {
   rating: 0,
   text: "",
 };
-
-type TSaveRateFn = any | void;
-
-async function saveRating(payload: TPayload): Promise<TSaveRateFn> {
-  // axios.post(`/rate/${id}`, {
-  //   userId: user,
-  // });
-}

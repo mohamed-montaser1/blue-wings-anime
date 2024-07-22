@@ -215,6 +215,7 @@ export default function Register() {
         position="bottom-right"
         closeButton={false}
         closeOnClick={true}
+        rtl
       />
     </Container>
   );

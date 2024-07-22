@@ -8,9 +8,9 @@ import uploadImage from "@/utils/uploadImage";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { AxiosError } from "axios";
 import { redirect } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
-import { ToastContainer, toast } from "react-toastify";
+import { Id, ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { z } from "zod";
 
@@ -58,6 +58,7 @@ export default function CreateManga() {
   const [keywords, setKeywords] = useState<
     TClassification[keyof TClassification]["value"][]
   >([]);
+  const toastId = useRef<null | Id>(null);
 
   useEffect(() => {
     if (!user) return;
@@ -90,23 +91,42 @@ export default function CreateManga() {
     };
 
     try {
+      toastId.current = toast.loading("جاري إنشاء المانجا");
       const res = await useFetch("/api/manga/create", "POST", form);
-      console.log({ res: res.status });
-      toast("تم الإنشاء بنجاح");
+      setTimeout(() => {
+        toast.update(toastId.current as unknown as Id, {
+          type: "success",
+          render: "تم الإنشاء بنجاح",
+          isLoading: false,
+          autoClose: 4000,
+        });
+      }, 500);
     } catch (error) {
       let e = error as unknown as AxiosError;
       switch (e.response!.status) {
         case 404:
-          toast.error("لا يوجد مستخدم بهذا البريد الإلكتروني");
+          toast.update(toastId.current as unknown as Id, {
+            type: "error",
+            render: "لا يوجد مستخدم بهذا البريد الإلكتروني",
+            isLoading: false,
+            autoClose: 4000,
+          });
           break;
         case 409:
-          toast.error("يوجد مانجا بالفعل بهذا الإسم");
+          toast.update(toastId.current as unknown as Id, {
+            type: "error",
+            render: "يوجد مانجا بالفعل بهذا الإسم",
+            isLoading: false,
+            autoClose: 4000,
+          });
           break;
         case 500:
-          toast.error("حدث خطأ ما في السيرفر. عاود المحاولة لاحقاً");
-          break;
-        case 201:
-          toast.success("تم إنشاء المانجا بنجاح");
+          toast.update(toastId.current as unknown as Id, {
+            type: "error",
+            render: "حدث خطأ ما في السيرفر. عاود المحاولة لاحقاً",
+            isLoading: false,
+            autoClose: 4000,
+          });
           break;
       }
     }
@@ -239,6 +259,7 @@ export default function CreateManga() {
         position="bottom-right"
         closeOnClick
         closeButton={false}
+        rtl
       />
     </Container>
   );

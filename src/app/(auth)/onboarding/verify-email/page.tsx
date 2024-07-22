@@ -103,6 +103,7 @@ export default function VerifyEmail() {
         position="bottom-right"
         closeButton={false}
         closeOnClick={true}
+        rtl
       />
     </Container>
   );

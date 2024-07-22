@@ -183,6 +183,8 @@ export function CreatePost({ setPosts, user }: TCreatePostProps) {
         position="bottom-right"
         closeOnClick
         closeButton={false}
+        rtl
+
       />
     </div>
   );

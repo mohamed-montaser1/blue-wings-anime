@@ -7,7 +7,6 @@ import "react-rater/lib/react-rater.css";
 import Plain from "@icons/plain";
 import { defaultState, ratingReducerFn } from "@reducers/rate";
 import useUser from "@hooks/useUser";
-import { usePathname } from "next/navigation";
 import { TManga } from "@/models/Manga";
 import { toast } from "react-toastify";
 import useFetch from "@/hooks/useFetch";

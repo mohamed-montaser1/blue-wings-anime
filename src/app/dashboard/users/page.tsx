@@ -99,6 +99,7 @@ export default function Users() {
         position="bottom-right"
         closeButton={false}
         closeOnClick={true}
+        rtl
       />
     </div>
   );

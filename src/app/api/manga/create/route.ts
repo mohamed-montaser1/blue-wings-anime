@@ -43,7 +43,7 @@ export async function POST(req: Request) {
   }
 
   const isExisted = await Manga.findOne({
-    slug_name: slugify(title, slugifyOptions),
+    slug: slugify(title, slugifyOptions),
   }).exec();
 
   let authorId;

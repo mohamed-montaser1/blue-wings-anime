@@ -80,6 +80,7 @@ export default function Artists() {
         position="bottom-right"
         closeButton={false}
         closeOnClick={true}
+        rtl
       />
     </Container>
   );

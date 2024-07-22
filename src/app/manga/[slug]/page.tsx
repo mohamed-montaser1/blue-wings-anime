@@ -26,6 +26,7 @@ export default function Page({ params: { slug } }: TProps) {
           {}
         );
         setData(res.data.manga);
+        console.log({ res })
       } catch (err) {
         let error = err as unknown as AxiosError;
         switch (error.response?.status) {

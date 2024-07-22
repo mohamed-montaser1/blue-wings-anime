@@ -40,15 +40,13 @@ export async function POST(req: Request) {
     );
   }
 
-  console.log({ body });
-
   try {
     const parsedVersion = createBlogSchema.parse(body);
     const article = await Article.create({
       _id: new mongoose.Types.ObjectId(),
       ...parsedVersion,
     });
-    article.save();
+    await article.save();
     return NextResponse.json(
       {
         success: true,

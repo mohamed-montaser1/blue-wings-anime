@@ -140,6 +140,7 @@ export default function Login() {
         position="bottom-right"
         closeButton={false}
         closeOnClick={true}
+        rtl
       />
     </Container>
   );

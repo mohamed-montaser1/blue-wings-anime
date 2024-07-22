@@ -32,7 +32,10 @@ export default function MangaInfo({ data }: TProps) {
         "POST",
         {}
       );
-      if (res.status < 202) {
+
+      if (res.data.data === null) {
+        toast.info("المانجا موجوده بالفعل في المفضلة !");
+      } else if (res.status < 202) {
         toast.success("تم إضافة المانجا الى المفضلة بنجاح");
       }
     } catch (error) {
@@ -65,15 +68,23 @@ export default function MangaInfo({ data }: TProps) {
               </div>
             )}
             <div className="rate bg-sub-card p-4 rounded-lg flex items-center justify-between my-6">
-              <div className="flex">
-                <Rater
-                  interactive={false}
-                  total={5}
-                  rating={3}
-                  key={Math.random()}
-                />
-              </div>
-              <span className="text-white">9.40</span>
+              {data.rating.length > 0 ? (
+                <>
+                  <div className="flex">
+                    <Rater
+                      interactive={false}
+                      total={5}
+                      rating={3}
+                      key={Math.random()}
+                    />
+                  </div>
+                  <span className="text-white">9.40</span>
+                </>
+              ) : (
+                <h1 className="text-slate-200 text-xl">
+                  لم يتم تقييم هذه المانجا بعد !
+                </h1>
+              )}
             </div>
             <div className="info flex flex-col gap-2">
               <div className="info-data">
@@ -153,6 +164,7 @@ export default function MangaInfo({ data }: TProps) {
           position="bottom-right"
           closeButton={false}
           closeOnClick={true}
+          rtl
         />
       </Container>
     </div>

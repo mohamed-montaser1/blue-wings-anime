@@ -130,6 +130,7 @@ export default function CreateBlogPage() {
         position="bottom-right"
         closeOnClick
         closeButton={false}
+        rtl
       />
     </Container>
   );

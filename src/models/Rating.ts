@@ -27,7 +27,6 @@ const RatingSchema = new Schema<TRating>({
   },
   createdAt: {
     type: Number,
-    default: Date.now(),
   },
 });
 

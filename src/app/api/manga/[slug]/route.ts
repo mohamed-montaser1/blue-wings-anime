@@ -21,6 +21,7 @@ export async function GET(req: Request, { params }: Props) {
 
   const manga = await Manga.findOne({ slug })
     .populate({ path: "author", select: "name -_id" })
+    .populate({ path: "rating" })
     .exec();
 
   if (!manga) {

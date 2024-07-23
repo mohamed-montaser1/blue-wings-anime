@@ -1,3 +1,4 @@
+import { dbConnect } from "@/lib";
 import { TDynamicAPIParams } from "@/lib/types";
 import { User } from "@/models";
 import { Manga } from "@/models/Manga";
@@ -8,6 +9,7 @@ import { NextResponse } from "next/server";
 type TParams = TDynamicAPIParams<["slug"]>;
 
 export async function POST(req: Request, { params }: TParams) {
+  await dbConnect();
   const slug = params.slug;
   const { stars, text, user_name } = await req.json();
 
@@ -46,30 +48,45 @@ export async function POST(req: Request, { params }: TParams) {
     );
   }
 
+  const isRated = await Rating.findOne({ author: user._id }).exec();
+
+  if (isRated) {
+    return NextResponse.json({
+      success: false,
+      error: null,
+      data: null,
+    });
+  }
+
   try {
     const review = await Rating.create({
       _id: new mongoose.Types.ObjectId(),
       rating: stars,
       review: text,
       author: user,
+      createdAt: Date.now(),
     });
     await Manga.findOneAndUpdate(
       { slug },
       {
         $push: {
-          rating: {
-            review,
-          },
+          rating: review._id,
         },
       }
     ).exec();
 
-    return NextResponse.json({
-      success: true,
-      error: null,
-      data: "تم حفظ التقييم بنجاح",
-    });
+    return NextResponse.json(
+      {
+        success: true,
+        error: null,
+        data: "تم حفظ التقييم بنجاح",
+      },
+      { status: 201 }
+    );
   } catch (error) {
+    console.log("*".repeat(30));
+    console.log({ error });
+    console.log("*".repeat(30));
     return NextResponse.json(
       {
         success: false,

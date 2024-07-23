@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button, Container, Input } from "@components";
 import Image from "next/image";
 import Star from "@icons/star";
@@ -22,6 +22,7 @@ type TProps = {
 export default function MangaInfo({ data }: TProps) {
   const { user } = useUser({ required: false });
   const [chapter, setChapter] = useState<"default" | number>("default");
+  const [rating, setRating] = useState(0);
   const keywords = data.keywords;
 
   async function handleAddToFav() {
@@ -44,6 +45,15 @@ export default function MangaInfo({ data }: TProps) {
     }
   }
 
+  useEffect(() => {
+    console.log({ rating: data.rating });
+    let rate = data.rating.reduce((acc, el, i) => {
+      return (acc + el.rating) / (i + 1);
+    }, 0);
+    setRating(rate);
+  }, [data.rating]);
+
+  console.log({ data });
   return (
     <div className="mt-[105px]">
       <Container className="flex gap-10 flex-col-reverse items-center lg:flex-row lg:items-start">
@@ -74,11 +84,11 @@ export default function MangaInfo({ data }: TProps) {
                     <Rater
                       interactive={false}
                       total={5}
-                      rating={3}
-                      key={Math.random()}
+                      rating={rating}
+                      key={nanoid()}
                     />
                   </div>
-                  <span className="text-white">9.40</span>
+                  <span className="text-white">{rating.toFixed(2)}</span>
                 </>
               ) : (
                 <h1 className="text-slate-200 text-xl">

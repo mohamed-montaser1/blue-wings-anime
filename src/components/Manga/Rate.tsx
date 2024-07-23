@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useReducer } from "react";
+import React, { useReducer, useRef } from "react";
 import { Button, Container, Input, Title } from "@components";
 import Rater from "react-rater";
 import "react-rater/lib/react-rater.css";
@@ -8,7 +8,7 @@ import Plain from "@icons/plain";
 import { defaultState, ratingReducerFn } from "@reducers/rate";
 import useUser from "@hooks/useUser";
 import { TManga } from "@/models/Manga";
-import { toast } from "react-toastify";
+import { Id, toast } from "react-toastify";
 import useFetch from "@/hooks/useFetch";
 
 type TProps = {
@@ -18,24 +18,54 @@ type TProps = {
 export default function Rate({ data }: TProps) {
   const [state, dispatch] = useReducer(ratingReducerFn, defaultState);
   const { user } = useUser({ required: false });
+  const toastId = useRef<Id | null>(null);
 
   async function handleSaveRate() {
+    toastId.current = toast.loading("جاري حفظ التقييم");
     if (!state.rating) {
-      toast.error("يجب عليك تحديد عدد النجوم في التقييم");
+      setTimeout(() => {
+        toast.update(toastId.current as unknown as Id, {
+          type: "error",
+          render: "يجب تحديد عدد النجوم",
+          autoClose: 3000,
+          isLoading: false,
+          closeOnClick: true,
+        });
+      }, 500);
       return;
     }
-    if (state.text.trim().length < 1) {
-      toast.error("يجب عليك كتابة ما لا يقل عن 10 حروف في نص التقييم");
+    if (state.text.trim().length < 10) {
+      setTimeout(() => {
+        toast.update(toastId.current as unknown as Id, {
+          type: "error",
+          render: "يجب عليك كتابة ما لا يقل عن 10 حروف في نص التقييم",
+          autoClose: 3000,
+          isLoading: false,
+          closeOnClick: true,
+        });
+      }, 500);
       return;
     }
 
-    const res = await useFetch(`/api/manga/${data.slug}/rate`, "POST", {
-      stars: state.rating,
-      text: state.text,
-      user_name: user.slug_name,
-    });
-
-    console.log({ res })
+    try {
+      const res = await useFetch(`/api/manga/${data.slug}/rate`, "POST", {
+        stars: state.rating,
+        text: state.text,
+        user_name: user.slug_name,
+      });
+      if (res.status === 201) {
+        toast.update(toastId.current, {
+          type: "success",
+          render: "تم حفظ التقييم بنجاح",
+          autoClose: 3000,
+          isLoading: false,
+          closeOnClick: true,
+        });
+      }
+      console.log({ res });
+    } catch (error) {
+      console.log({ error });
+    }
   }
 
   return (

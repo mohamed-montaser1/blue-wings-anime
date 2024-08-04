@@ -10,6 +10,7 @@ import useUser from "@hooks/useUser";
 import { TManga } from "@/models/Manga";
 import { Id, toast } from "react-toastify";
 import useFetch from "@/hooks/useFetch";
+import { AxiosError } from "axios";
 
 type TProps = {
   data: TManga;
@@ -64,7 +65,18 @@ export default function Rate({ data }: TProps) {
       }
       console.log({ res });
     } catch (error) {
-      console.log({ error });
+      let e = error as unknown as AxiosError;
+      switch (e.response?.status) {
+        case 409:
+          toast.update(toastId.current, {
+            type: "error",
+            render: "لقد قمت بكتابة تقييم سابق علي هذه المانجا",
+            autoClose: 3000,
+            isLoading: false,
+            closeOnClick: true,
+          });
+          break;
+      }
     }
   }
 

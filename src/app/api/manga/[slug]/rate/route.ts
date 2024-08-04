@@ -48,18 +48,6 @@ export async function POST(req: Request, { params }: TParams) {
     );
   }
 
-  const isRated = await Rating.findOne({ author: user._id }).exec();
-
-  if (isRated) {
-    return NextResponse.json(
-      {
-        success: false,
-        error: null,
-        data: null,
-      },
-      { status: 409 }
-    );
-  }
   const manga = await Manga.findOne({ slug }).exec();
   if (!manga) {
     return NextResponse.json(
@@ -69,6 +57,19 @@ export async function POST(req: Request, { params }: TParams) {
         data: null,
       },
       { status: 404 }
+    );
+  }
+
+  const isRated = await Rating.findOne({ author: user._id, manga: manga._id }).exec();
+
+  if (isRated) {
+    return NextResponse.json(
+      {
+        success: false,
+        error: null,
+        data: null,
+      },
+      { status: 409 }
     );
   }
 

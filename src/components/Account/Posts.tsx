@@ -1,7 +1,14 @@
 import useUser from "@hooks/useUser";
 import { Avatar, Button, Input } from "../Ui";
 import Image from "next/image";
-import { ChangeEvent, Dispatch, SetStateAction, useRef, useState } from "react";
+import {
+  ChangeEvent,
+  Dispatch,
+  SetStateAction,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { FaComment, FaShare, FaTimes } from "react-icons/fa";
 import {
   imageTypesAllowed,
@@ -222,8 +229,16 @@ function Post({ post: p, i }: PostProps) {
   const [comment, setComment] = useState("");
   const [showComments, setShowComments] = useState(true);
   const [showShareDropdown, setShowShareDropdown] = useState(false);
-  const id = post._id;
+  const id = String(post._id);
   const path = location.href + "#" + id;
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setPost(post);
+    }, 1000);
+
+    return () => clearInterval(timer);
+  });
 
   async function handleAddOneLike() {
     const form = new FormData();

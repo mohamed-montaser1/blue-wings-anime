@@ -1,10 +1,12 @@
 "use client";
 import useFetch from "@/hooks/useFetch";
 import useUser from "@/hooks/useUser";
+import { slugifyOptions } from "@/lib/slugifyOptions";
 import { TManga } from "@/models/Manga";
 import { MangaInfo, Rate, SimilarManga } from "@components";
 import { AxiosError } from "axios";
 import { useEffect, useState } from "react";
+import slugify from "slugify";
 
 type TProps = {
   params: {
@@ -21,7 +23,7 @@ export default function Page({ params: { slug } }: TProps) {
     (async () => {
       try {
         const res = await useFetch<{}, { manga: TManga }>(
-          `/api/manga/${slug}`,
+          `/api/manga/${slugify(slug, slugifyOptions)}`,
           "GET",
           {}
         );

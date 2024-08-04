@@ -1,6 +1,6 @@
 import { dbConnect } from "@/lib";
 import { Manga, TManga } from "@/models/Manga";
-import { Rating } from "@/models/Rating";
+import { Rating, TRating } from "@/models/Rating";
 import { isValidSlug } from "@/utils/isValidSlug";
 import { NextResponse } from "next/server";
 
@@ -39,11 +39,13 @@ export async function GET(req: Request, { params }: Props) {
 
   return NextResponse.json({
     manga: Object.assign({}, manga._doc, {
-      ratingNumber: manga.rating.reduce((acc, el, i) => {
-        return (acc + el.rating) / (i + 1);
-      }, 0),
+      ratingNumber: sum(manga.rating) / manga.rating.length,
     }),
   });
+}
+
+function sum(arr: Array<TRating>) {
+  return arr.reduce((acc, user) => acc + user.rating, 0);
 }
 
 export async function DELETE(req: Request, { params }: Props) {

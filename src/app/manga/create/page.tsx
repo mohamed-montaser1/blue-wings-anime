@@ -32,10 +32,6 @@ const createMangaSchema = z.object({
     required_error: "يجب تحديد نوع المانجا",
   }),
   story: z.string().min(10, "يجب أن تحتوي القصة على الأقل على 10 أحرف"),
-  author: z
-    .string()
-    .email("يجب إدخال بريد الكتروني صالح")
-    .nonempty("يجب إدخال اسم المؤلف"),
   credit: z
     .any()
     .refine((files) => files?.length == 1, "يجب إدخال صورة الكريديت")
@@ -76,14 +72,14 @@ export default function CreateManga() {
     // TODO: send API Request to /api/manga/create
     // TODO: check if error ? display it : continue
     // TODO: if there is no errors ? display success message and redirect to its url
-    const { author, credit, status, story, title, type } = getValues();
+    const { credit, status, story, title, type } = getValues();
     const image =
       // @ts-ignore
       "/uploads/credits/" + (await uploadImage(credit[0], "credits"));
     const form = {
       title,
       type,
-      author,
+      author: user.email,
       status,
       story,
       credit: image,

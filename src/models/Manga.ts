@@ -16,9 +16,10 @@ export interface TManga {
   createdAt: number;
   credit: string;
   story: string;
+  ratingNumber: number;
 }
 
-const MangaSchema = new Schema<TManga>(
+export const MangaSchema = new Schema<TManga>(
   {
     _id: {
       type: Schema.Types.ObjectId,
@@ -77,5 +78,7 @@ const MangaSchema = new Schema<TManga>(
   },
   { versionKey: false }
 );
+
+MangaSchema.index({ slug: "text" });
 
 export const Manga = models.Manga || model("Manga", MangaSchema);

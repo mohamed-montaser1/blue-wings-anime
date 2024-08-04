@@ -104,16 +104,18 @@ const authOptions: AuthOptions = {
       await Post.init();
       await Comment.init();
 
-      token.user = await User.findOne({ email: token.email });
-      // .populate({
-      //   path: "posts",
-      //   populate: [
-      //     { path: "likes", model: "User", select: "_id name image" },
-      //     { path: "comments", model: "Comment" },
-      //     { path: "author", model: "User" },
-      //   ],
-      // })
-      // .exec();
+      token.user = await User.findOne({ email: token.email })
+        .populate({
+          path: "posts",
+          populate: [
+            { path: "likes", model: "User", select: "_id name image" },
+            { path: "comments", model: "Comment" },
+            { path: "author", model: "User" },
+          ],
+        })
+        .populate("creations")
+        .populate("favoriteManga")
+        .exec();
       return token;
     },
     async signIn({ user, profile }) {

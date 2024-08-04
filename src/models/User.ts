@@ -1,4 +1,4 @@
-import { Schema, model, models } from "mongoose";
+import mongoose, { Schema, model, models } from "mongoose";
 import { TPost } from "./Post";
 import DateController from "@/utils/date";
 import { TManga } from "./Manga";
@@ -19,6 +19,7 @@ export interface TUser {
   createdAt: number;
   posts: TPost[];
   favoriteManga: TManga[];
+  creations: TManga[];
 }
 
 const UserSchema = new Schema<TUser>(
@@ -82,6 +83,10 @@ const UserSchema = new Schema<TUser>(
       default: Date.now(),
     },
     favoriteManga: {
+      type: [{ type: Schema.Types.ObjectId, ref: "Manga" }],
+      default: [],
+    },
+    creations: {
       type: [{ type: Schema.Types.ObjectId, ref: "Manga" }],
       default: [],
     },

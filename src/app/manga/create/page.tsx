@@ -62,7 +62,7 @@ export default function CreateManga() {
 
   useEffect(() => {
     if (!user) return;
-    if (user.role !== "admin") {
+    if (user.role !== "editor") {
       redirect("/");
     }
   }, [user]);
@@ -134,7 +134,9 @@ export default function CreateManga() {
 
   return (
     <Container className="mt-7">
-      <h1 className="text-slate-200 text-3xl text-center mb-10">قم بإنشاء عمل جديد الآن</h1>
+      <h1 className="text-slate-200 text-3xl text-center mb-10">
+        قم بإنشاء عمل جديد الآن
+      </h1>
       <form onSubmit={handleSubmit(createManga)}>
         <div className="flex items-center gap-14 flex-wrap justify-center">
           <Input className="flex-1" data-required>
@@ -190,24 +192,12 @@ export default function CreateManga() {
               ))}
             </select>
           </Input>
-          <Input className="flex-1" data-required>
-            <input
-              type="email"
-              placeholder="البريد الخاص بالمنشئ"
-              className="input"
-              {...register("author")}
-            />
-          </Input>
         </div>
         <div className="mt-5">
           <Input className="flex-1 h-52" data-required>
             <textarea
               className="resize-none bg-card input h-52"
               placeholder="أدخل قصة العمل"
-              // value={manga.story}
-              // onChange={(e) =>
-              //   setManga((p) => ({ ...p, story: e.target.value }))
-              // }
               {...register("story")}
             ></textarea>
           </Input>
@@ -242,11 +232,6 @@ export default function CreateManga() {
                 </span>
               ))}
             </div>
-          </h3>
-
-          <h3 className="text-slate-200 text-2xl flex gap-3">
-            <span>الإيميل الخاص بالمنشئ (يجب أن يكون مسجلاً علي الموقع):</span>
-            <span className="text-primary">{getValues().author}</span>
           </h3>
 
           <Button variant="main" className="mx-auto my-6" type="submit">

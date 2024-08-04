@@ -46,12 +46,8 @@ export default function MangaInfo({ data }: TProps) {
   }
 
   useEffect(() => {
-    console.log({ rating: data.rating });
-    let rate = data.rating.reduce((acc, el, i) => {
-      return (acc + el.rating) / (i + 1);
-    }, 0);
-    setRating(rate);
-  }, [data.rating]);
+    setRating(data.ratingNumber);
+  }, []);
 
   console.log({ data });
   return (

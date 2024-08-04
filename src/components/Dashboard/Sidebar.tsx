@@ -31,6 +31,11 @@ export default function Sidebar() {
           key={nanoid()}
         />
         <SidebarLink
+          href="/dashboard/manga/chapter/create"
+          content={"إنشاء فصل"}
+          key={nanoid()}
+        />
+        <SidebarLink
           href="/dashboard/posts"
           content={"منشورات الرسامين"}
           key={nanoid()}

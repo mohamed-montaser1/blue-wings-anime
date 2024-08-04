@@ -51,11 +51,25 @@ export async function POST(req: Request, { params }: TParams) {
   const isRated = await Rating.findOne({ author: user._id }).exec();
 
   if (isRated) {
-    return NextResponse.json({
-      success: false,
-      error: null,
-      data: null,
-    });
+    return NextResponse.json(
+      {
+        success: false,
+        error: null,
+        data: null,
+      },
+      { status: 409 }
+    );
+  }
+  const manga = await Manga.findOne({ slug }).exec();
+  if (!manga) {
+    return NextResponse.json(
+      {
+        success: false,
+        error: "لا يوجد مانجا بهذا الإسم",
+        data: null,
+      },
+      { status: 404 }
+    );
   }
 
   try {
@@ -64,6 +78,7 @@ export async function POST(req: Request, { params }: TParams) {
       rating: stars,
       review: text,
       author: user,
+      manga: manga._id,
       createdAt: Date.now(),
     });
     await Manga.findOneAndUpdate(

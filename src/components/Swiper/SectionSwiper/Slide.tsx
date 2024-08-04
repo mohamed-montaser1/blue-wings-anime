@@ -21,7 +21,7 @@ export default function Slide({ children, title, image }: Props) {
         <Image
           src={image || SmallCardPlacholder}
           alt="anime image"
-          className="w-full h-full"
+          className="w-full h-full object-cover"
           width={216}
           height={400}
         />

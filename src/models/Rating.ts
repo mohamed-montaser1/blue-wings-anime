@@ -1,5 +1,6 @@
 import { TUser } from "@/lib/types";
 import { Schema, model, models } from "mongoose";
+import { TManga } from "./Manga";
 
 export interface TRating {
   _id: Schema.Types.ObjectId;
@@ -7,6 +8,7 @@ export interface TRating {
   rating: number;
   review: string;
   createdAt: number;
+  manga: TManga;
 }
 
 const RatingSchema = new Schema<TRating>({
@@ -16,6 +18,10 @@ const RatingSchema = new Schema<TRating>({
   author: {
     type: Schema.Types.ObjectId,
     ref: "User",
+  },
+  manga: {
+    type: Schema.Types.ObjectId,
+    ref: "Manga",
   },
   rating: {
     type: Number,

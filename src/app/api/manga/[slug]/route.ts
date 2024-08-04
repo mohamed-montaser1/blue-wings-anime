@@ -1,11 +1,13 @@
 import { dbConnect } from "@/lib";
-import { Manga } from "@/models/Manga";
+import { Manga, TManga } from "@/models/Manga";
+import { Rating } from "@/models/Rating";
 import { isValidSlug } from "@/utils/isValidSlug";
 import { NextResponse } from "next/server";
 
 type Props = { params: { slug: string } };
 
 export async function GET(req: Request, { params }: Props) {
+  await dbConnect();
   const slug = params.slug;
   const is_valid_slug_name = isValidSlug(slug);
   if (!is_valid_slug_name) {
@@ -19,7 +21,7 @@ export async function GET(req: Request, { params }: Props) {
     );
   }
 
-  const manga = await Manga.findOne({ slug })
+  let manga: TManga = await Manga.findOne({ slug })
     .populate({ path: "author", select: "name -_id" })
     .populate({ path: "rating" })
     .exec();
@@ -34,7 +36,14 @@ export async function GET(req: Request, { params }: Props) {
       { status: 404 }
     );
   }
-  return NextResponse.json({ manga });
+
+  return NextResponse.json({
+    manga: Object.assign({}, manga._doc, {
+      ratingNumber: manga.rating.reduce((acc, el, i) => {
+        return (acc + el.rating) / (i + 1);
+      }, 0),
+    }),
+  });
 }
 
 export async function DELETE(req: Request, { params }: Props) {
@@ -68,10 +77,13 @@ export async function DELETE(req: Request, { params }: Props) {
       data: null,
     });
   } catch (error) {
-    return NextResponse.json({
-      success: false,
-      error,
-      data: null,
-    });
+    return NextResponse.json(
+      {
+        success: false,
+        error,
+        data: null,
+      },
+      { status: 500 }
+    );
   }
 }

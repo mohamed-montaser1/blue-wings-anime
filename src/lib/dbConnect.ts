@@ -1,3 +1,10 @@
+import { Post, User } from "@/models";
+import { Article } from "@/models/Article";
+import { ChangeRoleRequest } from "@/models/ChangeRoleRequest";
+import { Chapter } from "@/models/Chapter";
+import { Comment } from "@/models/Comment";
+import { Manga } from "@/models/Manga";
+import { Rating } from "@/models/Rating";
 import mongoose, { ConnectOptions } from "mongoose";
 
 mongoose.set("strictPopulate", false);
@@ -17,6 +24,15 @@ async function dbConnect() {
   await mongoose.connect(process.env.MONGODB_URI as string, {
     dbName: "Anime-DB",
   });
+
+  await Article.init();
+  await Chapter.init();
+  await Comment.init();
+  await Manga.init();
+  await ChangeRoleRequest.init();
+  await Post.init();
+  await Rating.init();
+  await User.init();
 }
 
 export default dbConnect;

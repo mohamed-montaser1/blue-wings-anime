@@ -15,6 +15,15 @@ import DateController from "@/utils/date";
 import { Heart, PlainIcon, PostHeart, TrashIcon } from "@icons/index";
 import { nanoid } from "nanoid";
 import { TUser } from "@/models/User";
+import {
+  FacebookShareButton,
+  FacebookIcon,
+  TwitterShareButton,
+  TwitterIcon,
+  WhatsappShareButton,
+  WhatsappIcon,
+} from "next-share";
+import { usePathname } from "next/navigation";
 
 // export default function Posts({ children }: TPosts) {
 //   const [posts, setPosts] = useState<TPost[]>([]);
@@ -184,7 +193,6 @@ export function CreatePost({ setPosts, user }: TCreatePostProps) {
         closeOnClick
         closeButton={false}
         rtl
-
       />
     </div>
   );
@@ -212,6 +220,10 @@ function Post({ post: p, i }: PostProps) {
   const [post, setPost] = useState(p);
   const [comments, setComments] = useState(p.comments.slice().reverse());
   const [comment, setComment] = useState("");
+  const [showComments, setShowComments] = useState(true);
+  const [showShareDropdown, setShowShareDropdown] = useState(false);
+  const id = post._id;
+  const path = location.href + "#" + id;
 
   async function handleAddOneLike() {
     const form = new FormData();
@@ -231,6 +243,7 @@ function Post({ post: p, i }: PostProps) {
   }
 
   async function handleAddComment() {
+    if (comment.trim().length < 1) return;
     const form = new FormData();
     form.set("userId", user._id);
     form.set("content", comment);
@@ -249,8 +262,12 @@ function Post({ post: p, i }: PostProps) {
     setComment("");
   }
 
+  function handleToggleComments() {
+    setShowComments((prev) => !prev);
+  }
+
   return (
-    <div key={i} className="bg-card mt-4 p-3 rounded-lg">
+    <div key={i} className="bg-card my-4 p-3 rounded-lg" id={id}>
       <div className="user-info flex items-center justify-between">
         <div className="flex gap-2">
           <Avatar
@@ -326,16 +343,61 @@ function Post({ post: p, i }: PostProps) {
             variant="light-form-btn"
             className="flex-grow"
             style={{ maxWidth: "unset" }}
+            onClick={handleToggleComments}
           >
             <FaComment color="#9128FF" />
           </Button>
-          <Button
-            variant="light-form-btn"
-            className="flex-grow"
-            style={{ maxWidth: "unset" }}
-          >
-            <FaShare color="#9128FF" />
-          </Button>
+          <div className="relative">
+            <Button
+              variant="light-form-btn"
+              className="flex-grow w-full"
+              style={{ maxWidth: "unset" }}
+              onClick={() => setShowShareDropdown((prev) => !prev)}
+            >
+              <FaShare color="#9128FF" />
+            </Button>
+            {showShareDropdown && (
+              <div className="absolute z-[999] bg-sub-card w-full h-fit py-4 flex flex-col bottom-full mb-3 rounded-xl shadow-xl">
+                <FacebookShareButton
+                  url={path}
+                  quote={`منشور ${post.author.name} في موقع blue wings`}
+                  hashtag={`bluewings`}
+                >
+                  <FacebookIcon size={32} round className="inline" />
+                  <span className="text-slate-200 flex-1 mx-1">
+                    مشاركه عبر فيسبوك
+                  </span>
+                </FacebookShareButton>
+                <br />
+                <TwitterShareButton
+                  url={path}
+                  title={`منشور ${post.author.name} في موقع blue wings`}
+                  hashtags={[
+                    "bluewings",
+                    "bluewingsm",
+                    "manga",
+                    post.author.slug_name,
+                  ]}
+                >
+                  <TwitterIcon size={32} round className="inline" />
+                  <span className="text-slate-200 !w-full mx-4">
+                    مشاركه عبر تويتر
+                  </span>
+                </TwitterShareButton>
+                <br />
+                <WhatsappShareButton
+                  url={path}
+                  title={`منشور ${post.author.name} في موقع blue wings`}
+                  separator=":  "
+                >
+                  <WhatsappIcon size={32} round className="inline" />
+                  <span className="text-slate-200 !w-full mx-1">
+                    مشاركه عبر واتساب
+                  </span>
+                </WhatsappShareButton>
+              </div>
+            )}
+          </div>
         </div>
       )}
       <div className="comments block">
@@ -355,6 +417,7 @@ function Post({ post: p, i }: PostProps) {
                 className="w-full h-full bg-sub-card border-none outline-none text-slate-300"
                 value={comment}
                 onChange={(e) => setComment(e.target.value)}
+                onKeyUp={(e) => (e.key === "Enter" ? handleAddComment() : null)}
               />
               <button onClick={handleAddComment}>
                 <Image src={PlainIcon} alt="send" />
@@ -362,26 +425,33 @@ function Post({ post: p, i }: PostProps) {
             </Input>
           </div>
         )}
-        <div className="mt-5">
-          {comments.map((comment, i) => (
-            <div key={i} className="flex gap-2 my-2 bg-sub-card rounded-lg p-3">
-              <Avatar
-                image={comment.author?.image}
-                size={40}
-                className="!h-12 !w-12"
-              />
-              <div className="flex-grow">
-                <div className="flex justify-between">
-                  <span className="text-slate-200">{comment.author?.name}</span>
-                  <span className="text-slate-300 text-sm">
-                    {new DateController(comment.createdAt).fromNow()}
-                  </span>
+        {showComments && (
+          <div className="mt-5">
+            {comments.map((comment, i) => (
+              <div
+                key={i}
+                className="flex gap-2 my-2 bg-sub-card rounded-lg p-3"
+              >
+                <Avatar
+                  image={comment.author?.image}
+                  size={40}
+                  className="!h-12 !w-12"
+                />
+                <div className="flex-grow">
+                  <div className="flex justify-between">
+                    <span className="text-slate-200">
+                      {comment.author?.name}
+                    </span>
+                    <span className="text-slate-300 text-sm">
+                      {new DateController(comment.createdAt).fromNow()}
+                    </span>
+                  </div>
+                  <p className="text-slate-400 mt-2">{comment.content}</p>
                 </div>
-                <p className="text-slate-400 mt-2">{comment.content}</p>
               </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );

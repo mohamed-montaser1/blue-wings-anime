@@ -17,6 +17,10 @@ export default function FavoritesPage() {
   );
   const [data, setData] = useState<TManga[]>([]);
   useEffect(() => {
+    console.log({ data });
+  }, [data]);
+
+  useEffect(() => {
     // Get The Data From Server Here And Change The Status To Loaded
     (async () => {
       if (!user) return;
@@ -40,6 +44,22 @@ export default function FavoritesPage() {
       </h1>
     );
   }
+  async function removeFromFavs(manga_name: string) {
+    // DELETE /api/manga/favs/[username]/[manganame]
+    try {
+      const res = await useFetch(
+        `/api/manga/favs/${user.slug_name}/${manga_name}`,
+        "DELETE",
+        {}
+      );
+      toast.info("تم حذف المانجا من المفضلة");
+    } catch (error) {
+      console.log("*".repeat(30));
+      console.log({ error });
+      console.log("*".repeat(30));
+    }
+  }
+
   return (
     <>
       <Container className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-16">
@@ -60,7 +80,7 @@ export default function FavoritesPage() {
                 {el.rating.length > 1 ? (
                   <Rater
                     total={5}
-                    rating={el.rating.length}
+                    rating={el.ratingNumber}
                     interactive={false}
                     key={nanoid()}
                   />
@@ -70,14 +90,20 @@ export default function FavoritesPage() {
                   </span>
                 )}
               </div>
-              <Link href={`/manga/${el.slug}`} className="flex gap-2">
-                <Button variant="light-form-btn" className="mt-4">
-                  زيارة
-                </Button>
-                <Button variant="danger" className="mt-4">
+              <div className="flex gap-2">
+                <Link href={`/manga/${el.slug}`} className="flex gap-2">
+                  <Button variant="light-form-btn" className="mt-4">
+                    زيارة
+                  </Button>
+                </Link>
+                <Button
+                  variant="danger"
+                  className="mt-4"
+                  onClick={(e) => removeFromFavs(el.slug)}
+                >
                   إزالة من المفضلة
                 </Button>
-              </Link>
+              </div>
             </div>
           </Slide>
         ))}

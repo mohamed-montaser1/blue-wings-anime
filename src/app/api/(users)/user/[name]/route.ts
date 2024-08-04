@@ -11,21 +11,23 @@ export async function GET(req: Request, { params }: TParams) {
   const slug_name = params.name;
   await Comment.init();
 
-  const user = await User.findOne({ slug_name }).populate({
-    path: "posts",
-    populate: [
-      { path: "likes", model: "User", select: "_id name image" },
-      { path: "author", model: "User" },
-      {
-        path: "comments",
-        model: "Comment",
-        populate: {
-          path: "author",
-          model: "User",
+  const user = await User.findOne({ slug_name })
+    .populate({
+      path: "posts",
+      populate: [
+        { path: "likes", model: "User", select: "_id name image" },
+        { path: "author", model: "User" },
+        {
+          path: "comments",
+          model: "Comment",
+          populate: {
+            path: "author",
+            model: "User",
+          },
         },
-      },
-    ],
-  });
+      ],
+    })
+    .populate({ path: "creations" });
 
   if (!user) {
     return NextResponse.json({ error: "لا يمكن إيجاد مستخدم بهذا الإسم" });

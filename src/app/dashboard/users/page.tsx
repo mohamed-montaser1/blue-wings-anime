@@ -23,6 +23,7 @@ import "react-toastify/dist/ReactToastify.css";
 
 export default function Users() {
   const [users, setUsers] = useState<TUser[]>([]);
+  const [admins, setAdmins] = useState<TUser[]>([]);
   const [showRolePopup, setShowRolePopup] = useState(false);
   const [selectedUser, setSelectedUser] = useState<TUser | null>(null);
   const [render, setRender] = useState(0);
@@ -32,8 +33,10 @@ export default function Users() {
   useEffect(() => {
     async function getUsers() {
       const res = await useFetch<{}, TUser[]>("/api/all", "GET", {});
-      const data = res.data.filter((user: TUser) => user.role !== "admin");
-      setUsers(data);
+      const userRole = res.data.filter((user: TUser) => user.role !== "admin");
+      const adminRole = res.data.filter((user: TUser) => user.role === "admin");
+      setAdmins(adminRole);
+      setUsers(userRole);
     }
     getUsers();
   }, [render]);
@@ -54,10 +57,16 @@ export default function Users() {
       )}
       {users.length > 0 && (
         <>
-          <h1 className="text-slate-200 text-xl text-center">
-            <span>عدد المستخدمين غير المسؤولين:</span>
-            <span> {users.filter((user) => user.role !== "admin").length}</span>
-          </h1>
+          <div className="flex justify-between container">
+            <h1 className="text-slate-200 text-xl text-center">
+              <span>عدد المستخدمين:</span>
+              <span> {users.length}</span>
+            </h1>
+            <h1 className="text-slate-200 text-xl text-center">
+              <span>عدد المسؤولين:</span>
+              <span> {admins.length}</span>
+            </h1>
+          </div>
           <table className="container h-fit">
             <thead className="border">
               <tr>
@@ -143,7 +152,9 @@ function RolePopup({ selectedUser, setShowRolePopup, setRender }: Props) {
     toast("عاود المحاولة لاحقاً", { type: "error" });
   }
 
-  function handleClosePopup(e: MouseEvent<HTMLDivElement, MouseEvent>) {
+  function handleClosePopup(
+    e: MouseEvent<HTMLDivElement, globalThis.MouseEvent>
+  ) {
     const target = e.target as HTMLDivElement;
     if (target.classList.contains("overlay")) {
       setShowRolePopup(false);

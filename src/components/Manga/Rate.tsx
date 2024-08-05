@@ -10,7 +10,7 @@ import useUser from "@hooks/useUser";
 import { TManga } from "@/models/Manga";
 import { Id, toast } from "react-toastify";
 import useFetch from "@/hooks/useFetch";
-import { AxiosError } from "axios";
+import axios, { AxiosError } from "axios";
 
 type TProps = {
   data: TManga;
@@ -49,7 +49,7 @@ export default function Rate({ data }: TProps) {
     }
 
     try {
-      const res = await useFetch(`/api/manga/${data.slug}/rate`, "POST", {
+      const res = await axios.post(`/api/manga/${data.slug}/rate`, {
         stars: state.rating,
         text: state.text,
         user_name: user.slug_name,

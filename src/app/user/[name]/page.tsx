@@ -8,6 +8,7 @@ import { Bio } from "@/components/Account";
 import { CreatePost, Posts } from "@/components/Account/Posts";
 import useUser from "@/hooks/useUser";
 import { TPost } from "@/models/Post";
+import axios from "axios";
 
 type TProps = {
   params: {
@@ -27,11 +28,7 @@ export default function Page({ params: { name } }: TProps) {
   }, [user]);
 
   useEffect(() => {
-    useFetch<{}, { user: TUser; error?: string }>(
-      `/api/user/${name}`,
-      "GET",
-      {}
-    ).then((res) => {
+    axios.get(`/api/user/${name}`).then((res) => {
       if (res.data.error) {
         setError(res.data.error);
         return;

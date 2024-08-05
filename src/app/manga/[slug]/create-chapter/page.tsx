@@ -4,7 +4,7 @@ import useFetch from "@/hooks/useFetch";
 import useUser from "@/hooks/useUser";
 import { TManga } from "@/models/Manga";
 import uploadImage from "@/utils/uploadImage";
-import { AxiosError } from "axios";
+import axios, { AxiosError } from "axios";
 import { redirect, usePathname } from "next/navigation";
 import { FormEvent, useEffect, useRef, useState } from "react";
 import { toast, ToastContainer } from "react-toastify";
@@ -30,7 +30,7 @@ export default function CreateChapter() {
     if (!user) return;
     if (user.role === "editor") {
       (async () => {
-        const res = await useFetch(`/api/manga/${slug}`, "GET", {});
+        const res = await axios.get(`/api/manga/${slug}`)
         const manga = res.data.manga;
         const author = manga.author.name;
         if (author !== user.name) {
@@ -52,7 +52,7 @@ export default function CreateChapter() {
     const formData = new FormData();
     formData.append("images", JSON.stringify(images));
     try {
-      await useFetch(`/api/manga/${mangaName}/chapters`, "POST", formData);
+      await axios.post(`/api/manga/${mangaName}/chapters`, formData)
       toast.success("تم إضافة الفصل بنجاح");
     } catch (error) {
       let e = error as unknown as AxiosError;
@@ -111,7 +111,8 @@ export default function CreateChapter() {
           id="files-input"
         />
         <p className="text-slate-400 mb-5" data-required>
-          يجب رفع الصور مرقمة لتظهر بنفس الترتيب في صفحة الفصل مثلا "01" "02"
+          يجب رفع الصور مرقمة لتظهر بنفس الترتيب في صفحة الفصل مثلا
+          &quot;01&quot; &quot;02&quot;
           وهكذا
         </p>
         <label

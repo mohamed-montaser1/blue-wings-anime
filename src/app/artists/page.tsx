@@ -8,12 +8,14 @@ import "react-toastify/dist/ReactToastify.css";
 import Image from "next/image";
 import DateController from "@utils/date";
 import Link from "next/link";
+import axios from "axios";
 
 export default function Artists() {
   const [data, setData] = useState<TUser[]>([]);
 
   useEffect(() => {
-    useFetch<{}, { artists: Array<TUser> }>("/api/artists", "GET", {})
+    axios
+      .get("/api/artists")
       .then((res) => {
         setData(res.data.artists);
       })

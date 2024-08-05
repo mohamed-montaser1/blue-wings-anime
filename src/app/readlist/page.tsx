@@ -3,7 +3,7 @@ import { Button, Container, Slide } from "@/components";
 import useFetch from "@/hooks/useFetch";
 import { TManga } from "@/models/Manga";
 import useUser from "@hooks/useUser";
-import { AxiosError } from "axios";
+import axios, { AxiosError } from "axios";
 import { nanoid } from "nanoid";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -21,11 +21,7 @@ export default function FavoritesPage() {
     // Get The Data From Server Here And Change The Status To Loaded
     (async () => {
       if (!user) return;
-      const res = await useFetch(
-        `/api/manga/favs/${user.slug_name}`,
-        "GET",
-        {}
-      );
+      const res = await axios.get(`/api/manga/favs/${user.slug_name}`)
       setStatus("loaded");
       setData(res.data.data);
     })();

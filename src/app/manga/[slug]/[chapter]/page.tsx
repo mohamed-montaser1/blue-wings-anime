@@ -7,6 +7,7 @@ import { TChapter } from "@/models/Chapter";
 import { TComment } from "@/models/Comment";
 import DateController from "@/utils/date";
 import { PlainIcon } from "@icons/index";
+import axios from "axios";
 import { nanoid } from "nanoid";
 import Image from "next/image";
 import { redirect, usePathname, useRouter } from "next/navigation";
@@ -26,10 +27,8 @@ export default function Chapter() {
   console.log({ slug, chapterNumber });
   useEffect(() => {
     (async () => {
-      const res = await useFetch(
-        `/api/manga/${slug}/chapters/${chapterNumber}`,
-        "GET",
-        {}
+      const res = await axios.get(
+        `/api/manga/${slug}/chapters/${chapterNumber}`
       );
       setChapter(res.data.data);
       setComments(res.data.data.comments.reverse());
@@ -43,9 +42,8 @@ export default function Chapter() {
     form.set("author", user.email);
     form.set("content", comment);
 
-    const res = await useFetch(
+    const res = await axios.post(
       `/api/manga/${slug}/chapters/${chapterNumber}/comments`,
-      "POST",
       form
     );
     console.log({ res });
@@ -94,7 +92,11 @@ export default function Chapter() {
             {Array.from({ length: 20 }).map((_, i) => {
               const idx = i + 1;
               return (
-                <option value={idx} key={idx} className="bg-card text-slate-300">
+                <option
+                  value={idx}
+                  key={idx}
+                  className="bg-card text-slate-300"
+                >
                   الفصل {idx}
                 </option>
               );

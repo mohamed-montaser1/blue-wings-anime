@@ -6,7 +6,7 @@ import useUser from "@/hooks/useUser";
 import { classifications, TClassification } from "@/utils/classifications";
 import uploadImage from "@/utils/uploadImage";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { AxiosError } from "axios";
+import axios, { AxiosError } from "axios";
 import { redirect } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -88,7 +88,7 @@ export default function CreateManga() {
 
     try {
       toastId.current = toast.loading("جاري إنشاء المانجا");
-      const res = await useFetch("/api/manga/create", "POST", form);
+      await axios.post("/api/manga/create", form);
       setTimeout(() => {
         toast.update(toastId.current as unknown as Id, {
           type: "success",

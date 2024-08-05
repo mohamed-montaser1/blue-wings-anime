@@ -4,7 +4,7 @@ import useUser from "@/hooks/useUser";
 import { slugifyOptions } from "@/lib/slugifyOptions";
 import { TManga } from "@/models/Manga";
 import { MangaInfo, Rate, SimilarManga } from "@components";
-import { AxiosError } from "axios";
+import axios, { AxiosError } from "axios";
 import { useEffect, useState } from "react";
 import slugify from "slugify";
 
@@ -22,13 +22,11 @@ export default function Page({ params: { slug } }: TProps) {
   useEffect(() => {
     (async () => {
       try {
-        const res = await useFetch<{}, { manga: TManga }>(
-          `/api/manga/${slugify(slug, slugifyOptions)}`,
-          "GET",
-          {}
+        const res = await axios.get(
+          `/api/manga/${slugify(slug, slugifyOptions)}`
         );
         setData(res.data.manga);
-        console.log({ res })
+        console.log({ res });
       } catch (err) {
         let error = err as unknown as AxiosError;
         switch (error.response?.status) {

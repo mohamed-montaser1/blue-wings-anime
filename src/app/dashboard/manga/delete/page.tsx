@@ -2,6 +2,7 @@
 import { Button, Container, Input, Title } from "@/components";
 import useFetch from "@/hooks/useFetch";
 import { slugifyOptions } from "@/lib/slugifyOptions";
+import axios from "axios";
 import { useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -17,7 +18,7 @@ export default function Page() {
     }
     const slug = slugify(name, slugifyOptions);
     try {
-      const res = await useFetch(`/api/manga/${slug}`, "DELETE", {});
+      const res = await axios.delete(`/api/manga/${slug}`);
       if (res.status === 200) {
         toast.success("تم حذف المانجا بنجاح");
         return;

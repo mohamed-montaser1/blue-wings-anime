@@ -5,7 +5,7 @@ import useFetch from "@/hooks/useFetch";
 import useUser from "@/hooks/useUser";
 import { TUser, UserRole } from "@/models/User";
 import { SettingsIcon } from "@icons/index";
-import { AxiosError } from "axios";
+import axios, { AxiosError } from "axios";
 import { nanoid } from "nanoid";
 import Image from "next/image";
 import Link from "next/link";
@@ -32,7 +32,7 @@ export default function Users() {
 
   useEffect(() => {
     async function getUsers() {
-      const res = await useFetch<{}, TUser[]>("/api/all", "GET", {});
+      const res = await axios.get("/api/all");
       const userRole = res.data.filter((user: TUser) => user.role !== "admin");
       const adminRole = res.data.filter((user: TUser) => user.role === "admin");
       setAdmins(adminRole);
@@ -128,7 +128,7 @@ function RolePopup({ selectedUser, setShowRolePopup, setRender }: Props) {
       setShowRolePopup(false);
       return;
     }
-    const res = await useFetch(`/api/user/edit/${selectedUser?.email}`, "PUT", {
+    const res = await axios.put(`/api/user/edit/${selectedUser?.email}`, {
       role,
     });
     if (res.data.error) {
@@ -192,7 +192,7 @@ type TableDataProps = {
   content: string;
 };
 
-export function TableHeadData({ content }: TableDataProps) {
+function TableHeadData({ content }: TableDataProps) {
   return <th className="text-primary py-3 border">{content}</th>;
 }
 
@@ -200,7 +200,7 @@ type TableBodyDataProps = {
   children: React.ReactNode;
 };
 
-export function TableBodyData({ children }: TableBodyDataProps) {
+function TableBodyData({ children }: TableBodyDataProps) {
   return (
     <td className="text-slate-300 text-center border relative">{children}</td>
   );
@@ -231,7 +231,7 @@ function UserData({
 
   async function handleRemoveAccount() {
     try {
-      await useFetch(`/api/user/${user.slug_name}`, "DELETE", {});
+      await axios.delete(`/api/user/${user.slug_name}`);
       setRender((prev) => prev + 1);
       toast.success("تم حذف الحساب بنجاح");
     } catch (error) {

@@ -14,6 +14,7 @@ import { roles } from "@/components/Account/AccountInfo";
 import useUser from "@/hooks/useUser";
 import { redirect } from "next/navigation";
 import { toast } from "react-toastify";
+import axios from "axios";
 
 export default function NewRoleRequests() {
   const [requests, setRequests] = useState<TChangeRoleRequest[]>([]);
@@ -22,7 +23,7 @@ export default function NewRoleRequests() {
 
   useEffect(() => {
     (async function () {
-      const res = await useFetch("/api/request-new-role", "GET", {});
+      const res = await axios.get("/api/request-new-role");
       if (res.data.error) {
         toast(res.data.error, { type: "error" });
         return;
@@ -91,7 +92,8 @@ function UserData({ index, request, setRender }: UserDataProps) {
     // TODO: Re Render The Table To Display The Updated Data
     const form = new FormData();
     form.set("email", String(request.user.email));
-    useFetch("/api/confirm-role", "POST", form)
+    axios
+      .post("/api/confirm-role", form)
       .then((res) => {
         if (res.status === 200) {
           toast("تم حفظ المنصب الجديد بنجاح", { type: "success" });

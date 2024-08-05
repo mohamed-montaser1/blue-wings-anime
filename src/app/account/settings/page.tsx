@@ -1,3 +1,4 @@
+// @ts-nocheck
 "use client";
 import { Avatar, Button, Container, Input } from "@components";
 import Image, { StaticImageData } from "next/image";
@@ -18,8 +19,8 @@ import { UserRole } from "@models/User";
 import useAsk from "@/hooks/useAsk";
 import uploadImage from "@/utils/uploadImage";
 import { roles } from "@/components/Account/AccountInfo";
-import useFetch from "@/hooks/useFetch";
 import slugify from "slugify";
+import axios from "axios";
 
 type TProfile = {
   image: string | StaticImageData;
@@ -38,7 +39,7 @@ const defaultProfileValues = {
   role: "user",
 } as const;
 
-export const imageTypesAllowed = [
+const imageTypesAllowed = [
   "image/jpg",
   "image/jpeg",
   "image/png",
@@ -46,7 +47,9 @@ export const imageTypesAllowed = [
   "image/webp",
 ] as const;
 
-export type imageTypesAllowedKey = (typeof imageTypesAllowed)[number];
+type imageTypesAllowedKey = (typeof imageTypesAllowed)[number];
+
+// export { imageTypesAllowed, imageTypesAllowedKey };
 
 export default function EditPage() {
   const { avatar, status, user, updateSession } = useUser({ required: true });
@@ -79,11 +82,9 @@ export default function EditPage() {
     };
     setProfile(defaultProfile);
 
-    (async () => {
-      const isAnyUserWithSameName = await useFetch(
-        `/api/user/${user?.slug_name}/exists`,
-        "GET",
-        {}
+    async function checkIfThereIsUserWithSameName() {
+      const isAnyUserWithSameName = await axios.get(
+        `/api/user/${user?.slug_name}/exists`
       );
       const error = isAnyUserWithSameName.data?.error;
       if (error) {
@@ -91,8 +92,17 @@ export default function EditPage() {
         toast.error("يجب عليك تغيير إسمك ليظهر حسابك");
       }
       console.log({ isAnyUserWithSameName, error });
-    })();
-  }, [status, avatar, user?.name]);
+    }
+    checkIfThereIsUserWithSameName();
+  }, [
+    status,
+    avatar,
+    user?.name,
+    user?.bio,
+    user?.cover,
+    user?.role,
+    user?.slug_name,
+  ]);
 
   async function saveImage(
     img: File | string,
@@ -395,25 +405,10 @@ function ChangeRole({ setShowChangeRoleRequest }: ChangeRoleProps) {
       return;
     }
 
-    // TODO: Send Request To API
-    type TResponse = {
-      success: boolean;
-      error: string | null;
-      data: string | null;
-    };
-    type TBody = {
-      role: UserRole;
-      email: string;
-    };
-
-    const res = await useFetch<TBody, TResponse>(
-      "/api/request-new-role",
-      "POST",
-      {
-        email: user.email,
-        role: role,
-      }
-    );
+    const res = await axios.post("/api/request-new-role", {
+      email: user.email,
+      role,
+    });
     if (res.data.error) {
       toast(res.data.error, { type: "error" });
       return;

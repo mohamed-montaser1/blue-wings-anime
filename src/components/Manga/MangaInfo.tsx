@@ -16,6 +16,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { TUser } from "@/models/User";
 import Link from "next/link";
 import { redirect } from "next/navigation";
+import axios from "axios";
 
 type TProps = {
   data: TManga;
@@ -29,10 +30,8 @@ export default function MangaInfo({ data }: TProps) {
   async function handleAddToFav() {
     if (!user) return;
     try {
-      const res = await useFetch(
-        `/api/manga/favs/${(user as TUser).slug_name}/${data.slug}`,
-        "POST",
-        {}
+      const res = await axios.post(
+        `/api/manga/favs/${(user as TUser).slug_name}/${data.slug}`
       );
 
       if (res.data.data === null) {
@@ -150,7 +149,11 @@ export default function MangaInfo({ data }: TProps) {
                     -- الإنتقال للفصل --
                   </option>
                   {data.chapters.map((chapter, idx) => (
-                    <option value={idx + 1} key={idx} className="!bg-sub-card text-xl">
+                    <option
+                      value={idx + 1}
+                      key={idx}
+                      className="!bg-sub-card text-xl"
+                    >
                       chapter {idx + 1}
                     </option>
                   ))}
@@ -166,7 +169,10 @@ export default function MangaInfo({ data }: TProps) {
                   </h1>
                 )}
                 {data.chapters.map((chapter, idx) => (
-                  <span className="text-white font-bold border border-solid border-sub-card rounded-lg px-5 py-2.5 w-40 cursor-pointer hover:bg-sub-card transition-colors duration-300 ease-in-out" key={idx}>
+                  <span
+                    className="text-white font-bold border border-solid border-sub-card rounded-lg px-5 py-2.5 w-40 cursor-pointer hover:bg-sub-card transition-colors duration-300 ease-in-out"
+                    key={idx}
+                  >
                     الفصل {idx + 1}
                   </span>
                 ))}

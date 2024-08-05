@@ -3,6 +3,7 @@ import { Button, Container, Slide } from "@/components";
 import useFetch from "@/hooks/useFetch";
 import { TManga } from "@/models/Manga";
 import useUser from "@hooks/useUser";
+import axios from "axios";
 import { nanoid } from "nanoid";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -24,11 +25,7 @@ export default function FavoritesPage() {
     // Get The Data From Server Here And Change The Status To Loaded
     (async () => {
       if (!user) return;
-      const res = await useFetch(
-        `/api/manga/favs/${user.slug_name}`,
-        "GET",
-        {}
-      );
+      const res = await axios.get(`/api/manga/favs/${user.slug_name}`);
       setStatus("loaded");
       setData(res.data.data);
       console.log({ data: res.data.data });
@@ -47,11 +44,7 @@ export default function FavoritesPage() {
   async function removeFromFavs(manga_name: string) {
     // DELETE /api/manga/favs/[username]/[manganame]
     try {
-      const res = await useFetch(
-        `/api/manga/favs/${user.slug_name}/${manga_name}`,
-        "DELETE",
-        {}
-      );
+      await axios.delete(`/api/manga/favs/${user.slug_name}/${manga_name}`);
       toast.info("تم حذف المانجا من المفضلة");
     } catch (error) {
       console.log("*".repeat(30));

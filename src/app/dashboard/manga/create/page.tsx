@@ -6,7 +6,7 @@ import useUser from "@/hooks/useUser";
 import { classifications, TClassification } from "@/utils/classifications";
 import uploadImage from "@/utils/uploadImage";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { AxiosError } from "axios";
+import axios, { AxiosError } from "axios";
 import { redirect } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -92,7 +92,7 @@ export default function CreateManga() {
 
     try {
       toastId.current = toast.loading("جاري إنشاء المانجا");
-      const res = await useFetch("/api/manga/create", "POST", form);
+      const res = await axios.post("/api/manga/create", form);
       setTimeout(() => {
         toast.update(toastId.current as unknown as Id, {
           type: "success",
@@ -134,7 +134,9 @@ export default function CreateManga() {
 
   return (
     <Container className="mt-7">
-      <h1 className="text-slate-200 text-3xl text-center mb-10">قم بإنشاء عمل جديد الآن</h1>
+      <h1 className="text-slate-200 text-3xl text-center mb-10">
+        قم بإنشاء عمل جديد الآن
+      </h1>
       <form onSubmit={handleSubmit(createManga)}>
         <div className="flex items-center gap-14 flex-wrap justify-center">
           <Input className="flex-1" data-required>

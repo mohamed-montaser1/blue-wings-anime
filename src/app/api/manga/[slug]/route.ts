@@ -38,7 +38,7 @@ export async function GET(req: Request, { params }: Props) {
   }
 
   return NextResponse.json({
-    manga: Object.assign({}, manga._doc, {
+    manga: Object.assign({}, (manga as TManga & { _doc: TManga })._doc, {
       ratingNumber: sum(manga.rating) / manga.rating.length,
     }),
   });

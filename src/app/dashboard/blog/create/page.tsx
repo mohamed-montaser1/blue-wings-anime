@@ -4,13 +4,14 @@ import useFetch from "@/hooks/useFetch";
 import { TArticle } from "@/models/Article";
 import uploadImage from "@/utils/uploadImage";
 import { zodResolver } from "@hookform/resolvers/zod";
+import axios from "axios";
 import { ChangeEvent, useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { z, ZodError } from "zod";
 
-export const createBlogSchema = z.object({
+const createBlogSchema = z.object({
   title: z
     .string()
     .min(5, { message: "يجب إدخال عنوان مكون من 5 أحرف علي الأقل" }),
@@ -43,11 +44,6 @@ export default function CreateBlogPage() {
       TODO: If Response is OK toast a successful message to user
       TODO: else toast a detailed error message to user
     */
-    type TResponse = {
-      success: boolean;
-      error: null | ZodError[] | string;
-      data: null | TArticle;
-    };
 
     const imageUrl = await uploadImage(image as File, "blog");
     try {
@@ -56,11 +52,7 @@ export default function CreateBlogPage() {
         content: getValues().content,
         image: "/uploads/blog/" + imageUrl,
       };
-      await useFetch<typeof body, TResponse>(
-        "/api/blog",
-        "POST",
-        body
-      );
+      await axios.post("/api/blog", body);
       toast.success("تم إنشاء المقالة بنجاح");
     } catch (error) {
       console.log({ error });

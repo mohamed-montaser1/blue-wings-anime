@@ -11,7 +11,7 @@ type TBody = {
 };
 
 // Create New Article
-export const createBlogSchema = z.object({
+const createBlogSchema = z.object({
   title: z
     .string()
     .min(5, { message: "يجب إدخال عنوان مكون من 5 أحرف علي الأقل" }),

@@ -3,12 +3,13 @@
 import { Button, Container } from "@components";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, useCallback, useEffect, useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "@/app/globals.css";
 import useUser from "@hooks/useUser";
 import useFetch from "@hooks/useFetch";
+import axios from "axios";
 
 export default function VerifyEmail() {
   const { user } = useUser({ required: true });
@@ -18,6 +19,23 @@ export default function VerifyEmail() {
   const [inputValue, setInputValue] = useState("");
   const [canSend, setCanSend] = useState(false);
 
+  const checkVerifiedEmail = useCallback(
+    function () {
+      if (user.email_verified) {
+        return router.replace("/");
+      }
+      setCanSend(true);
+    },
+    [user?.email_verified, router]
+  );
+
+  const sendCode = useCallback(async function () {
+    const res = await axios.post("/api/email-verification", {
+      email: user.email,
+    });
+    setCode(res.data.code);
+  }, []);
+
   useEffect(() => {
     if (!user) return;
     checkVerifiedEmail();
@@ -26,21 +44,9 @@ export default function VerifyEmail() {
   useEffect(() => {
     if (!user) return;
     if (!canSend) return;
-    sendCode();
-  }, [user?.email, canSend]);
 
-  async function sendCode() {
-    type TData = { email: string };
-    type TResponse = { code: string };
-    const res = await useFetch<TData, TResponse>(
-      "/api/email-verification",
-      "POST",
-      {
-        email: user.email,
-      }
-    );
-    setCode(res.data.code);
-  }
+    sendCode();
+  }, [user, canSend, sendCode]);
 
   function handleMaxLength(e: ChangeEvent<HTMLInputElement>) {
     const target = e.target;
@@ -66,13 +72,6 @@ export default function VerifyEmail() {
         if (!isOpen) router.push("/account/settings");
       },
     });
-  }
-
-  function checkVerifiedEmail() {
-    if (user.email_verified) {
-      return router.replace("/");
-    }
-    setCanSend(true);
   }
 
   return (

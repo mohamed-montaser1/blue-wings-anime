@@ -33,6 +33,7 @@ import {
   TelegramIcon,
 } from "next-share";
 import { usePathname } from "next/navigation";
+import axios from "axios";
 
 // export default function Posts({ children }: TPosts) {
 //   const [posts, setPosts] = useState<TPost[]>([]);
@@ -117,11 +118,7 @@ export function CreatePost({ setPosts, user }: TCreatePostProps) {
     form.set("post-text", postText);
     form.set("post-images", JSON.stringify(images));
     form.set("email", user.email);
-    const res = await useFetch<FormData, { data: TPost[] }>(
-      "/api/posts/create",
-      "POST",
-      form
-    );
+    const res = await axios.post(`/api/posts/create`, form);
     if (res.data.error) {
       toast.error(res.data.error);
       return;
@@ -245,11 +242,7 @@ function Post({ post: p, i }: PostProps) {
   async function handleAddOneLike() {
     const form = new FormData();
     form.set("userId", user._id);
-    const res = await useFetch(
-      `/api/posts/info/${post._id}/like`,
-      "POST",
-      form
-    );
+    const res = await axios.post(`/api/posts/info/${post._id}/like`, form);
     if (res.data.error) {
       toast.error(res.data.error);
     }
@@ -264,11 +257,7 @@ function Post({ post: p, i }: PostProps) {
     const form = new FormData();
     form.set("userId", user._id);
     form.set("content", comment);
-    const res = await useFetch(
-      `/api/posts/info/${post._id}/comment`,
-      "POST",
-      form
-    );
+    const res = await axios.post(`/api/posts/info/${post._id}/comment`, form);
     if (res.data.error) {
       toast.error(res.data.error);
       return;

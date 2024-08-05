@@ -21,26 +21,25 @@ export default function VerifyEmail() {
   useEffect(() => {
     if (!user) return;
     checkVerifiedEmail();
-  }, [user?.email_verified, router]);
+  }, [user, router, checkVerifiedEmail]);
 
   useEffect(() => {
     if (!user) return;
+    if (!canSend) return;
     sendCode();
   }, [user?.email, canSend]);
 
-  function sendCode() {
-    if (!user.email || !canSend) return;
-    type TData = {
-      email: string;
-    };
-    type TResponse = {
-      code: string;
-    };
-    useFetch<TData, TResponse>("/api/email-verification", "POST", {
-      email: user.email,
-    }).then((res) => {
-      setCode(res.data.code);
-    });
+  async function sendCode() {
+    type TData = { email: string };
+    type TResponse = { code: string };
+    const res = await useFetch<TData, TResponse>(
+      "/api/email-verification",
+      "POST",
+      {
+        email: user.email,
+      }
+    );
+    setCode(res.data.code);
   }
 
   function handleMaxLength(e: ChangeEvent<HTMLInputElement>) {

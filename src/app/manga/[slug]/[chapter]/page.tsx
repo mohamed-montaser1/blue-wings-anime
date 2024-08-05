@@ -94,7 +94,7 @@ export default function Chapter() {
             {Array.from({ length: 20 }).map((_, i) => {
               const idx = i + 1;
               return (
-                <option value={idx} className="bg-card text-slate-300">
+                <option value={idx} key={idx} className="bg-card text-slate-300">
                   الفصل {idx}
                 </option>
               );
@@ -117,6 +117,7 @@ export default function Chapter() {
               src={url}
               alt={`${nanoid()}-chapterImage`}
               className="w-full"
+              key={idx}
             />
           </>
         ))}

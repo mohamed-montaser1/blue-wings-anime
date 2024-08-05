@@ -34,8 +34,8 @@ function Ad({ delay }: TAdProps) {
         modules={[Pagination, Navigation, Autoplay]}
         className="w-full h-full"
       >
-        {Array.from({ length: 5 }).map(() => (
-          <SwiperSlide className="!flex justify-center items-center text-slate-200 w-full h-full">
+        {Array.from({ length: 5 }).map((el, i) => (
+          <SwiperSlide className="!flex justify-center items-center text-slate-200 w-full h-full" key={i}>
             منطقة إعلانية
           </SwiperSlide>
         ))}

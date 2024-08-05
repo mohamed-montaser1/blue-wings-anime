@@ -16,6 +16,7 @@ export default function Breadcrumbs({ url, className }: Props) {
           className={`px-1 ${
             i !== url.length - 1 ? "text-slate-400" : "text-slate-200"
           }`}
+          key={i}
         >
           {el} {i !== url.length - 1 && <span className="mr-1">/</span>}
         </li>

@@ -213,7 +213,7 @@ export function Posts({ posts }: PostedPosts) {
   return (
     <>
       {posts.map((post, i) => (
-        <Post post={post} i={i} />
+        <Post post={post} i={i} key={i} />
       ))}
     </>
   );
@@ -320,6 +320,7 @@ function Post({ post: p, i }: PostProps) {
                     ? "col-span-2"
                     : ""
                 }`}
+                key={i}
               >
                 <Image
                   src={image}

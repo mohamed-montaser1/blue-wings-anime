@@ -28,12 +28,8 @@ export default function WorkListFilterBar() {
         </Button>
         {showFilters && (
           <ul className="bg-card rounded-xl text-white p-2 border-none outline-none flex flex-col gap-2 absolute left-0 px-4 top-[120%] min-w-60">
-            {FILTER_ITEMS_DATA.map((item) => (
-              <FilterItem
-                query={item.query}
-                name={item.name}
-                key={Math.random()}
-              />
+            {FILTER_ITEMS_DATA.map((item, i) => (
+              <FilterItem query={item.query} name={item.name} key={i} />
             ))}
           </ul>
         )}

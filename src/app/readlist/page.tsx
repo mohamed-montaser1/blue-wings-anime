@@ -52,8 +52,8 @@ export default function FavoritesPage() {
             لا يوجد مانجا في المفضلة بعد !
           </h1>
         )}
-        {data.map((el) => (
-          <Slide key={Math.random()} title="مفضلة" image={el.credit}>
+        {data.map((el, i) => (
+          <Slide key={i} title="مفضلة" image={el.credit}>
             <div className="text-white w-full mt-2 flex flex-col items-start">
               <h3 className="text-2xl font-bold">{el.name}</h3>
               <p className="my-1">

@@ -4,15 +4,16 @@ import { Container, SectionSwiper, Title } from "@components";
 import { SwiperSlide } from "swiper/react";
 import Slide from "../Swiper/SectionSwiper/Slide";
 import Rater from "react-rater";
+import { nanoid } from "nanoid";
 
 export default function SimilarManga() {
   return (
     <div className="mt-24">
       <Container>
         <Title>أعمال ذات صلة</Title>
-        <SectionSwiper slidesPerView={4} id="any" key={Math.random()}>
+        <SectionSwiper slidesPerView={4} id="any" key={nanoid()}>
           {data.map((slide, i) => (
-            <SwiperSlide className="mr-4">
+            <SwiperSlide className="mr-4" key={i}>
               <Slide title="مانجا" key={i}>
                 <div className="details w-full mt-3">
                   <h3 className="text-white text-right">

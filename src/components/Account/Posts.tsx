@@ -29,6 +29,8 @@ import {
   TwitterIcon,
   WhatsappShareButton,
   WhatsappIcon,
+  TelegramShareButton,
+  TelegramIcon,
 } from "next-share";
 import { usePathname } from "next/navigation";
 
@@ -297,11 +299,11 @@ function Post({ post: p, i }: PostProps) {
             </span>
           </div>
         </div>
-        {(user as TUser)?._id === post.author?._id && (
+        {/* {(user as TUser)?._id === post.author?._id && (
           <Button variant="light-form-btn">
             <Image src={TrashIcon} alt="trash-icon" />
           </Button>
-        )}
+        )} */}
       </div>
       <div className="content mt-4 flex flex-col gap-2">
         <p className="text-slate-300">{post.text}</p>
@@ -410,6 +412,16 @@ function Post({ post: p, i }: PostProps) {
                     مشاركه عبر واتساب
                   </span>
                 </WhatsappShareButton>
+                <br />
+                <TelegramShareButton
+                  title={`منشور ${post.author.name} في موقع blue wings`}
+                  url={path}
+                >
+                  <TelegramIcon size={32} round className="inline" />
+                  <span className="text-slate-200 !w-full mx-1">
+                    مشاركة عبر تيليجرام
+                  </span>
+                </TelegramShareButton>
               </div>
             )}
           </div>

@@ -1,3 +1,4 @@
+import { dbConnect } from "@/lib";
 import { TDynamicAPIParams } from "@/lib/types";
 import { Post } from "@/models";
 import { Comment } from "@/models/Comment";
@@ -7,6 +8,7 @@ import { NextResponse } from "next/server";
 type TParams = TDynamicAPIParams<["postId"]>;
 
 export async function POST(req: Request, { params }: TParams) {
+  await dbConnect();
   const body = await req.formData();
   const postId = params.postId;
   const userId = body.get("userId");

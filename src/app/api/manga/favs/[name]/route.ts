@@ -9,7 +9,6 @@ export async function GET(
   { params }: TDynamicAPIParams<["name"]>
 ) {
   await dbConnect();
-  // await Manga.init();
   const { name } = params;
   const user = await User.findOne({ slug_name: name })
     .populate("favoriteManga")

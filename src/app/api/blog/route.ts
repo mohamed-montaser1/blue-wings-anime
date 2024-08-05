@@ -1,3 +1,4 @@
+import { dbConnect } from "@/lib";
 import { Article } from "@/models/Article";
 import mongoose from "mongoose";
 import { NextResponse } from "next/server";
@@ -25,6 +26,7 @@ export const createBlogSchema = z.object({
 });
 
 export async function POST(req: Request) {
+  await dbConnect()
   let body: TBody;
 
   try {

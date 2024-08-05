@@ -1,8 +1,10 @@
+import { dbConnect } from "@/lib";
 import { User } from "@/models";
 import { ChangeRoleRequest } from "@/models/ChangeRoleRequest";
 import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
+  await dbConnect()
   const body = await req.formData();
   const email = body.get("email");
 

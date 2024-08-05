@@ -91,6 +91,7 @@ export async function POST(req: Request, { params }: TParams) {
 
 // Get All Chapters
 export async function GET(req: Request, { params }: TParams) {
+  await dbConnect()
   const { slug } = params;
   const manga: TManga = await Manga.findOne({ slug }).exec();
   if (!manga) {

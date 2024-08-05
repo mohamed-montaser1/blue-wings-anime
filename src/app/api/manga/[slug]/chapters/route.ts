@@ -16,7 +16,7 @@ export async function POST(req: Request, { params }: TParams) {
   await dbConnect();
   const { slug } = params;
   const form = await req.formData();
-  const images = form.get("images");
+  const images = JSON.parse(form.get("images") as unknown as string);
 
   if (!isValidSlug(slug)) {
     return NextResponse.json(

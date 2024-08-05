@@ -2,7 +2,7 @@ import { dbConnect } from "@/lib";
 import { TDynamicAPIParams } from "@/lib/types";
 import { User } from "@/models";
 import { Manga } from "@/models/Manga";
-import { Rating } from "@/models/Rating";
+import { Rating, TRating } from "@/models/Rating";
 import mongoose from "mongoose";
 import { NextResponse } from "next/server";
 
@@ -60,7 +60,10 @@ export async function POST(req: Request, { params }: TParams) {
     );
   }
 
-  const isRated = await Rating.findOne({ author: user._id, manga: manga._id }).exec();
+  const isRated = await Rating.findOne({
+    author: user._id,
+    manga: manga._id,
+  }).exec();
 
   if (isRated) {
     return NextResponse.json(
@@ -73,6 +76,10 @@ export async function POST(req: Request, { params }: TParams) {
     );
   }
 
+  function sum(arr: Array<TRating>) {
+    return arr.reduce((acc, user) => acc + user.rating, 0);
+  }
+
   try {
     const review = await Rating.create({
       _id: new mongoose.Types.ObjectId(),
@@ -82,13 +89,22 @@ export async function POST(req: Request, { params }: TParams) {
       manga: manga._id,
       createdAt: Date.now(),
     });
-    await Manga.findOneAndUpdate(
+
+    let newManga = await Manga.findOneAndUpdate(
       { slug },
       {
         $push: {
           rating: review._id,
         },
-      }
+      },
+      { new: true }
+    )
+      .populate("rating")
+      .exec();
+    let newRatingNumber = sum(newManga.rating) / newManga.rating.length;
+    await Manga.findOneAndUpdate(
+      { slug },
+      { ratingNumber: newRatingNumber }
     ).exec();
 
     return NextResponse.json(

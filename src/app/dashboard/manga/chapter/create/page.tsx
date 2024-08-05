@@ -13,7 +13,6 @@ export default function CreateChapter() {
   const [debounceTimer, setDebounceTimer] = useState<NodeJS.Timeout | null>(
     null
   );
-  const [showTypeFilterPopup, setShowTypeFilterPopup] = useState(false);
 
   function handleSearch(e: ChangeEvent<HTMLInputElement>) {
     setIsSearching(true);

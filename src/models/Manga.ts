@@ -54,6 +54,10 @@ export const MangaSchema = new Schema<TManga>(
       type: [{ type: Schema.Types.ObjectId, ref: "Rating" }],
       default: [],
     },
+    ratingNumber: {
+      type: Number,
+      default: 0,
+    },
     status: {
       type: String,
       required: true,
@@ -79,6 +83,6 @@ export const MangaSchema = new Schema<TManga>(
   { versionKey: false }
 );
 
-MangaSchema.index({ slug: "text" });
+MangaSchema.index({ slug: "text", name: "text" });
 
 export const Manga = models.Manga || model("Manga", MangaSchema);

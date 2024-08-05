@@ -80,7 +80,6 @@ const UserSchema = new Schema<TUser>(
     },
     createdAt: {
       type: Number,
-      default: Date.now(),
     },
     favoriteManga: {
       type: [{ type: Schema.Types.ObjectId, ref: "Manga" }],

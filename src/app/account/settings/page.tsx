@@ -43,6 +43,7 @@ export const imageTypesAllowed = [
   "image/jpeg",
   "image/png",
   "image/gif",
+  "image/webp",
 ] as const;
 
 export type imageTypesAllowedKey = (typeof imageTypesAllowed)[number];
@@ -105,7 +106,7 @@ export default function EditPage() {
     }
 
     if (!imageTypesAllowed.includes(img.type as imageTypesAllowedKey)) {
-      toast("يجب عليك إدخال صورة بإمتداد jpg او png او jpeg", {
+      toast(`يجب عليك إدخال صورة بإمتداد ${imageTypesAllowed.join(" , ")}`, {
         type: "error",
       });
       return;
@@ -451,7 +452,7 @@ function ChangeRole({ setShowChangeRoleRequest }: ChangeRoleProps) {
           position="bottom-right"
           closeButton={false}
           closeOnClick={true}
-        rtl
+          rtl
         />
       </Container>
     </div>

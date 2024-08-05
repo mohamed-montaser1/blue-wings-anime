@@ -9,6 +9,13 @@ export interface TComment {
   createdAt: number;
 }
 
+/*
+  _id: ObjectId
+  Author: Email
+  Content: Text
+  Likes: Empty Array
+  CreatedAt: Date.now()
+*/
 const CommentSchema = new Schema<TComment>(
   {
     _id: {

@@ -60,11 +60,18 @@ export default function AccountSettings() {
               />
             )}
             {user.role === "editor" && (
-              <DropdownOption
-                icon={NewIcon}
-                text="إنشاء مانجا"
-                href="/manga/create"
-              />
+              <>
+                <DropdownOption
+                  icon={NewIcon}
+                  text="إنشاء مانجا"
+                  href="/manga/create"
+                />
+                <DropdownOption
+                  icon={NewIcon}
+                  text="إنشاء فصل جديد"
+                  href="/manga/chapter/create"
+                />
+              </>
             )}
             <DropdownOption icon={Heart} text="أعمالك المفضلة" href="/favs" />
             <DropdownOption

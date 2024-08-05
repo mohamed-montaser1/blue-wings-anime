@@ -4,6 +4,7 @@ import useFetch from "@/hooks/useFetch";
 import useUser from "@/hooks/useUser";
 import { TManga } from "@/models/Manga";
 import uploadImage from "@/utils/uploadImage";
+import { AxiosError } from "axios";
 import { redirect, usePathname } from "next/navigation";
 import { FormEvent, useEffect, useRef, useState } from "react";
 import { toast, ToastContainer } from "react-toastify";
@@ -16,6 +17,7 @@ export default function CreateChapter() {
   const [mangaName, setMangaName] = useState("");
 
   const path = usePathname();
+  const slug = path.split("/").at(-2);
 
   useEffect(() => {
     const mangaName = path.split("/");
@@ -27,12 +29,16 @@ export default function CreateChapter() {
   useEffect(() => {
     if (!user) return;
     if (user.role === "editor") {
-      const isAuthor = Boolean(
-        user.creations.filter((el: TManga, idx: number) => {
-          return el.slug === mangaName;
-        }).length
-      );
-      console.log({ isAuthor, creations: user.creations });
+      (async () => {
+        const res = await useFetch(`/api/manga/${slug}`, "GET", {});
+        const manga = res.data.manga;
+        const author = manga.author.name;
+        if (author !== user.name) {
+          redirect("/");
+        }
+      })();
+    } else {
+      redirect("/");
     }
   }, [user]);
 
@@ -45,12 +51,23 @@ export default function CreateChapter() {
     }
     const formData = new FormData();
     formData.append("images", JSON.stringify(images));
-    const res = await useFetch(
-      `/api/manga/${mangaName}/chapters/`,
-      "POST",
-      formData
-    );
-    console.log({ res });
+    try {
+      await useFetch(`/api/manga/${mangaName}/chapters`, "POST", formData);
+      toast.success("تم إضافة الفصل بنجاح");
+    } catch (error) {
+      let e = error as unknown as AxiosError;
+      switch (e.response?.status) {
+        case 400:
+          toast.error("تأكد من صحة الصور وصلاحية الإمتدادات");
+          break;
+        case 404:
+          toast.error(`لا توجد مانجا بهذا الإسم (${slug})`);
+          break;
+        case 500:
+          toast.error("حدث خطأ في الخادم الرجاء المحاولة لاحقاً");
+          break;
+      }
+    }
   }
   function uploadImages() {
     return new Promise<string[]>((resolve, reject) => {
@@ -58,7 +75,7 @@ export default function CreateChapter() {
 
       if (files.length > 0) {
         const uploadPromises = Array.from(files).map((file) => {
-          return uploadImage(file, mangaName)
+          return uploadImage(file, `manga/${mangaName}`)
             .then((newUrl) => `/uploads/manga/${mangaName}/${newUrl}`)
             .catch((err) => {
               console.log({ errorWhileUploadImagesToServer: err });
@@ -93,6 +110,10 @@ export default function CreateChapter() {
           onChange={(e) => setFiles(e.target.files as unknown as File[])}
           id="files-input"
         />
+        <p className="text-slate-400 mb-5" data-required>
+          يجب رفع الصور مرقمة لتظهر بنفس الترتيب في صفحة الفصل مثلا "01" "02"
+          وهكذا
+        </p>
         <label
           htmlFor="files-input"
           className="bg-primary text-white text-xl px-4 max-w-fit min-h-14 justify-center rounded-xl flex items-center gap-2.5 mb-3"

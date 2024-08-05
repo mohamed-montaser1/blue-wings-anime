@@ -1,4 +1,4 @@
-import { Manga } from "@/models/Manga";
+import { Manga, TManga } from "@/models/Manga";
 import mongoose from "mongoose";
 import slugify from "slugify";
 import { NextResponse } from "next/server";
@@ -85,21 +85,24 @@ export async function POST(req: Request) {
   }
 
   try {
-    await Manga.create({
+    const manga = await Manga.create({
       _id: new mongoose.Types.ObjectId(),
       name: title,
-      slug: slugify(title, {
-        lower: true,
-        replacement: "-",
-        trim: true,
-      }),
+      slug: slugify(title, slugifyOptions),
       keywords,
       type,
       status,
       author: authorId,
+      ratingNumber: 0,
       credit,
       story,
     });
+    await User.findOneAndUpdate(
+      { email: author },
+      {
+        $push: { creations: manga._id },
+      }
+    ).exec();
     return NextResponse.json(
       {
         success: true,

@@ -5,7 +5,13 @@ import { readFile, readdir, writeFile } from "fs/promises";
 import { join } from "path";
 import { nanoid } from "nanoid";
 
-const imageTypesAllowed = ["image/jpg", "image/jpeg", "image/png", "image/gif"];
+const imageTypesAllowed = [
+  "image/jpg",
+  "image/jpeg",
+  "image/png",
+  "image/gif",
+  "image/webp",
+];
 
 type TParams = {
   params: {
@@ -26,7 +32,7 @@ const POST = async (req: Request, { params }: TParams) => {
 
   if (!imageTypesAllowed.includes(type as imageTypesAllowedKey)) {
     return NextResponse.json({
-      error: "You Should Enter One of these types .jpeg , .jpg or .png",
+      error: `يجب عليك إدخال صورة بإمتداد ${imageTypesAllowed.join(" , ")}`,
       success: false,
       image: null,
       type,

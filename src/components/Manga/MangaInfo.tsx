@@ -14,6 +14,8 @@ import useFetch from "@/hooks/useFetch";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { TUser } from "@/models/User";
+import Link from "next/link";
+import { redirect } from "next/navigation";
 
 type TProps = {
   data: TManga;
@@ -22,7 +24,6 @@ type TProps = {
 export default function MangaInfo({ data }: TProps) {
   const { user } = useUser({ required: false });
   const [chapter, setChapter] = useState<"default" | number>("default");
-  const [rating, setRating] = useState(0);
   const keywords = data.keywords;
 
   async function handleAddToFav() {
@@ -46,13 +47,13 @@ export default function MangaInfo({ data }: TProps) {
   }
 
   useEffect(() => {
-    setRating(data.ratingNumber);
-  }, []);
+    if (chapter === "default") return;
+    redirect(`/manga/${data.slug}/${chapter}`);
+  }, [chapter]);
 
-  console.log({ data });
   return (
     <div className="mt-[105px]">
-      <Container className="flex gap-10 flex-col-reverse items-center lg:flex-row lg:items-start">
+      <Container className="flex gap-10 flex-col-reverse items-center lg:flex-row lg:items-stretch">
         <div>
           <Image
             src={data.credit}
@@ -80,11 +81,13 @@ export default function MangaInfo({ data }: TProps) {
                     <Rater
                       interactive={false}
                       total={5}
-                      rating={rating}
+                      rating={data.ratingNumber}
                       key={nanoid()}
                     />
                   </div>
-                  <span className="text-white">{rating.toFixed(2)}</span>
+                  <span className="text-white">
+                    {data.ratingNumber.toFixed(2)}
+                  </span>
                 </>
               ) : (
                 <h1 className="text-slate-200 text-xl">
@@ -129,12 +132,14 @@ export default function MangaInfo({ data }: TProps) {
               <p className="text-[#ccc] mt-2 leading-7">{data.story}</p>
             </div>
           </div>
-          <div className="bg-card text-white w-full min-h-56 px-4 pb-10 pt-5 mt-5 h-auto flex-1">
+          <div className="bg-card text-white w-full min-h-56 px-4 pb-10 pt-5 mt-5 flex-1">
             <h2 className="font-bold text-xl">الفصول</h2>
             <div className="mt-5 flex gap-5">
-              <Button className="text-3xl !bg-primary !px-20 py-14 flex-1">
-                الفصل الأول
-              </Button>
+              <Link href={`/manga/${data.slug}/1`}>
+                <Button className="text-3xl !bg-primary !px-20 py-14 flex-1">
+                  الفصل الأول
+                </Button>
+              </Link>
               <Input className="!bg-secondary flex-1 items-center justify-center">
                 <select
                   className="bg-transparent outline-none w-full text-xl h-full"
@@ -155,6 +160,11 @@ export default function MangaInfo({ data }: TProps) {
             <div className="flex flex-col gap-3 mt-5">
               <span>الفصول في شكل خلايا</span>
               <div className="flex gap-4 flex-wrap">
+                {data.chapters.length < 1 && (
+                  <h1 className="text-slate-300 mx-auto text-2xl">
+                    لم يتم إضافة اي فصول بعد !
+                  </h1>
+                )}
                 {data.chapters.map((chapter, idx) => (
                   <span className="text-white font-bold border border-solid border-sub-card rounded-lg px-5 py-2.5 w-40 cursor-pointer hover:bg-sub-card transition-colors duration-300 ease-in-out">
                     الفصل {idx + 1}

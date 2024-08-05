@@ -41,6 +41,7 @@ export async function POST(req: Request) {
     password: hashPassword,
     role: body.role,
     favoriteManga: [],
+    createdAt: Date.now()
   });
 
   try {

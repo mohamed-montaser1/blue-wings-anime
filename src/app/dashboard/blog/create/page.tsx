@@ -45,12 +45,12 @@ export default function CreateBlogPage() {
       TODO: else toast a detailed error message to user
     */
 
-    const imageUrl = await uploadImage(image as File, "blog");
+    const imageUrl = await uploadImage(image as File);
     try {
       const body = {
         title: getValues().title,
         content: getValues().content,
-        image: "/uploads/blog/" + imageUrl,
+        image: imageUrl,
       };
       await axios.post("/api/blog", body);
       toast.success("تم إنشاء المقالة بنجاح");

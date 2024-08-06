@@ -72,9 +72,8 @@ export default function CreateManga() {
     // TODO: check if error ? display it : continue
     // TODO: if there is no errors ? display success message and redirect to its url
     const { credit, status, story, title, type } = getValues();
-    const image =
-      // @ts-ignore
-      "/uploads/credits/" + (await uploadImage(credit[0], "credits"));
+    // @ts-ignore
+    const image = await uploadImage(credit[0]);
     const form = {
       title,
       type,

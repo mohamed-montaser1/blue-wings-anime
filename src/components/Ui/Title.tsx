@@ -20,7 +20,7 @@ export default function Title({ children, center, ...props }: Props) {
       }`}
     >
       <h2
-        className={`text-2xl sm:text-3xl md:text-[40px] text-white text-center mb-2 md:mb-4 font-bold`}
+        className={`text-2xl sm:!text-3xl md:!text-[40px] text-white text-center mb-2 md:!mb-4 font-bold`}
       >
         {children}
       </h2>

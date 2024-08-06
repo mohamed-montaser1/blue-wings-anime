@@ -28,7 +28,10 @@ import {
   TelegramIcon,
 } from "next-share";
 import axios from "axios";
-import { imageTypesAllowed, imageTypesAllowedKey } from "@/utils/imageTypesAllowed";
+import {
+  imageTypesAllowed,
+  imageTypesAllowedKey,
+} from "@/utils/imageTypesAllowed";
 
 type TCreatePostProps = {
   setPosts: Dispatch<SetStateAction<TPost[]>>;
@@ -46,7 +49,7 @@ export function CreatePost({ setPosts, user }: TCreatePostProps) {
       const filesArray = Array.from(fileList);
       for (let file of filesArray) {
         if (!imageTypesAllowed.includes(file.type as imageTypesAllowedKey)) {
-          toast("يجب عليك إدخال صورة بإمتداد jpg او png او jpeg", {
+          toast(`يجب عليك إدخال صورة بإمتداد ${imageTypesAllowed.join(" , ")}`, {
             type: "error",
           });
           return;
@@ -61,8 +64,8 @@ export function CreatePost({ setPosts, user }: TCreatePostProps) {
 
       if (files.length > 0) {
         const uploadPromises = files.map((file) => {
-          return uploadImage(file, "posts-images")
-            .then((newUrl) => `/uploads/posts-images/${newUrl}`)
+          return uploadImage(file)
+            .then((newUrl) => newUrl)
             .catch((err) => {
               console.log({ errorWhileUploadImagesToServer: err });
               throw err; // This will make Promise.all reject if any single upload fails
@@ -71,6 +74,7 @@ export function CreatePost({ setPosts, user }: TCreatePostProps) {
 
         Promise.all(uploadPromises)
           .then((results) => {
+            // @ts-ignore
             resolve(results);
           })
           .catch((err) => {

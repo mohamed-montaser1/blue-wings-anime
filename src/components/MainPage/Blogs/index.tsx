@@ -33,6 +33,7 @@ const blog_demo_data = [
     rate: 5,
   },
 ];
+
 export default function Blogs() {
   return (
     <Container className="mt-20">
@@ -49,7 +50,7 @@ export default function Blogs() {
                 هذا النص من مولد النص العربى، حيث يمكنك أن تولد مثل هذا النص أو
                 العديد من النصوص الأخر
               </p>
-              <div className="flex justify-between items-center mt-4 mb-5 flex-col lg:flex-row gap-2">
+              <div className="flex justify-between items-center mt-4 mb-5 flex-col lg:!flex-row gap-2">
                 <div className="creation-time flex gap-2">
                   <Image src={ClockIcon} alt="clock icon" />
                   <span className="text-slate-100 text-sm" dir="ltr">

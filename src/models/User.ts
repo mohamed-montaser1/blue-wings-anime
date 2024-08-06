@@ -59,11 +59,11 @@ const UserSchema = new Schema<TUser>(
     },
     image: {
       type: String,
-      default: "/uploads/profiles-pictures/default.jpg",
+      default: "/default-profile.jpg",
     },
     cover: {
       type: String,
-      default: "/uploads/profiles-covers/default.jpg",
+      default: "/default-cover.jpg",
     },
     role: {
       type: String,

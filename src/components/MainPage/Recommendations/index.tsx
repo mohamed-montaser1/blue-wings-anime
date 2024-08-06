@@ -14,7 +14,7 @@ export default function Recommendations() {
   return (
     <Container className="mt-20">
       <Title className="!mb-10 mx-auto md:mx-0">توصيات</Title>
-      <div className="flex flex-col lg:flex-row gap-6 max-w-full items-center">
+      <div className="flex flex-col lg:!flex-row gap-6 max-w-full items-center">
         <FilterBar />
         <div className="flex gap-2.5 mx-auto md:mx-0">
           <SwiperButton arrowDir="right" id={id} />
@@ -89,7 +89,7 @@ function FilterItem({ text, active = false }: TFilterItemProps) {
     <li
       className={`text-white ${
         active ? "main-gradient" : ""
-      } px-7 py-2 rounded-lg w-fit h-fit hover:bg-secondary transition-colors duration-300 ease-in-out cursor-pointer text-xl border border-solid border-secondary md:border-none`}
+      } px-7 py-2 rounded-lg w-fit h-fit hover:bg-secondary transition-colors duration-300 ease-in-out cursor-pointer text-xl border border-solid border-secondary md:!border-none`}
     >
       {text}
     </li>

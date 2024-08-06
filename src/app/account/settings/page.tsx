@@ -27,6 +27,7 @@ import {
 } from "@/utils/imageTypesAllowed";
 import { usePathname } from "next/navigation";
 import { useRouter } from "next/navigation";
+import { slugifyOptions } from "@/lib/slugifyOptions";
 
 type TProfile = {
   image: string | StaticImageData;
@@ -40,8 +41,8 @@ type TProfile = {
 };
 
 const defaultProfileValues = {
-  cover: "/uploads/profiles-covers/default.jpg",
-  image: "/uploads/profiles-pictures/default.jpg",
+  cover: "/default-cover.jpg",
+  image: "/default-profile.jpg",
   role: "user",
 } as const;
 
@@ -100,7 +101,6 @@ export default function EditPage() {
 
   async function saveImage(
     img: File | string,
-    dir: string,
     msg: string,
     cb: (result: string | object) => void
   ) {
@@ -115,15 +115,15 @@ export default function EditPage() {
       });
       return;
     }
-    let result = await uploadImage(img, dir);
+    let result = await uploadImage(img);
     if (result instanceof Object) {
       console.error({ uploadingError: result });
       toast(msg, { type: "error" });
       cb(result);
       return;
     }
-    cb(`/uploads/${dir}/${result}`);
-    return `/uploads/${dir}/${result}`;
+    cb(result);
+    return result;
   }
 
   const setUserAvatar = (image: string | object) => {
@@ -158,11 +158,10 @@ export default function EditPage() {
         const { cover, image } = changes.files;
         if (cover) {
           if (cover.toString().startsWith("default")) {
-            saves = { ...saves, cover: `/uploads/profiles-covers/default.jpg` };
+            saves = { ...saves, cover: `/default-cover.jpg` };
           } else {
             const coverUrl = await saveImage(
               cover,
-              "profiles-covers",
               "حدث خطأ ما أثناء حفظ الصورة الشخصيه الجديده",
               setUserCover
             );
@@ -174,7 +173,6 @@ export default function EditPage() {
         if (image) {
           const avatarUrl = await saveImage(
             image,
-            "profiles-pictures",
             "حدث خطأ ما أثناء حفظ الصورة الشخصيه الجديده",
             setUserAvatar
           );
@@ -191,11 +189,7 @@ export default function EditPage() {
         saves = {
           ...saves,
           name: changes.name,
-          slug_name: slugify(changes.name, {
-            lower: true,
-            trim: true,
-            replacement: "-",
-          }),
+          slug_name: slugify(changes.name, slugifyOptions),
         };
       }
       if (changes.bio) {

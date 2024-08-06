@@ -30,7 +30,7 @@ export default function CreateChapter() {
     if (!user) return;
     if (user.role === "editor") {
       (async () => {
-        const res = await axios.get(`/api/manga/${slug}`)
+        const res = await axios.get(`/api/manga/${slug}`);
         const manga = res.data.manga;
         const author = manga.author.name;
         if (author !== user.name) {
@@ -52,7 +52,7 @@ export default function CreateChapter() {
     const formData = new FormData();
     formData.append("images", JSON.stringify(images));
     try {
-      await axios.post(`/api/manga/${mangaName}/chapters`, formData)
+      await axios.post(`/api/manga/${mangaName}/chapters`, formData);
       toast.success("تم إضافة الفصل بنجاح");
     } catch (error) {
       let e = error as unknown as AxiosError;
@@ -75,8 +75,8 @@ export default function CreateChapter() {
 
       if (files.length > 0) {
         const uploadPromises = Array.from(files).map((file) => {
-          return uploadImage(file, `manga/${mangaName}`)
-            .then((newUrl) => `/uploads/manga/${mangaName}/${newUrl}`)
+          return uploadImage(file)
+            .then((newUrl) => newUrl)
             .catch((err) => {
               console.log({ errorWhileUploadImagesToServer: err });
               throw err; // This will make Promise.all reject if any single upload fails
@@ -85,6 +85,7 @@ export default function CreateChapter() {
 
         Promise.all(uploadPromises)
           .then((results) => {
+            // @ts-ignore
             resolve(results);
           })
           .catch((err) => {
@@ -112,8 +113,7 @@ export default function CreateChapter() {
         />
         <p className="text-slate-400 mb-5" data-required>
           يجب رفع الصور مرقمة لتظهر بنفس الترتيب في صفحة الفصل مثلا
-          &quot;01&quot; &quot;02&quot;
-          وهكذا
+          &quot;01&quot; &quot;02&quot; وهكذا
         </p>
         <label
           htmlFor="files-input"

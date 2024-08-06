@@ -48,8 +48,8 @@ export default function AccountInfo({ user }: Props) {
             alt="testing-banner"
           />
         </div>
-        <div className="flex flex-col xs:flex-row items-center xs:items-start xs:gap-5">
-          <div className="w-[200px] aspect-square bg-slate-500 rounded-full p-1 -translate-y-1/4 md:mr-7 border border-slate-900">
+        <div className="flex flex-col xs:!flex-row items-center xs:!items-start xs:!gap-5">
+          <div className="w-[200px] aspect-square bg-slate-500 rounded-full p-1 -translate-y-1/4 md:!mr-7 border border-slate-900">
             <Avatar
               size={200}
               image={user?.image as string}

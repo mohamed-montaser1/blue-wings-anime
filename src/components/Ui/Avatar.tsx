@@ -11,7 +11,7 @@ type Props = {
 export default function Avatar({ image, size, className }: Props) {
   return (
     <Image
-      src={image || "/uploads/profiles-pictures/default.jpg"}
+      src={image || "/default-profile.jpg"}
       width={size}
       height={size}
       alt={`user-image-${nanoid()}`}

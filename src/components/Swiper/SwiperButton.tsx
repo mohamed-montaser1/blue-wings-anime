@@ -28,7 +28,7 @@ export default function SwiperButton({ arrowDir, id, ...props }: Props) {
   return (
     <button
       {...props}
-      className={`bg-card p-4 md:p-7 rounded-full h-fit w-fit`}
+      className={`bg-card p-4 md:!p-7 rounded-full h-fit w-fit`}
       onClick={handleSwipe}
     >
       <Image

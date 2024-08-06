@@ -5,6 +5,7 @@ import { Chapter } from "@/models/Chapter";
 import { Comment } from "@/models/Comment";
 import { Manga } from "@/models/Manga";
 import { Rating } from "@/models/Rating";
+import ensureIndexes from "@/utils/ensureIndexes";
 import mongoose, { ConnectOptions } from "mongoose";
 
 mongoose.set("strictPopulate", false);

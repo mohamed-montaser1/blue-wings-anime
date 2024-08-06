@@ -1,18 +1,9 @@
-import { imageTypesAllowedKey } from "@/app/account/settings/page";
 import { NextResponse } from "next/server";
 import { existsSync, mkdirSync } from "fs";
 import { readFile, readdir, writeFile } from "fs/promises";
 import { join } from "path";
 import { nanoid } from "nanoid";
-
-const imageTypesAllowed = [
-  "image/jpg",
-  "image/jpeg",
-  "image/png",
-  "image/gif",
-  "image/webp",
-];
-
+import { imageTypesAllowed, imageTypesAllowedKey } from "@/utils/imageTypesAllowed";
 type TParams = {
   params: {
     dir: string[];

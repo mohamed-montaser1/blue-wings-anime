@@ -28,7 +28,7 @@ export type TDropdownOptionProps = Omit<
   AnchorHTMLAttributes<HTMLAnchorElement>,
   keyof typeof InternalLinkProps
 > & {
-  icon: React.ReactNode;
+  icon: any;
   text: string;
   base?: boolean;
   href: string;

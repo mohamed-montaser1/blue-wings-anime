@@ -1,6 +1,8 @@
 "use client";
 import { Avatar, Button, Container, Input } from "@/components";
 import { roles } from "@/components/Account/AccountInfo";
+import { TableBodyData } from "@/components/Dashboard/TableBodyData";
+import { TableHeadData } from "@/components/Dashboard/TableHeadData";
 import useFetch from "@/hooks/useFetch";
 import useUser from "@/hooks/useUser";
 import { TUser, UserRole } from "@/models/User";
@@ -185,24 +187,6 @@ function RolePopup({ selectedUser, setShowRolePopup, setRender }: Props) {
         </Button>
       </Container>
     </div>
-  );
-}
-
-type TableDataProps = {
-  content: string;
-};
-
-function TableHeadData({ content }: TableDataProps) {
-  return <th className="text-primary py-3 border">{content}</th>;
-}
-
-type TableBodyDataProps = {
-  children: React.ReactNode;
-};
-
-function TableBodyData({ children }: TableBodyDataProps) {
-  return (
-    <td className="text-slate-300 text-center border relative">{children}</td>
   );
 }
 

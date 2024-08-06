@@ -2,8 +2,7 @@ import { NextResponse } from "next/server";
 import { writeFile } from "fs/promises";
 import { join } from "path";
 import { nanoid } from "nanoid";
-
-const imageTypesAllowed = ["jpg", "jpeg", "png"] as const;
+import { imageTypesAllowed, imageTypesAllowedKey } from "./imageTypesAllowed";
 
 type TGenerateSaveImageRoute = NextResponse<{
   error: string | null;
@@ -13,14 +12,14 @@ type TGenerateSaveImageRoute = NextResponse<{
 
 export async function generateSaveImageRoute(
   req: Request,
-  uploadsDir: string,
+  uploadsDir: string
 ): Promise<TGenerateSaveImageRoute> {
   const form = await req.formData();
   const image: File | null = form.get("image") as unknown as File;
   const type = image.type.split("/")[1];
-  if (!imageTypesAllowed.includes(type as (typeof imageTypesAllowed)[number])) {
+  if (!imageTypesAllowed.includes(type as imageTypesAllowedKey)) {
     return NextResponse.json({
-      error: "You Should Enter One of these types .jpeg , .jpg or .png",
+      error: `You Should Enter One of these types ${imageTypesAllowed.join(" , ")}`,
       success: false,
       image: null,
     });

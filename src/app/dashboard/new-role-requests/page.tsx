@@ -1,20 +1,18 @@
 "use client";
 import { Avatar, Button, Container } from "@/components";
-import useFetch from "@/hooks/useFetch";
 import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
-import { TableBodyData, TableHeadData } from "../users/page";
 import Image from "next/image";
 import { TChangeRoleRequest } from "@/models/ChangeRoleRequest";
 import { nanoid } from "nanoid";
 import { SettingsIcon } from "@icons/index";
 import DateController from "@/utils/date";
-import { TUser } from "@/lib/types";
-import { TbUvIndex } from "react-icons/tb";
 import { roles } from "@/components/Account/AccountInfo";
 import useUser from "@/hooks/useUser";
 import { redirect } from "next/navigation";
 import { toast } from "react-toastify";
 import axios from "axios";
+import { TableHeadData } from "@/components/Dashboard/TableHeadData";
+import { TableBodyData } from "@/components/Dashboard/TableBodyData";
 
 export default function NewRoleRequests() {
   const [requests, setRequests] = useState<TChangeRoleRequest[]>([]);

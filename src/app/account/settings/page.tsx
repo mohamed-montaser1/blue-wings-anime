@@ -21,6 +21,7 @@ import uploadImage from "@/utils/uploadImage";
 import { roles } from "@/components/Account/AccountInfo";
 import slugify from "slugify";
 import axios from "axios";
+import { imageTypesAllowed, imageTypesAllowedKey } from "@/utils/imageTypesAllowed";
 
 type TProfile = {
   image: string | StaticImageData;
@@ -38,18 +39,6 @@ const defaultProfileValues = {
   image: "/uploads/profiles-pictures/default.jpg",
   role: "user",
 } as const;
-
-const imageTypesAllowed = [
-  "image/jpg",
-  "image/jpeg",
-  "image/png",
-  "image/gif",
-  "image/webp",
-] as const;
-
-type imageTypesAllowedKey = (typeof imageTypesAllowed)[number];
-
-// export { imageTypesAllowed, imageTypesAllowedKey };
 
 export default function EditPage() {
   const { avatar, status, user, updateSession } = useUser({ required: true });

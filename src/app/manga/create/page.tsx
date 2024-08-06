@@ -1,9 +1,8 @@
 "use client";
-import { imageTypesAllowed } from "@/app/account/settings/page";
 import { Button, Container, Input } from "@/components";
-import useFetch from "@/hooks/useFetch";
 import useUser from "@/hooks/useUser";
 import { classifications, TClassification } from "@/utils/classifications";
+import { imageTypesAllowed } from "@/utils/imageTypesAllowed";
 import uploadImage from "@/utils/uploadImage";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios, { AxiosError } from "axios";

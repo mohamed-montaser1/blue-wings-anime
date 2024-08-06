@@ -10,16 +10,11 @@ import {
   useState,
 } from "react";
 import { FaComment, FaShare, FaTimes } from "react-icons/fa";
-import {
-  imageTypesAllowed,
-  imageTypesAllowedKey,
-} from "@/app/account/settings/page";
 import { ToastContainer, toast } from "react-toastify";
 import uploadImage from "@utils/uploadImage";
-import useFetch from "@/hooks/useFetch";
 import { type TPost as TPost } from "@/models/Post";
 import DateController from "@/utils/date";
-import { Heart, PlainIcon, PostHeart, TrashIcon } from "@icons/index";
+import { Heart, PlainIcon, PostHeart } from "@icons/index";
 import { nanoid } from "nanoid";
 import { TUser } from "@/models/User";
 import {
@@ -32,26 +27,8 @@ import {
   TelegramShareButton,
   TelegramIcon,
 } from "next-share";
-import { usePathname } from "next/navigation";
 import axios from "axios";
-
-// export default function Posts({ children }: TPosts) {
-//   const [posts, setPosts] = useState<TPost[]>([]);
-//   const { user } = useUser({ required: true });
-//   const pathname = usePathname();
-//   useEffect(() => {
-//     console.log({ pathname });
-//     if (!user) return;
-//     console.log({ userPosts: user.posts });
-//     setPosts((user.posts as TPost[]).sort((a, b) => b.createdAt - a.createdAt));
-//   }, [user]);
-//   return (
-//     <div>
-//       <CreatePost setPosts={setPosts} user={user as TUser} />
-//       <PostedPosts posts={posts} />
-//     </div>
-//   );
-// }
+import { imageTypesAllowed, imageTypesAllowedKey } from "@/utils/imageTypesAllowed";
 
 type TCreatePostProps = {
   setPosts: Dispatch<SetStateAction<TPost[]>>;

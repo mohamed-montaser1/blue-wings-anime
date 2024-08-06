@@ -24,11 +24,14 @@ export default function AccountInfo({ user }: Props) {
   const [date, setDate] = useState<string>("");
 
   useEffect(() => {
+    console.log({ user, msg: "1" })
     if (!user?.createdAt) return;
+    console.log({ user, msg: "2" })
     fromJoinDate();
-  }, [user?.createdAt]);
+  }, [user, user?.createdAt]);
 
   function fromJoinDate() {
+    console.log({ joinDate: user?.createdAt });
     const dateController = new DateController(user?.createdAt as number);
     setDate(dateController.format("DD MMM YYYY"));
   }

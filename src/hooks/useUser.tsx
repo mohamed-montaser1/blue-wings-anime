@@ -1,4 +1,3 @@
-import DateController from "@/utils/date";
 import { TUseUserReturn, TUseUserProps, TUser } from "../lib/types";
 import { Session } from "next-auth";
 import { useSession } from "next-auth/react";

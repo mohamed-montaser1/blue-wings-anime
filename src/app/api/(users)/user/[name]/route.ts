@@ -32,7 +32,7 @@ export async function GET(req: Request, { params }: TParams) {
   if (!user) {
     return NextResponse.json({ error: "لا يمكن إيجاد مستخدم بهذا الإسم" });
   }
-
+  console.log({ user });
   return NextResponse.json({
     user,
   });

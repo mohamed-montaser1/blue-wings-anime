@@ -3,7 +3,10 @@ import { existsSync, mkdirSync } from "fs";
 import { readFile, readdir, writeFile } from "fs/promises";
 import { join } from "path";
 import { nanoid } from "nanoid";
-import { imageTypesAllowed, imageTypesAllowedKey } from "@/utils/imageTypesAllowed";
+import {
+  imageTypesAllowed,
+  imageTypesAllowedKey,
+} from "@/utils/imageTypesAllowed";
 type TParams = {
   params: {
     dir: string[];
@@ -11,6 +14,8 @@ type TParams = {
 };
 
 const POST = async (req: Request, { params }: TParams) => {
+  const url = new URL(req.url);
+  console.log({ url });
   const form = await req.formData();
   const dir = params.dir.join("/");
   const image: File | null = form.get("image") as unknown as File;
@@ -37,7 +42,9 @@ const POST = async (req: Request, { params }: TParams) => {
   await writeFile(path, buffer);
   return NextResponse.json({ error: null, success: true, image: filename });
 };
+
 async function GET(req: Request, { params }: TParams) {
+  const url = new URL(req.url);
   const dir = params.dir.join("/");
   const uploadsDir = join(process.cwd(), "public", "uploads", dir);
   if (!existsSync(uploadsDir)) {
@@ -49,7 +56,7 @@ async function GET(req: Request, { params }: TParams) {
   }
   let files = await readdir(uploadsDir);
   files = files.map((file) => {
-    return join("/uploads", dir, file);
+    return join(url.origin, "/uploads", dir, file);
   });
   return NextResponse.json({ success: true, data: files, error: null });
 }

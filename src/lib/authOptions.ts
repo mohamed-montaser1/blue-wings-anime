@@ -10,6 +10,7 @@ import { Post } from "@/models";
 import { Comment } from "@/models/Comment";
 import slugify from "slugify";
 import { slugifyOptions } from "./slugifyOptions";
+import axios from "axios";
 
 const authOptions: AuthOptions = {
   providers: [

@@ -21,7 +21,12 @@ import uploadImage from "@/utils/uploadImage";
 import { roles } from "@/components/Account/AccountInfo";
 import slugify from "slugify";
 import axios from "axios";
-import { imageTypesAllowed, imageTypesAllowedKey } from "@/utils/imageTypesAllowed";
+import {
+  imageTypesAllowed,
+  imageTypesAllowedKey,
+} from "@/utils/imageTypesAllowed";
+import { usePathname } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 type TProfile = {
   image: string | StaticImageData;

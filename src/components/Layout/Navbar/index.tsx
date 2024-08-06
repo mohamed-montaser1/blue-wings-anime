@@ -26,7 +26,7 @@ export default function Navbar() {
       <Container className="flex justify-between items-center relative">
         <div className="flex items-center">
           <Link
-            href={"#"}
+            href={"/"}
             onClick={() => {
               if (pathname !== "/") animatePageOut("/", router);
             }}

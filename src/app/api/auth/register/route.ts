@@ -35,8 +35,8 @@ export async function POST(req: Request) {
 
   const newUser = await User.create({
     _id: new mongoose.Types.ObjectId(),
-    name: body.name,
-    slug_name: slugify(body.name, slugifyOptions),
+    name: body.username,
+    slug_name: slugify(body.username, slugifyOptions),
     email: body.email,
     password: hashPassword,
     role: "user",
@@ -51,6 +51,7 @@ export async function POST(req: Request) {
       { status: 201 }
     );
   } catch (error) {
+    console.log("Error: !!", error);
     return NextResponse.json(
       {
         user: null,

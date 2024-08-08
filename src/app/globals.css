@@ -171,25 +171,27 @@ button.animated::after {
 .grid-section-container {
   grid-template-areas:
     "membership"
-    "history"
-    "ads"
-    "social";
+    /* "history" */
+    "social"
+    "social"
+    "ads";
 }
 
 @media (min-width: 768px) {
   .grid-section-container {
     grid-template-areas:
-      "membership history"
+      "membership social"
       "ads social";
   }
 }
 @media (min-width: 992px) {
   .grid-section-container {
     grid-template-areas:
-      "membership membership membership history history"
+      "membership membership membership social social"
       "ads ads ads social social";
   }
 }
+
 .ad {
   @apply bg-card flex-1 min-h-80 text-white text-3xl flex items-center justify-center rounded-lg;
 }

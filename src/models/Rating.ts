@@ -31,9 +31,6 @@ const RatingSchema = new Schema<TRating>({
     type: String,
     required: true,
   },
-  createdAt: {
-    type: Number,
-  },
-});
+}, { timestamps: true });
 
 export const Rating = models.Rating || model("Rating", RatingSchema);

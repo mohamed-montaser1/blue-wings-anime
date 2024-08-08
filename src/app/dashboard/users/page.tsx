@@ -35,8 +35,9 @@ export default function Users() {
   useEffect(() => {
     async function getUsers() {
       const res = await axios.get("/api/all");
-      const userRole = res.data.filter((user: TUser) => user.role !== "admin");
-      const adminRole = res.data.filter((user: TUser) => user.role === "admin");
+      const data = res.data.users;
+      const userRole = data.filter((user: TUser) => user.role !== "admin");
+      const adminRole = data.filter((user: TUser) => user.role === "admin");
       setAdmins(adminRole);
       setUsers(userRole);
     }

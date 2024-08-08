@@ -19,9 +19,9 @@ export {
 export const images = [
   imageOne,
   imageTwo,
-  imageThree,
+  // imageThree,
   imageFour,
   imageFive,
   imageSix,
-  imageSeven,
+  // imageSeven,
 ];

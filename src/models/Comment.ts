@@ -9,13 +9,6 @@ export interface TComment {
   createdAt: number;
 }
 
-/*
-  _id: ObjectId
-  Author: Email
-  Content: Text
-  Likes: Empty Array
-  CreatedAt: Date.now()
-*/
 const CommentSchema = new Schema<TComment>(
   {
     _id: {
@@ -33,12 +26,8 @@ const CommentSchema = new Schema<TComment>(
       type: [{ type: Schema.Types.ObjectId, ref: "User" }],
       default: [],
     },
-    createdAt: {
-      type: Number,
-      default: Date.now(),
-    },
   },
-  { versionKey: false }
+  { timestamps: true }
 );
 
 export const Comment = models.Comment || model("Comment", CommentSchema);

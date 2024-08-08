@@ -38,12 +38,8 @@ const PostSchema = new Schema<TPost>(
       type: Schema.Types.ObjectId,
       ref: "User",
     },
-    createdAt: {
-      type: Number,
-      required: true,
-    },
   },
-  { versionKey: false }
+  { timestamps: true }
 );
 
 export const Post = models.Post || model("Post", PostSchema);

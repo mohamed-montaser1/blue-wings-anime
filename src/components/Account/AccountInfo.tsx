@@ -24,9 +24,9 @@ export default function AccountInfo({ user }: Props) {
   const [date, setDate] = useState<string>("");
 
   useEffect(() => {
-    console.log({ user, msg: "1" })
+    console.log({ user, msg: "1" });
     if (!user?.createdAt) return;
-    console.log({ user, msg: "2" })
+    console.log({ user, msg: "2" });
     fromJoinDate();
   }, [user, user?.createdAt]);
 

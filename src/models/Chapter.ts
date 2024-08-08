@@ -11,30 +11,30 @@ export interface TChapter {
   manga: TManga;
 }
 
-const ChapterSchema = new Schema<TChapter>({
-  _id: {
-    type: Schema.Types.ObjectId,
+const ChapterSchema = new Schema<TChapter>(
+  {
+    _id: {
+      type: Schema.Types.ObjectId,
+    },
+    number: {
+      type: Number,
+      required: true,
+      unique: true,
+    },
+    images: {
+      type: [String],
+      required: true,
+    },
+    manga: {
+      type: Schema.Types.ObjectId,
+      ref: "Manga",
+    },
+    comments: {
+      type: [{ type: Schema.Types.ObjectId, ref: "Comment" }],
+      default: [],
+    },
   },
-  number: {
-    type: Number,
-    required: true,
-    unique: true,
-  },
-  images: {
-    type: [String],
-    required: true,
-  },
-  manga: {
-    type: Schema.Types.ObjectId,
-    ref: "Manga",
-  },
-  comments: {
-    type: [{ type: Schema.Types.ObjectId, ref: "Comment" }],
-    default: [],
-  },
-  createdAt: {
-    type: Number,
-  },
-});
+  { timestamps: true }
+);
 
 export const Chapter = models.Chapter || model("Chapter", ChapterSchema);

@@ -48,9 +48,13 @@ export default function Page({ params: { name } }: TProps) {
       <AccountInfo user={user as TAccountInfoUser} />
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 relative">
         <Bio user={user as TUser} />
-        <div>
-          {session_user?.email === user?.email && (
+        <div className="flex items-center justify-center">
+          {user?.role === "artist" && session_user?.email === user?.email ? (
             <CreatePost setPosts={setPosts} user={user as TUser} />
+          ) : (
+            <h1 className="text-slate-200 text-2xl text-center">
+              المصممين وحدهم يستطيعون النشر !
+            </h1>
           )}
           <Posts posts={posts || []} />
         </div>

@@ -1,13 +1,13 @@
 "use client";
 import { Button, Container, Title, Input } from "@components";
 import Image from "next/image";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { GoogleIcon, LockIcon, PlainIcon, UserOutlineIcon } from "@icons";
 import { TRegisterError } from "@lib/types";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useSession, signIn } from "next-auth/react";
-import { useForm } from "react-hook-form";
+import { FieldErrors, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import registerSchema from "@lib/registerSchema";
 import axios from "axios";
@@ -17,13 +17,14 @@ import "react-toastify/dist/ReactToastify.css";
 import "@/app/globals.css";
 
 type FormValues = {
-  name: string;
+  username: string;
   email: string;
   password: string;
   confirmPassword: string;
 };
 
 export default function Register() {
+  const formRef = useRef<HTMLFormElement | null>(null);
   const {
     register,
     handleSubmit,
@@ -34,7 +35,6 @@ export default function Register() {
   });
   const passwordRefOne = useRef<HTMLInputElement>();
   const passwordRefTwo = useRef<HTMLInputElement>();
-  const [userRole, setUserRole] = useState("user");
 
   let { ref: passwordOneRef, ...passwordOneRegister } = register("password");
   let { ref: passwordTwoRef, ...passwordTwoRegister } =
@@ -54,10 +54,8 @@ export default function Register() {
   };
   async function handleRegularSignUp(_: FormValues) {
     try {
-      const res = await axios.post("/api/auth/register", {
-        ...getValues(),
-        role: userRole,
-      });
+      const res = await axios.post("/api/auth/register", getValues());
+      console.log({ res });
       toast(res.data.message, { type: "success" });
       signIn("credentials", {
         email: getValues().email,
@@ -76,12 +74,21 @@ export default function Register() {
     input!.type = input!.type === "text" ? "password" : "text";
   }
 
+  function handleOnInvalid(
+    errors: FieldErrors<FormValues>,
+    event: React.BaseSyntheticEvent
+  ) {
+    console.log({ errors });
+  }
+
   return (
     <Container className="flex flex-col items-center my-[100px]">
       <Title>إنشاء حساب</Title>
       <form
         className="mt-[80px] flex flex-col w-[603px] max-w-full items-center"
-        onSubmit={handleSubmit(handleRegularSignUp)}
+        // @ts-ignore
+        onSubmit={handleSubmit(handleRegularSignUp, handleOnInvalid)}
+        ref={formRef}
       >
         <div className="input-container w-full">
           <Input>
@@ -91,10 +98,10 @@ export default function Register() {
               placeholder="إسم المستخدم"
               className="input"
               tabIndex={1}
-              {...register("name")}
+              {...register("username")}
             />
           </Input>
-          {errors.name && <p className="error">{`${errors.name.message}`}</p>}
+          {errors.username && <p className="error">{`${errors.username.message}`}</p>}
         </div>
         <div className="input-container w-full">
           <Input>
@@ -161,27 +168,11 @@ export default function Register() {
             <p className="error">{`${errors.confirmPassword.message}`}</p>
           )}
         </div>{" "}
-        <div className="input-container w-full">
-          <Input className="items-center py-0">
-            <select
-              dir="rtl"
-              tabIndex={4}
-              className="bg-card w-full py-2.5 outline-none text-white"
-              value={userRole}
-              onChange={(e) => setUserRole(e.target.value)}
-            >
-              <option value="user" defaultChecked>
-                مستخدم
-              </option>
-              <option value="editor">محرر</option>
-              <option value="artist">فنان</option>
-            </select>
-          </Input>
-        </div>
         <Button
           variant="form-btn"
           className={`py-2.5 px-[50px] h-[57px] disabled:bg-sub-card`}
           aria-disabled={isSubmitting}
+          type="submit"
         >
           <span className="text-primary">إنشاء حساب جديد</span>
           <Image src={PlainIcon} alt="plain-icon" />

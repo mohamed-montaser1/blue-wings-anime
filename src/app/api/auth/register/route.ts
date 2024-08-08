@@ -39,9 +39,9 @@ export async function POST(req: Request) {
     slug_name: slugify(body.name, slugifyOptions),
     email: body.email,
     password: hashPassword,
-    role: body.role,
+    role: "user",
     favoriteManga: [],
-    createdAt: Date.now()
+    createdAt: Date.now(),
   });
 
   try {
@@ -56,7 +56,7 @@ export async function POST(req: Request) {
         user: null,
         message: `internal server error: ${error}`,
       },
-      { status: 205 }
+      { status: 500 }
     );
   }
 }

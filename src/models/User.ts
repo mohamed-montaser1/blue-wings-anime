@@ -24,9 +24,9 @@ export interface TUser {
 
 const UserSchema = new Schema<TUser>(
   {
-    // _id: {
-    //   type: Schema.Types.ObjectId,
-    // },
+    _id: {
+      type: Schema.Types.ObjectId,
+    },
     name: {
       type: String,
       trim: true,
@@ -87,7 +87,7 @@ const UserSchema = new Schema<TUser>(
       default: [],
     },
   },
-  { timestamps: true, id: true }
+  { timestamps: true, _id: false }
 );
 
 export const User = models.User || model("User", UserSchema);

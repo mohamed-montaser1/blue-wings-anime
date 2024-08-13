@@ -7,8 +7,8 @@ export default function SocialMediaAccounts() {
   return (
     <div className="flex flex-col gap-3" style={{ gridArea: "social" }}>
       {images.map((img, i) => (
-        <Link href={"#"} key={i}>
-          <Image className="img-banner" src={img} alt="image" key={i} />
+        <Link href={img.link} key={i} target="_blank">
+          <Image className="img-banner" src={img.img} alt="image" key={i} />
         </Link>
       ))}
     </div>

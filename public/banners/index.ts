@@ -17,11 +17,24 @@ export {
 };
 
 export const images = [
-  imageOne,
-  imageTwo,
-  // imageThree,
-  imageFour,
-  imageFive,
-  imageSix,
-  // imageSeven,
+  {
+    img: imageOne,
+    link: "#",
+  },
+  {
+    img: imageTwo,
+    link: "#",
+  },
+  {
+    img: imageFour,
+    link: "#",
+  },
+  {
+    img: imageFive,
+    link: "#",
+  },
+  {
+    img: imageSix,
+    link: "https://www.instagram.com/blue_wings0",
+  },
 ];

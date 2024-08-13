@@ -28,13 +28,14 @@ export default function AccountSettings() {
 
   return (
     <>
-      <div className="relative">
+      <div className="w-fit">
         <Button
-          className="flex flex-row-reverse gap-2 cursor-pointer md:bg-sub-card !p-1 md:!p-4 md:rounded-xl"
+          className="flex flex-row-reverse gap-2 cursor-pointer md:bg-sub-card md:rounded-xl w-fit"
           onClick={handleToggleDropdown}
+          size={"xl"}
         >
           <div className="flex justify-center items-center gap-2">
-            <h3 className="text-white text-left text-sm hidden xs:!inline">
+            <h3 className="text-white text-left text-base hidden sm:!inline">
               {user?.name}
             </h3>
             <Image src={UserIcon} alt="user-icon" />
@@ -59,19 +60,12 @@ export default function AccountSettings() {
                 href="/dashboard/users"
               />
             )}
-            {user.role === "editor" && (
-              <>
-                <DropdownOption
-                  icon={NewIcon}
-                  text="إنشاء مانجا"
-                  href="/manga/create"
-                />
-                <DropdownOption
-                  icon={NewIcon}
-                  text="إنشاء فصل جديد"
-                  href="/manga/chapter/create"
-                />
-              </>
+            {(user.role === "admin" || user.role === "artist") && (
+              <DropdownOption
+                icon={NewIcon}
+                text="منشور جديد"
+                href="/post/new"
+              />
             )}
             <DropdownOption icon={Heart} text="أعمالك المفضلة" href="/favs" />
             <DropdownOption

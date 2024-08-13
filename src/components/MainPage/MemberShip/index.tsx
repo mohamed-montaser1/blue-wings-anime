@@ -6,7 +6,7 @@ import Button from "../../Ui/Button";
 export default function PremiumMember() {
   return (
     <div
-      className="bg-card p-4 rounded-lg max-w-[832px] h-fit"
+      className="bg-card p-4 rounded-lg w-full h-fit"
       style={{ gridArea: "membership" }}
     >
       <h2 className="flex gap-2 w-fit">

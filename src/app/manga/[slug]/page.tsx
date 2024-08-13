@@ -1,5 +1,4 @@
 "use client";
-import useFetch from "@/hooks/useFetch";
 import useUser from "@/hooks/useUser";
 import { slugifyOptions } from "@/lib/slugifyOptions";
 import { TManga } from "@/models/Manga";

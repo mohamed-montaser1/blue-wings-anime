@@ -41,7 +41,7 @@ export default function Navbar() {
           </Link>
           <Menu />
         </div>
-        <div className="btn-container flex">
+        <div className="btn-container flex !w-fit">
           {status === "authenticated" ? (
             <AccountSettings />
           ) : (
@@ -56,7 +56,7 @@ export default function Navbar() {
             </Button>
           )}
           <Button
-            className="xxl:!hidden md:mr-3 !p-3 !min-w-0"
+            className="2xl:!hidden md:mr-3 !p-3 !min-w-0"
             onClick={handleActiveMenu}
           >
             <Image src={MenuIcon} alt="menu-icon" className="min-w-6" />

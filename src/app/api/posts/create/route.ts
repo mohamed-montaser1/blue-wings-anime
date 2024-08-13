@@ -1,7 +1,7 @@
 import { dbConnect } from "@/lib";
 import { TCreateNewPostResponse } from "@lib/types";
 import { Post } from "@models/Post";
-import { User } from "@models/User";
+import { TUser, User } from "@models/User";
 import mongoose from "mongoose";
 import { Session } from "next-auth";
 import { NextResponse } from "next/server";
@@ -34,13 +34,29 @@ export async function POST(req: Req): Promise<TCreateNewPostResponse> {
       });
     }
   }
-  const user = await User.findOne({ email }).populate("posts", "-author -_id");
+  const user: TUser = await User.findOne({ email })
+    .populate("posts", "-author -_id")
+    .exec();
+
   if (!user) {
-    return NextResponse.json({
-      success: false,
-      error: `Cannot Find User With This Email (email: ${email})`,
-      data: null,
-    });
+    return NextResponse.json(
+      {
+        success: false,
+        error: `لا يمكن إيجاد مستخدم بهذا البريد الإلكتروني (${email})`,
+        data: null,
+      },
+      { status: 404 }
+    );
+  }
+  if (user.role !== "artist" && user.role !== "admin") {
+    return NextResponse.json(
+      {
+        success: false,
+        error: "يجب أن يكون المستخدم فنان لإضافة منشور",
+        data: null,
+      },
+      { status: 400 }
+    );
   }
   // Create New Post
   const newPost = await Post.create({

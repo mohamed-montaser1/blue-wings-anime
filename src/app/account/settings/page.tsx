@@ -1,6 +1,5 @@
-// @ts-nocheck
 "use client";
-import { Avatar, Button, Container, Input } from "@components";
+import { Button, Container, Input } from "@components";
 import Image, { StaticImageData } from "next/image";
 import { CameraIcon, TrashIcon, UserIcon } from "@icons/index";
 import useUser from "@hooks/useUser";
@@ -25,9 +24,8 @@ import {
   imageTypesAllowed,
   imageTypesAllowedKey,
 } from "@/utils/imageTypesAllowed";
-import { usePathname } from "next/navigation";
-import { useRouter } from "next/navigation";
 import { slugifyOptions } from "@/lib/slugifyOptions";
+import { Avatar, AvatarFallback, AvatarImage } from "@components/Ui/Avatar";
 
 type TProfile = {
   image: string | StaticImageData;
@@ -86,7 +84,6 @@ export default function EditPage() {
         toast.error(error);
         toast.error("يجب عليك تغيير إسمك ليظهر حسابك");
       }
-      console.log({ isAnyUserWithSameName, error });
     }
     checkIfThereIsUserWithSameName();
   }, [
@@ -237,7 +234,7 @@ export default function EditPage() {
             height={"400"}
             className="w-full h-64 object-cover rounded-lg"
             priority={false}
-            alt="testing-banner"
+            alt="user-cover"
           />
           <div className="btn-container absolute right-5 top-7 flex flex-col gap-2">
             <input
@@ -271,10 +268,13 @@ export default function EditPage() {
           </div>
         </div>
         <div className="w-[200px] aspect-square bg-slate-500 rounded-full p-1 -translate-y-1/2 ml-7 border border-slate-900">
-          <Avatar
-            image={profile.image || defaultProfileValues.image}
-            size={200}
-          />
+          <Avatar size="xl">
+            <AvatarImage
+              src={(profile.image || defaultProfileValues.image) as string}
+              size="xl"
+            />
+            <AvatarFallback>صورة المستخدم {user?.name}</AvatarFallback>
+          </Avatar>
           <input
             type="file"
             hidden
@@ -380,7 +380,9 @@ function ChangeRole({ setShowChangeRoleRequest }: ChangeRoleProps) {
   useEffect(() => {
     setRole(user?.role);
   }, [user]);
-  function handleClosePopup(e: MouseEvent<HTMLDivElement, MouseEvent>) {
+  function handleClosePopup(
+    e: MouseEvent<HTMLDivElement, globalThis.MouseEvent>
+  ) {
     const target = e.target as HTMLDivElement;
     if (target.classList.contains("overlay")) {
       setShowChangeRoleRequest(false);

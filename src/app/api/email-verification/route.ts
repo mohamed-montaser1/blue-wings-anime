@@ -29,17 +29,25 @@ export async function POST(req: Request) {
     text: `كود تفعيل البريد الإلكتروني: ${code}`,
   };
 
-  const res = await transporter.sendMail(mailOptions);
-
-  if (res.rejected.length === 0) {
-    return NextResponse.json({
-      message: "Email sent successfully",
-      code,
-    });
+  try {
+    const res = await transporter.sendMail(mailOptions);
+    if (res.rejected.length === 0) {
+      return NextResponse.json(
+        {
+          message: "تم إرسال البريد بنجاح",
+          code,
+        },
+        { status: 200 }
+      );
+    }
+  } catch (error) {
+    return NextResponse.json(
+      {
+        message: "حصل خطأ أثناء إرسال البريد",
+        code: null,
+        error,
+      },
+      { status: 500 }
+    );
   }
-
-  return NextResponse.json({
-    message: "Email not sent",
-    code: null,
-  });
 }

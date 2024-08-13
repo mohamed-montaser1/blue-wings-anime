@@ -38,12 +38,16 @@ export async function GET(req: Request, { params }: Props) {
   }
 
   return NextResponse.json({
-    manga: Object.assign({}, (manga as TManga & { _doc: TManga })._doc, {
+    manga: Object.assign({}, (manga as unknown as { _doc: TManga })._doc, {
       ratingNumber: sum(manga.rating) / manga.rating.length,
     }),
   });
 }
-
+/**
+ *
+ * @param arr Array<TRating>
+ * @returns sum of rating
+ */
 function sum(arr: Array<TRating>) {
   return arr.reduce((acc, user) => acc + user.rating, 0);
 }

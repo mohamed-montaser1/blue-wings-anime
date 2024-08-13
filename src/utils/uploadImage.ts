@@ -1,6 +1,6 @@
 import axios, { AxiosError } from "axios";
 
-type TUploadImage = Promise<{ error: AxiosError; success: boolean } | string>;
+type TUploadImage = Promise<string>;
 
 export default function uploadImage(image: File): TUploadImage {
   const form = new FormData();

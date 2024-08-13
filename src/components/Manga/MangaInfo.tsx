@@ -63,11 +63,11 @@ export default function MangaInfo({ data }: TProps) {
           <div className="bg-card p-5 min-h-80 min-w-[400px] w-full mt-5">
             {user && (
               <div className="flex gap-4">
-                <Button className="!bg-secondary" onClick={handleAddToFav}>
+                <Button className="!bg-secondary flex-1 gap-2" onClick={handleAddToFav}>
                   <span className="text-white">مانجا مفضلة</span>
                   <Star fill="white" />
                 </Button>
-                <Button className="!bg-secondary">
+                <Button className="!bg-secondary flex-1 flex gap-2">
                   <span className="text-white">أريد قراءتها لاحقاً</span>
                   <Bookmark />
                 </Button>

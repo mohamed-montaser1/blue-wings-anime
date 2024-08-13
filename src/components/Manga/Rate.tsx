@@ -82,7 +82,7 @@ export default function Rate({ data }: TProps) {
 
   return (
     <div className="my-24">
-      <Container className="">
+      <Container className="flex flex-col">
         <Title className="mx-auto">قيم العمل الآن</Title>
         <div className="large">
           <Rater
@@ -112,11 +112,10 @@ export default function Rate({ data }: TProps) {
         </Input>
         <Button
           variant="form-btn"
-          className="mx-auto mt-4 px-16"
-          // onClick={() => console.log("DONE ===>", state)}
+          className="!mx-auto mt-4 px-16 gap-2"
           onClick={handleSaveRate}
         >
-          <span>تقييم</span>
+          <span className="text-base">تقييم</span>
           <Plain color="white" />
         </Button>
       </Container>

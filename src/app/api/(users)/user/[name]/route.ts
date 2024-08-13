@@ -27,12 +27,12 @@ export async function GET(req: Request, { params }: TParams) {
         },
       ],
     })
-    .populate({ path: "creations" });
+    .populate({ path: "creations" })
+    .exec();
 
   if (!user) {
     return NextResponse.json({ error: "لا يمكن إيجاد مستخدم بهذا الإسم" });
   }
-  console.log({ user });
   return NextResponse.json({
     user,
   });

@@ -8,7 +8,7 @@ import useUser from "@/hooks/useUser";
 function DropdownMenu({ children, userName }: TDropdownMenuProps) {
   const { avatar } = useUser({ required: true });
   return (
-    <div className="shadow-xl rounded-lg bg-card md:bg-sub-card md:rounded-xl absolute top-full left-0 mt-6 min-w-64 w-full min-h-14 z-50">
+    <div className="shadow-xl rounded-lg bg-card md:bg-sub-card md:rounded-xl absolute top-full left-[2rem] mt-6 min-w-64 min-h-14 z-50 w-fit">
       <Link
         href={"#"}
         id="DropdownOption"
@@ -46,7 +46,7 @@ function DropdownOption({
       href={href}
       id={`DropdownOption_${nanoid()}`}
       onClick={onClick}
-      className={`rounded-xl w-full transition-colors duration-300 ease-in-out p-4 ${
+      className={`rounded-xl !w-full transition-colors duration-300 ease-in-out p-4 ${
         !base ? "hover:bg-card" : "bg-secondary-800 rounded-b-none"
       } select-none flex items-center gap-4`}
       {...props}

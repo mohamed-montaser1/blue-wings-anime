@@ -6,7 +6,7 @@ import { TManga } from "@/models/Manga";
 import uploadImage from "@/utils/uploadImage";
 import axios, { AxiosError } from "axios";
 import { redirect, usePathname } from "next/navigation";
-import { FormEvent, useEffect, useRef, useState } from "react";
+import { MouseEvent, useEffect, useRef, useState } from "react";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -28,21 +28,14 @@ export default function CreateChapter() {
 
   useEffect(() => {
     if (!user) return;
-    if (user.role === "editor") {
-      (async () => {
-        const res = await axios.get(`/api/manga/${slug}`);
-        const manga = res.data.manga;
-        const author = manga.author.name;
-        if (author !== user.name) {
-          redirect("/");
-        }
-      })();
-    } else {
+    if (user.role !== "admin") {
       redirect("/");
     }
   }, [user]);
 
-  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(
+    e: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>
+  ) {
     e.preventDefault();
     const images = await uploadImages();
     if (images.length < 1) {
@@ -101,7 +94,7 @@ export default function CreateChapter() {
       <h1 className="text-center mx-auto mt-16 text-4xl font-bold text-white">
         إنشاء فصل جديد في {mangaName}
       </h1>
-      <form onSubmit={handleSubmit} className="mt-8 flex flex-col items-center">
+      <form className="mt-8 flex flex-col items-center" onSubmit={e => e.preventDefault()}>
         <input
           type="file"
           multiple
@@ -115,13 +108,15 @@ export default function CreateChapter() {
           يجب رفع الصور مرقمة لتظهر بنفس الترتيب في صفحة الفصل مثلا
           &quot;01&quot; &quot;02&quot; وهكذا
         </p>
-        <label
-          htmlFor="files-input"
-          className="bg-primary text-white text-xl px-4 max-w-fit min-h-14 justify-center rounded-xl flex items-center gap-2.5 mb-3"
+        <Button
+          variant="default"
+          className="px-8 mb-3"
+          onClick={() => imagesInputFile.current?.click()}
+          role="button"
         >
           تحميل الصور
-        </label>
-        <Button variant="primary" className="px-8">
+        </Button>
+        <Button variant="default" className="px-8" onClick={handleSubmit}>
           رفع الصور
         </Button>
       </form>

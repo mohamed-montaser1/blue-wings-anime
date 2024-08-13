@@ -30,11 +30,12 @@ export default function VerifyEmail() {
   );
 
   const sendCode = useCallback(async function () {
+    if (!user) return;
     const res = await axios.post("/api/email-verification", {
-      email: user?.email,
+      email: user.email,
     });
     setCode(res.data.code);
-  }, [])
+  }, [user])
 
   useEffect(() => {
     if (!user) return;

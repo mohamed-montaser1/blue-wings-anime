@@ -1,9 +1,16 @@
 "use client";
-import { Avatar, Button, Container, Input } from "@/components";
+import { Button, Container, Input } from "@/components";
+import { Avatar, AvatarFallback, AvatarImage } from "@components/Ui/Avatar";
 import { roles } from "@/components/Account/AccountInfo";
 import { TableBodyData } from "@/components/Dashboard/TableBodyData";
-import { TableHeadData } from "@/components/Dashboard/TableHeadData";
-import useFetch from "@/hooks/useFetch";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/Ui/table";
 import useUser from "@/hooks/useUser";
 import { TUser, UserRole } from "@/models/User";
 import { SettingsIcon } from "@icons/index";
@@ -23,7 +30,7 @@ import {
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-export default function Users() {
+export default function UsersAC() {
   const [users, setUsers] = useState<TUser[]>([]);
   const [admins, setAdmins] = useState<TUser[]>([]);
   const [showRolePopup, setShowRolePopup] = useState(false);
@@ -60,42 +67,57 @@ export default function Users() {
       )}
       {users.length > 0 && (
         <>
-          <div className="flex justify-between container">
-            <h1 className="text-slate-200 text-xl text-center">
-              <span>عدد المستخدمين:</span>
-              <span> {users.length}</span>
-            </h1>
-            <h1 className="text-slate-200 text-xl text-center">
-              <span>عدد المسؤولين:</span>
-              <span> {admins.length}</span>
-            </h1>
-          </div>
-          <table className="container h-fit">
-            <thead className="border">
-              <tr>
-                <TableHeadData content="الصوره الشخصيه" key={nanoid()} />
-                <TableHeadData content="الإسم" key={nanoid()} />
-                <TableHeadData content="البريد الإلكتروني" key={nanoid()} />
-                <TableHeadData content="المنصب" key={nanoid()} />
-                <TableHeadData content="الملف الشخصي" key={nanoid()} />
-              </tr>
-            </thead>
-            <tbody className="border">
+          <Table className="w-4/5 mx-auto border border-primary ">
+            <TableHeader>
+              <TableRow className="border-b-primary">
+                <TableHead
+                  key={nanoid()}
+                  className="text-center border border-primary"
+                >
+                  الصورة الشخصية
+                </TableHead>
+                <TableHead
+                  key={nanoid()}
+                  className="text-center border border-primary"
+                >
+                  الإسم
+                </TableHead>
+                <TableHead
+                  key={nanoid()}
+                  className="text-center border border-primary"
+                >
+                  البريد الإلكتروني
+                </TableHead>
+                <TableHead
+                  key={nanoid()}
+                  className="text-center border border-primary"
+                >
+                  المنصب
+                </TableHead>
+                <TableHead
+                  key={nanoid()}
+                  className="text-center border border-primary"
+                >
+                  الملف الشخصي
+                </TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
               {users.map((u, i) => {
                 if (u?.email === user?.email) return;
                 return (
                   <UserData
-                    user={u}
+                    key={nanoid()}
                     index={i}
-                    key={i}
-                    setShowRolePopup={setShowRolePopup}
-                    setSelectedUser={setSelectedUser}
                     setRender={setRender}
+                    setSelectedUser={setSelectedUser}
+                    setShowRolePopup={setShowRolePopup}
+                    user={u}
                   />
                 );
               })}
-            </tbody>
-          </table>
+            </TableBody>
+          </Table>
         </>
       )}
       {showRolePopup && (
@@ -114,6 +136,108 @@ export default function Users() {
         rtl
       />
     </div>
+  );
+}
+
+function UserData({
+  user,
+  index,
+  setShowRolePopup,
+  setSelectedUser,
+  setRender,
+}: UserDataProps) {
+  const SettingsRef = useRef<HTMLDivElement | null>(null);
+  const [isActive, setIsActive] = useState(false);
+
+  async function handleEditRole(e: any, user: TUser) {
+    setShowRolePopup(true);
+    setSelectedUser(user);
+  }
+
+  async function handleRemoveAccount() {
+    try {
+      await axios.delete(`/api/user/${user.slug_name}`);
+      setRender((prev) => prev + 1);
+      toast.success("تم حذف الحساب بنجاح");
+    } catch (error) {
+      let e = error as unknown as AxiosError;
+      console.log({ error });
+      switch (e.response?.status) {
+        case 404:
+          toast.error("لا يوجد مستخدم بهذا الإسم !");
+          break;
+        case 500:
+          toast.error(
+            "حدث خطأ ما في الخادم أثناء محاولة حذف هذا المستخدم يرجى المحاوله لاحقاً"
+          );
+          break;
+      }
+    }
+  }
+
+  return (
+    <TableRow className="border-b-primary">
+      <TableCell className="text-center border border-primary">
+        <Avatar className="mx-auto" size="lg">
+          <AvatarImage src={user.image} size="lg" />
+          <AvatarFallback>
+            {user.name
+              .split(" ")
+              .map((e) => e[0].toUpperCase())
+              .join("")}
+          </AvatarFallback>
+        </Avatar>
+      </TableCell>
+      <TableCell className="text-center border border-primary">
+        {user.name}
+      </TableCell>
+      <TableCell className="text-center border border-primary">
+        {user.email}
+      </TableCell>
+      <TableCell className="text-center border border-primary">
+        {roles[user.role]}
+      </TableCell>
+      <TableCell className="text-center border border-primary relative">
+        <Button
+          variant={"form-btn"}
+          onClick={() => setIsActive((prev) => !prev)}
+        >
+          <Image src={SettingsIcon} alt={`settings-icon-${nanoid()}`} />
+        </Button>
+        {isActive && (
+          <div
+            className={`flex absolute w-44 min-h-fit p-4 bg-card z-50 top-full left-0 rounded-xl flex-col items-stretch gap-3 shadow-2xl`}
+            ref={SettingsRef}
+          >
+            <Button
+              variant="light-form-btn"
+              className="!text-base max-w-full"
+              onClick={(e) => handleEditRole(e, user)}
+            >
+              تعديل المنصب
+            </Button>
+            <Link
+              href={`/user/${user.slug_name}`}
+              className="max-w-full inline-block"
+            >
+              <Button
+                variant="light-form-btn"
+                className="!text-base !w-full !max-w-full"
+              >
+                زيارة الحساب
+              </Button>
+            </Link>
+            <Button
+              variant="danger"
+              className="!text-base max-w-full"
+              onClick={handleRemoveAccount}
+            >
+              حذف الحساب
+            </Button>
+          </div>
+        )}
+      </TableCell>
+    </TableRow>
   );
 }
 
@@ -198,92 +322,3 @@ type UserDataProps = {
   setSelectedUser: Dispatch<SetStateAction<TUser | null>>;
   setRender: Dispatch<SetStateAction<number>>;
 };
-
-function UserData({
-  user,
-  index,
-  setShowRolePopup,
-  setSelectedUser,
-  setRender,
-}: UserDataProps) {
-  const SettingsRef = useRef<HTMLDivElement | null>(null);
-  const [isActive, setIsActive] = useState(false);
-
-  async function handleEditRole(e: any, user: TUser) {
-    setShowRolePopup(true);
-    setSelectedUser(user);
-  }
-
-  async function handleRemoveAccount() {
-    try {
-      await axios.delete(`/api/user/${user.slug_name}`);
-      setRender((prev) => prev + 1);
-      toast.success("تم حذف الحساب بنجاح");
-    } catch (error) {
-      let e = error as unknown as AxiosError;
-      console.log({ error });
-      switch (e.response?.status) {
-        case 404:
-          toast.error("لا يوجد مستخدم بهذا الإسم !");
-          break;
-        case 500:
-          toast.error(
-            "حدث خطأ ما في الخادم أثناء محاولة حذف هذا المستخدم يرجى المحاوله لاحقاً"
-          );
-          break;
-      }
-    }
-  }
-
-  return (
-    <tr key={index} className="border">
-      <TableBodyData>
-        <Avatar size={50} image={user.image} />
-      </TableBodyData>
-      <TableBodyData>{user.name}</TableBodyData>
-      <TableBodyData>{user.email}</TableBodyData>
-      <TableBodyData>{roles[user.role]}</TableBodyData>
-      <TableBodyData>
-        <Button
-          variant="form-btn"
-          className="mx-auto my-3"
-          onClick={() => setIsActive((prev) => !prev)}
-        >
-          <Image src={SettingsIcon} alt={`settings-icon-${nanoid()}`} />
-        </Button>
-        <div
-          className={`absolute w-44 min-h-fit p-4 bg-card z-50 top-full left-0 rounded-xl flex-col items-stretch gap-3 shadow-2xl ${
-            isActive ? "flex" : "hidden"
-          }`}
-          ref={SettingsRef}
-        >
-          <Button
-            variant="light-form-btn"
-            className="!text-base max-w-full"
-            onClick={(e) => handleEditRole(e, user)}
-          >
-            تعديل المنصب
-          </Button>
-          <Link
-            href={`/user/${user.slug_name}`}
-            className="max-w-full inline-block"
-          >
-            <Button
-              variant="light-form-btn"
-              className="!text-base !w-full !max-w-full"
-            >
-              زيارة الحساب
-            </Button>
-          </Link>
-          <Button
-            variant="danger"
-            className="!text-base max-w-full"
-            onClick={handleRemoveAccount}
-          >
-            حذف الحساب
-          </Button>
-        </div>
-      </TableBodyData>
-    </tr>
-  );
-}

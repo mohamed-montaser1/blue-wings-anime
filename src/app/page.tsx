@@ -3,7 +3,6 @@
 import {
   MostSkilledArtists,
   PremiumMember,
-  MangaWatchingHistory,
   Ads,
   SocialMediaAccounts,
   Recommendations,
@@ -27,7 +26,6 @@ export default function Home() {
       <MostSkilledArtists />
       <Container className="mt-20 grid grid-cols-1 md:grid-cols-2 gap-4 grid-section-container">
         <PremiumMember />
-        {/* <MangaWatchingHistory /> */}
         <SocialMediaAccounts />
         <Ads />
       </Container>

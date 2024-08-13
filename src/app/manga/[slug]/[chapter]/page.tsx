@@ -1,6 +1,7 @@
 "use client";
 import { Container } from "@/components";
-import { Avatar, Breadcrumbs, Button, Input, Title } from "@/components/Ui";
+import { Breadcrumbs, Button, Input, Title } from "@/components/Ui";
+import { Avatar, AvatarFallback, AvatarImage } from "@components/Ui/Avatar";
 import useFetch from "@/hooks/useFetch";
 import useUser from "@/hooks/useUser";
 import { TChapter } from "@/models/Chapter";
@@ -152,11 +153,10 @@ export default function Chapter() {
         <div className="mt-5">
           {comments.map((comment, i) => (
             <div key={i} className="flex gap-2 my-2 bg-sub-card rounded-lg p-3">
-              <Avatar
-                image={comment.author?.image}
-                size={40}
-                className="!h-12 !w-12"
-              />
+              <Avatar size="lg">
+                <AvatarImage src={comment.author?.image} size="lg" />
+                <AvatarFallback>{comment.author.name}</AvatarFallback>
+              </Avatar>
               <div className="flex-grow">
                 <div className="flex justify-between">
                   <span className="text-slate-200">{comment.author?.name}</span>

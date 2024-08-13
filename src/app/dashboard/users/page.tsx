@@ -67,7 +67,7 @@ export default function UsersAC() {
       )}
       {users.length > 0 && (
         <>
-          <Table className="w-4/5 mx-auto border border-primary ">
+          <Table className="w-4/5 mx-auto border border-primary">
             <TableHeader>
               <TableRow className="border-b-primary">
                 <TableHead

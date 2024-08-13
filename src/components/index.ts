@@ -1,5 +1,6 @@
 // UI Components
-import { Avatar, Button, Container, Input, Title } from "./Ui";
+import { Button, Container, Input, Title } from "./Ui";
+import { Avatar, AvatarFallback, AvatarImage } from "./Ui/Avatar";
 // Layout Components
 import Navbar from "./Layout/Navbar";
 // Swiper Components
@@ -63,4 +64,6 @@ export {
   MangaInfo,
   Rate,
   SimilarManga,
+  AvatarFallback,
+  AvatarImage
 };

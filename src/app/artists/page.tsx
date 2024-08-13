@@ -1,6 +1,7 @@
 "use client";
 import { TUser } from "@models/User";
-import { Avatar, Button, Container, Title } from "@components";
+import { Button, Container, Title } from "@components";
+import { Avatar, AvatarImage, AvatarFallback } from "@components/Ui/Avatar";
 import { useEffect, useState } from "react";
 import useFetch from "@hooks/useFetch";
 import { ToastContainer, toast } from "react-toastify";
@@ -46,11 +47,10 @@ export default function Artists() {
                     fill
                     className="object-cover rounded-t-lg"
                   />
-                  <Avatar
-                    size={50}
-                    image={user.image}
-                    className="!w-[50px] !h-[50px] absolute bottom-3 right-3 bg-slate-300 p-0.5"
-                  />
+                  <Avatar size="lg">
+                    <AvatarImage size="lg" />
+                    <AvatarFallback>{user.name}</AvatarFallback>
+                  </Avatar>
                 </div>
                 <div className="card-body px-4">
                   <h2 className="text-slate-200 mt-3 text-xl">{user.name}</h2>

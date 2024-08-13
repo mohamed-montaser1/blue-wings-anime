@@ -112,15 +112,17 @@ export default function EditPage() {
       });
       return;
     }
-    let result = await uploadImage(img);
-    if (result instanceof Object) {
-      console.error({ uploadingError: result });
-      toast(msg, { type: "error" });
-      cb(result);
-      return;
-    }
-    cb(result);
-    return result;
+    return uploadImage(img)
+      .then((result) => {
+        cb(result);
+        return result;
+      })
+      .catch((error) => {
+        console.error({ uploadingError: error });
+        toast(msg, { type: "error" });
+        cb(error);
+        return;
+      });
   }
 
   const setUserAvatar = (image: string | object) => {

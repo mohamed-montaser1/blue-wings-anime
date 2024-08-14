@@ -48,7 +48,7 @@ export default function Artists() {
                     className="object-cover rounded-t-lg"
                   />
                   <Avatar size="lg">
-                    <AvatarImage size="lg" />
+                    <AvatarImage src={user.image} size="lg" />
                     <AvatarFallback>{user.name}</AvatarFallback>
                   </Avatar>
                 </div>

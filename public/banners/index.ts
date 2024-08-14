@@ -19,7 +19,7 @@ export {
 export const images = [
   {
     img: imageOne,
-    link: "#",
+    link: "https://discord.gg/fyaHbprk",
   },
   {
     img: imageTwo,

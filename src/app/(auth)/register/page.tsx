@@ -2,7 +2,13 @@
 import { Button, Container, Title, Input } from "@components";
 import Image from "next/image";
 import { useEffect, useRef } from "react";
-import { GoogleIcon, LockIcon, PlainIcon, UserOutlineIcon } from "@icons";
+import {
+  GoogleIcon,
+  LockIcon,
+  MailBoxIcon,
+  PlainIcon,
+  UserOutlineIcon,
+} from "@icons";
 import { TRegisterError } from "@lib/types";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -101,11 +107,13 @@ export default function Register() {
               {...register("username")}
             />
           </Input>
-          {errors.username && <p className="error">{`${errors.username.message}`}</p>}
+          {errors.username && (
+            <p className="error">{`${errors.username.message}`}</p>
+          )}
         </div>
         <div className="input-container w-full">
           <Input>
-            <Image src={UserOutlineIcon} alt="user-outline-icon" />
+            <Image src={MailBoxIcon} alt="user-outline-icon" />
             <input
               type="email"
               placeholder="البريد الإلكتروني"
@@ -132,7 +140,7 @@ export default function Register() {
               {...passwordOneRegister}
             />
             <span
-              className="text-primary cursor-pointer"
+              className="text-primary cursor-pointer select-none"
               onClick={() => showPassword(1)}
             >
               إظهار كلمة المرور
@@ -158,7 +166,7 @@ export default function Register() {
               {...passwordTwoRegister}
             />
             <span
-              className="text-primary cursor-pointer"
+              className="text-primary cursor-pointer select-none"
               onClick={() => showPassword(2)}
             >
               إظهار كلمة المرور
@@ -168,32 +176,22 @@ export default function Register() {
             <p className="error">{`${errors.confirmPassword.message}`}</p>
           )}
         </div>{" "}
-        <Button
-          variant="form-btn"
-          className={`py-2.5 px-[50px] h-[57px] disabled:bg-sub-card`}
-          aria-disabled={isSubmitting}
-          type="submit"
-        >
-          <span className="text-primary">إنشاء حساب جديد</span>
+        <Button variant="form-btn" size={"xl"} type="submit">
+          <span className="text-primary ml-2 text-lg">إنشاء حساب جديد</span>
           <Image src={PlainIcon} alt="plain-icon" />
         </Button>
       </form>
       <div className="my-8 flex items-center gap-5 w-[603px] max-w-full">
-        <hr className="flex-1" />
+        <hr className="flex-1 border-slate-200" />
         <span className="text-white text-2xl">أو</span>
-        <hr className="flex-1" />
+        <hr className="flex-1 border-slate-200" />
       </div>
-      <div className="w-[600px] max-w-full bg-card min-h-[100px] rounded-3xl flex items-center justify-center">
-        <Button
-          className="bg-sub-card p-[25px]"
-          onClick={handleSignInWithGoogle}
-        >
-          <span className="hidden sm:inline-block">
-            تسجيل الدخول بإستخدام Google
-          </span>
-          <Image src={GoogleIcon} alt="google-icon" />
-        </Button>
-      </div>
+      <Button variant={"border"} size={"xxl"} onClick={handleSignInWithGoogle}>
+        <span className="inline-block max-[450px]:hidden text-lg ml-3">
+          إنشاء حساب بإستخدام Google
+        </span>
+        <Image src={GoogleIcon} alt="google-icon" className="h-10" />
+      </Button>
       <p className="mt-[20px] text-white">
         لديك حساب بالفعل ؟{" "}
         <Link href={"/login"} className="text-primary">

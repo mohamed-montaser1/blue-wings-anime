@@ -7,22 +7,17 @@ import { SwiperSlide } from "swiper/react";
 import Image from "next/image";
 import { ClockIcon } from "@icons/index";
 import generateSwiperBreakPoints from "@/lib/swiperOptions";
+import { CarouselItem } from "@/components/Ui/carousel";
 
 export default function Newest() {
   return (
     <div>
       <Container className="lg:px-0 mt-20">
-        <SectionHeader title="جديد الأعمال" id="newest" />
-        <SectionSwiper
-          slidesPerView={3}
-          id="newest"
-          options={{
-            breakpoints: generateSwiperBreakPoints({ slidesPerView: 3 }),
-          }}
-        >
+        <SectionHeader title="جديد الأعمال" />
+        <SectionSwiper>
           {data.map((el, i) => {
             return (
-              <SwiperSlide key={i} className="mr-3">
+              <CarouselItem key={i} className="basis-1/3">
                 <Slide>
                   <div className="details w-full mt-3">
                     <h3 className="text-slate-200 text-right text-2xl">
@@ -60,7 +55,7 @@ export default function Newest() {
                     </Button>
                   </div>
                 </Slide>
-              </SwiperSlide>
+              </CarouselItem>
             );
           })}
         </SectionSwiper>

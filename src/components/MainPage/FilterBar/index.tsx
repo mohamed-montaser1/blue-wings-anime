@@ -16,7 +16,8 @@ export default function FilterBar() {
         </ul>
         <Button
           variant="main"
-          className="!px-12 !py-[15px] lg:text-xl md:text-lg sm:text-sm max-[546px]:w-full flex justify-center hover:bg-opacity-80 transition-opacity ease-in-out duration-300"
+          size={"xl"}
+          className="lg:text-xl md:text-lg sm:text-sm"
         >
           كل المانجا
         </Button>

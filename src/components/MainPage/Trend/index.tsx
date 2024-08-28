@@ -5,6 +5,14 @@ import { TAnime } from "@/components/Swiper/SectionSwiper";
 import Slide from "../../Swiper/SectionSwiper/Slide";
 import Rater from "react-rater";
 import { SwiperSlide } from "swiper/react";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/Ui/carousel";
+import { Card, CardContent } from "@/components/Ui/card";
 
 export default function Trend() {
   const data: TAnime[] = [
@@ -42,17 +50,11 @@ export default function Trend() {
   return (
     <div className="mt-16">
       <Container className="lg:px-0">
-        <SectionHeader title="الأعمال الرائجة" id="trend" />
-        <SectionSwiper
-          id="trend"
-          options={{
-            breakpoints: generateSwiperBreakPoints({ slidesPerView: 4 }),
-          }}
-          slidesPerView={4}
-        >
+        <SectionHeader title="الأعمال الرائجة" />
+        <SectionSwiper>
           {data.map((el, i) => {
             return (
-              <SwiperSlide className="mr-3" key={i}>
+              <CarouselItem className="basis-1/4 *:select-none" key={i}>
                 <Slide>
                   <div className="details w-full mt-3">
                     <h3 className="text-white text-right">
@@ -74,7 +76,7 @@ export default function Trend() {
                     </div>
                   </div>
                 </Slide>
-              </SwiperSlide>
+              </CarouselItem>
             );
           })}
         </SectionSwiper>

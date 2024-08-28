@@ -12,24 +12,22 @@ interface Props
     HTMLButtonElement
   > {
   children: React.ReactNode;
-  variant?: keyof TStyles;
+  variant?: ButtonVariants;
   type?: "submit" | "reset" | "button";
 }
 
-type TStyles = Readonly<typeof styles>;
+export type ButtonVariants =
+  | "default"
+  | "danger"
+  | "form-btn"
+  | "light-form-btn"
+  | "ghost"
+  | "link"
+  | "main";
 
-let styles = {
-  main: "from-primary to-secondary bg-gradient-to-br",
-  danger: "bg-red-500",
-  "form-btn": "bg-card text-primary",
-  "light-form-btn": "bg-sub-card text-primary",
-  primary: "bg-primary",
-} as const;
-
-const buttonVariants = cva(
-  "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
+export const buttonVariants = cva(
+  "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background !transition duration-400 ease-in-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
   {
-    
     variants: {
       variant: {
         default: "bg-primary text-slate-200 hover:bg-primary/90",
@@ -37,6 +35,7 @@ const buttonVariants = cva(
         "form-btn":
           "bg-card hover:bg-sub-card text-slate-200 hover:text-primary",
         "light-form-btn": "bg-sub-card text-slate-200 hover:bg-sub-card/80",
+        "border": "bg-transparent text-slate-200 border border-solid border-slate-200 hover:bg-sub-card hover:border-sub-card",
         ghost: "hover:bg-accent hover:text-accent-foreground",
         link: "text-primary underline-offset-4 hover:underline",
         main: "bg-primary text-slate-200 hover:bg-primary/80",
@@ -46,6 +45,7 @@ const buttonVariants = cva(
         sm: "h-9 rounded-md px-3",
         lg: "h-11 rounded-md px-8",
         xl: "h-14 rounded-md px-8 py-4",
+        xxl: "h-16 rounded-md px-10 !py-6",
         icon: "h-10 w-10",
       },
     },

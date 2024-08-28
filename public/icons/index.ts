@@ -24,7 +24,8 @@ import PostHeart from "./post-heart.svg";
 import DashboardIcon from "./dashboard.svg";
 import NewsIcon from "./news.svg";
 import NewIcon from "./new.svg";
-import ImageVideoIcon from "./image-video.svg"
+import ImageVideoIcon from "./image-video.svg";
+import MailBoxIcon from "./mailbox.svg";
 
 export {
   Home,
@@ -53,5 +54,6 @@ export {
   DashboardIcon,
   NewsIcon,
   NewIcon,
-  ImageVideoIcon
+  ImageVideoIcon,
+  MailBoxIcon,
 };

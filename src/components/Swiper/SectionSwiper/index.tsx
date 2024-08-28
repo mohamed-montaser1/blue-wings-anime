@@ -1,6 +1,11 @@
-import { Swiper } from "swiper/react";
-import { SwiperOptions } from "swiper/types";
-
+import {
+  Carousel,
+  CarouselContent,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/Ui/carousel";
+import Autoplay from "embla-carousel-autoplay";
+import { useRef } from "react";
 import "react-rater/lib/react-rater.css";
 
 export interface TAnime {
@@ -11,28 +16,23 @@ export interface TAnime {
 }
 
 interface Props {
-  slidesPerView: number;
-  id: string;
-  options?: SwiperOptions;
   children: React.ReactNode;
 }
 
-export default function SectionSwiper({
-  slidesPerView,
-  id,
-  options,
-  children,
-}: Props) {
+export default function SectionSwiper({ children }: Props) {
+  const autoplayRef = useRef(Autoplay({ delay: 2000, stopOnMouseEnter: true }));
+
   return (
-    <Swiper
-      slidesPerView={slidesPerView}
-      loop
-      className="mt-9"
-      id={id}
-      grabCursor
-      {...options}
+    <Carousel
+      plugins={[autoplayRef.current]}
+      onMouseLeave={() => {
+        autoplayRef.current.play();
+      }}
+      className="cursor-grab"
     >
-      {children}
-    </Swiper>
+      <CarouselContent>{children}</CarouselContent>
+      <CarouselPrevious />
+      <CarouselNext />
+    </Carousel>
   );
 }

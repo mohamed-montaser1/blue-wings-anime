@@ -19,9 +19,7 @@ export default function Title({ children, center, ...props }: Props) {
         props.className ?? ""
       }`}
     >
-      <h2
-        className={`text-[40px] text-white text-center mb-2 md:!mb-4 font-bold`}
-      >
+      <h2 className={`text-[40px] text-white text-center font-bold`}>
         {children}
       </h2>
       <Image

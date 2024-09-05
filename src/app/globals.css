@@ -207,7 +207,21 @@ button.animated::after {
 }
 
 .overlay {
-  @apply w-full h-full fixed inset-0 flex justify-center items-center bg-card backdrop-blur-xl bg-opacity-60 z-[9999999999];
+  /* @apply w-full h-full fixed inset-0 flex justify-center items-center bg-card backdrop-blur-xl bg-opacity-60 z-[9999999999]; */
+  @apply bg-black/70 fixed w-full h-full inset-0 z-[10001] cursor-default flex items-center justify-center;
+}
+
+.custom-carousel-prev,
+.custom-carousel-next {
+  @apply bg-sub-card shadow-lg text-primary absolute top-1/2;
+}
+
+.custom-carousel-prev {
+  left: 1rem;
+}
+
+.custom-carousel-next {
+  right: 1rem;
 }
 
 @layer base {

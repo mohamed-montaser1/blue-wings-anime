@@ -4,6 +4,7 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/Ui/carousel";
+import { cn } from "@/lib/utils";
 import Autoplay from "embla-carousel-autoplay";
 import { useRef } from "react";
 import "react-rater/lib/react-rater.css";
@@ -15,11 +16,18 @@ export interface TAnime {
   rate: number;
 }
 
-interface Props {
+type Props = React.HTMLAttributes<HTMLDivElement> & {
   children: React.ReactNode;
-}
+  customBtns?: boolean;
+  showBtns?: boolean;
+};
 
-export default function SectionSwiper({ children }: Props) {
+export default function SectionSwiper({
+  children,
+  customBtns,
+  showBtns = true,
+  ...props
+}: Props) {
   const autoplayRef = useRef(Autoplay({ delay: 2000, stopOnMouseEnter: true }));
 
   return (
@@ -28,11 +36,21 @@ export default function SectionSwiper({ children }: Props) {
       onMouseLeave={() => {
         autoplayRef.current.play();
       }}
-      className="cursor-grab"
+      {...props}
+      className={cn(
+        showBtns ? "cursor-grab" : "cursor-default",
+        props.className
+      )}
     >
       <CarouselContent>{children}</CarouselContent>
-      <CarouselPrevious />
-      <CarouselNext />
+      {showBtns && (
+        <>
+          <CarouselPrevious
+            className={customBtns ? "custom-carousel-prev" : ""}
+          />
+          <CarouselNext className={customBtns ? "custom-carousel-next" : ""} />
+        </>
+      )}
     </Carousel>
   );
 }

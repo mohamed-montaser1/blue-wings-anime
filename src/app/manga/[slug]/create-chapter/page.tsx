@@ -1,8 +1,6 @@
 "use client";
-import { Button, Container, Input, Title } from "@/components";
-import useFetch from "@/hooks/useFetch";
+import { Button, Container } from "@/components";
 import useUser from "@/hooks/useUser";
-import { TManga } from "@/models/Manga";
 import uploadImage from "@/utils/uploadImage";
 import axios, { AxiosError } from "axios";
 import { redirect, usePathname } from "next/navigation";

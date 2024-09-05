@@ -1,6 +1,5 @@
 "use client";
 import { Button, Container, Slide } from "@/components";
-import useFetch from "@/hooks/useFetch";
 import { TManga } from "@/models/Manga";
 import useUser from "@hooks/useUser";
 import axios from "axios";

@@ -15,7 +15,7 @@ const avatarVariants = cva("!aspect-square", {
       sm: "w-9",
       md: "w-11",
       lg: "w-12",
-      xl: "w-[200px]",
+      xl: "w-[190px]",
     },
   },
 });

@@ -1,8 +1,7 @@
 "use client";
-import Sidebar from "@/components/Dashboard/Sidebar";
 import useUser from "@/hooks/useUser";
 import { redirect } from "next/navigation";
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 
 export default function Dashboard() {
   const { user } = useUser({ required: true });

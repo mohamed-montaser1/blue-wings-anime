@@ -1,9 +1,8 @@
-import generateSwiperBreakPoints from "@lib/swiperOptions";
-import { TAnime } from "../Swiper/SectionSwiper";
 import { SectionHeader, SectionSwiper } from "@components";
-import { SwiperSlide } from "swiper/react";
-import Slide from "../Swiper/SectionSwiper/Slide";
 import Rater from "react-rater";
+import { SwiperSlide } from "swiper/react";
+import { TAnime } from "../Swiper/SectionSwiper";
+import Slide from "../Swiper/SectionSwiper/Slide";
 
 export default function ReadingLater() {
   const data: TAnime[] = [
@@ -40,15 +39,8 @@ export default function ReadingLater() {
   ];
   return (
     <section className="mt-16">
-      <SectionHeader id="6" title="القرآءة لاحقاً" />
-      <SectionSwiper
-        slidesPerView={4}
-        id="6"
-        key={5}
-        options={{
-          breakpoints: generateSwiperBreakPoints({ slidesPerView: 4 }),
-        }}
-      >
+      <SectionHeader title="القرآءة لاحقاً" />
+      <SectionSwiper key={5}>
         {data.map((el, i) => {
           return (
             <SwiperSlide className="mr-3" key={i}>

@@ -8,6 +8,7 @@ import Image from "next/image";
 import { ClockIcon } from "@icons/index";
 import generateSwiperBreakPoints from "@/lib/swiperOptions";
 import { CarouselItem } from "@/components/Ui/carousel";
+import Link from "next/link";
 
 export default function Newest() {
   return (
@@ -50,9 +51,15 @@ export default function Newest() {
                         <span className="text-white">{el.rate}</span>
                       </div>
                     </div>
-                    <Button variant="main" className="px-11 mt-4">
-                      الإنتقال إلى الفصل
-                    </Button>
+                    <Link href={"#"} className="flex justify-center">
+                      <Button
+                        variant="main"
+                        size={"lg"}
+                        className="text-lg self-center select-none"
+                      >
+                        الإنتقال إلى العمل
+                      </Button>
+                    </Link>
                   </div>
                 </Slide>
               </CarouselItem>

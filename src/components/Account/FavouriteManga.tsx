@@ -1,9 +1,8 @@
-import generateSwiperBreakPoints from "@lib/swiperOptions";
-import { TAnime } from "../Swiper/SectionSwiper";
 import { SectionHeader, SectionSwiper } from "@components";
-import Slide from "../Swiper/SectionSwiper/Slide";
-import { SwiperSlide } from "swiper/react";
 import Rater from "react-rater";
+import { SwiperSlide } from "swiper/react";
+import { TAnime } from "../Swiper/SectionSwiper";
+import Slide from "../Swiper/SectionSwiper/Slide";
 
 export default function FavoriteManga() {
   const data: TAnime[] = [
@@ -40,15 +39,8 @@ export default function FavoriteManga() {
   ];
   return (
     <section className="mt-16">
-      <SectionHeader id="5" title="المانجا المفضلة" />
-      <SectionSwiper
-        slidesPerView={4}
-        id="5"
-        key={5}
-        options={{
-          breakpoints: generateSwiperBreakPoints({ slidesPerView: 4 }),
-        }}
-      >
+      <SectionHeader title="المانجا المفضلة" />
+      <SectionSwiper key={5}>
         {data.map((el, i) => {
           return (
             <SwiperSlide className="mr-3" key={i}>

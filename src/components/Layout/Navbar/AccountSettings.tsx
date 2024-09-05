@@ -16,10 +16,12 @@ import {
 import useUser from "@hooks/useUser";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { useMediaQuery } from "@uidotdev/usehooks";
 
 export default function AccountSettings() {
   const { user } = useUser({ required: true });
   const router = useRouter();
+  const isSmallDevice = useMediaQuery("only screen and (max-width : 640px)");
   const [showDropdown, setShowDropdown] = useState(false);
 
   function handleToggleDropdown() {
@@ -29,18 +31,28 @@ export default function AccountSettings() {
   return (
     <>
       <div className="w-fit">
-        <Button
-          className="flex flex-row-reverse gap-2 cursor-pointer md:bg-sub-card md:rounded-xl w-fit"
-          onClick={handleToggleDropdown}
-          size={"xl"}
-        >
-          <div className="flex justify-center items-center gap-2">
-            <h3 className="text-white text-left text-base hidden sm:!inline">
-              {user?.name}
-            </h3>
+        {isSmallDevice ? (
+          <Button
+            className="flex flex-row-reverse gap-2 cursor-pointer md:bg-sub-card md:rounded-xl w-fit"
+            onClick={handleToggleDropdown}
+            size={"icon"}
+          >
             <Image src={UserIcon} alt="user-icon" />
-          </div>
-        </Button>
+          </Button>
+        ) : (
+          <Button
+            className="flex flex-row-reverse gap-2 cursor-pointer md:bg-sub-card md:rounded-xl w-fit"
+            onClick={handleToggleDropdown}
+            size={"xl"}
+          >
+            <div className="flex justify-center items-center gap-2">
+              <h3 className="text-white text-left text-base hidden sm:!inline">
+                {user?.name}
+              </h3>
+              <Image src={UserIcon} alt="user-icon" />
+            </div>
+          </Button>
+        )}
         {showDropdown && (
           <DropdownMenu userName={user.name}>
             <DropdownOption

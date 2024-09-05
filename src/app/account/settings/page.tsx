@@ -1,8 +1,19 @@
 "use client";
+import { roles } from "@/components/Account/AccountInfo";
+import useAsk from "@/hooks/useAsk";
+import { slugifyOptions } from "@/lib/slugifyOptions";
+import {
+  imageTypesAllowed,
+  imageTypesAllowedKey,
+} from "@/utils/imageTypesAllowed";
+import uploadImage from "@/utils/uploadImage";
 import { Button, Container, Input } from "@components";
-import Image, { StaticImageData } from "next/image";
-import { CameraIcon, TrashIcon, UserIcon } from "@icons/index";
+import { Avatar, AvatarFallback, AvatarImage } from "@components/Ui/Avatar";
 import useUser from "@hooks/useUser";
+import { CameraIcon, TrashIcon, UserIcon } from "@icons/index";
+import { TUser, UserRole } from "@models/User";
+import axios from "axios";
+import Image, { StaticImageData } from "next/image";
 import {
   ChangeEvent,
   Dispatch,
@@ -12,20 +23,8 @@ import {
   useState,
 } from "react";
 import { ToastContainer, toast } from "react-toastify";
-import { TUser } from "@models/User";
 import "react-toastify/dist/ReactToastify.css";
-import { UserRole } from "@models/User";
-import useAsk from "@/hooks/useAsk";
-import uploadImage from "@/utils/uploadImage";
-import { roles } from "@/components/Account/AccountInfo";
 import slugify from "slugify";
-import axios from "axios";
-import {
-  imageTypesAllowed,
-  imageTypesAllowedKey,
-} from "@/utils/imageTypesAllowed";
-import { slugifyOptions } from "@/lib/slugifyOptions";
-import { Avatar, AvatarFallback, AvatarImage } from "@components/Ui/Avatar";
 
 type TProfile = {
   image: string | StaticImageData;
@@ -247,13 +246,15 @@ export default function EditPage() {
               onChange={(e) => handleChangeImage(e, "cover")}
             />
             <Button
-              variant="form-btn"
+              variant={"form-btn"}
+              size={"icon"}
               onClick={() => document.getElementById("cover-file")?.click()}
             >
               <Image src={CameraIcon} alt="camera-icon" />
             </Button>
             <Button
-              variant="form-btn"
+              variant={"form-btn"}
+              size={"icon"}
               onClick={() =>
                 setProfile((prev) => ({
                   ...prev,
@@ -269,7 +270,7 @@ export default function EditPage() {
             </Button>
           </div>
         </div>
-        <div className="w-[200px] aspect-square bg-slate-500 rounded-full p-1 -translate-y-1/2 ml-7 border border-slate-900">
+        <div className="w-[200px] aspect-square bg-slate-500 rounded-full p-1 -translate-y-1/2 ml-7 border border-slate-900 flex items-center justify-center">
           <Avatar size="xl">
             <AvatarImage
               src={(profile.image || defaultProfileValues.image) as string}
@@ -285,7 +286,8 @@ export default function EditPage() {
             onChange={(e) => handleChangeImage(e, "image")}
           />
           <Button
-            variant="light-form-btn"
+            variant={"light-form-btn"}
+            size={"icon"}
             className="!absolute top-3/4 right-0 shadow-md"
             onClick={() => document.getElementById("file")?.click()}
           >
@@ -354,7 +356,7 @@ export default function EditPage() {
             }}
           ></textarea>
         </Input>
-        <Button variant="main" className="my-5" onClick={handleSaveChanges}>
+        <Button variant={`main`} size={"lg"} className="mt-3 text-lg" onClick={handleSaveChanges}>
           حفظ التغييرات
         </Button>
       </div>

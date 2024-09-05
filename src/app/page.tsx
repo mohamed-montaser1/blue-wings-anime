@@ -1,17 +1,17 @@
 "use client";
 
 import {
-  MostSkilledArtists,
-  PremiumMember,
   Ads,
-  SocialMediaAccounts,
-  Recommendations,
   Blogs,
-  Hero,
-  FilterBar,
-  Trend,
-  Newest,
   Container,
+  FilterBar,
+  Hero,
+  MostSkilledArtists,
+  Newest,
+  PremiumMember,
+  Recommendations,
+  SocialMediaAccounts,
+  Trend,
 } from "@components";
 
 import "@/app/globals.css";

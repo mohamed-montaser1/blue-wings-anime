@@ -1,15 +1,14 @@
 "use client";
-import { TUser } from "@models/User";
 import { Button, Container, Title } from "@components";
-import { Avatar, AvatarImage, AvatarFallback } from "@components/Ui/Avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@components/Ui/Avatar";
+import { TUser } from "@models/User";
+import DateController from "@utils/date";
+import axios from "axios";
+import Image from "next/image";
+import Link from "next/link";
 import { useEffect, useState } from "react";
-import useFetch from "@hooks/useFetch";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import Image from "next/image";
-import DateController from "@utils/date";
-import Link from "next/link";
-import axios from "axios";
 
 export default function Artists() {
   const [data, setData] = useState<TUser[]>([]);

@@ -1,14 +1,13 @@
 "use client";
 import { Button, Container, Slide } from "@/components";
-import useFetch from "@/hooks/useFetch";
 import { TManga } from "@/models/Manga";
 import useUser from "@hooks/useUser";
-import axios, { AxiosError } from "axios";
+import axios from "axios";
 import { nanoid } from "nanoid";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import Rater from "react-rater";
-import { toast, ToastContainer } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 export default function FavoritesPage() {

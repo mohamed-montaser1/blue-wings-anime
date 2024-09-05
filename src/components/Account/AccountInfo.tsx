@@ -1,11 +1,11 @@
 "use client";
-import Image from "next/image";
-import { UserOutlineIcon } from "@icons";
-import { TRole } from "../../lib/types";
-import { useEffect, useState } from "react";
-import DateController from "@/utils/date";
 import { TUser } from "@/models/User";
+import DateController from "@/utils/date";
+import { UserOutlineIcon } from "@icons";
 import { AvatarFallback } from "@radix-ui/react-avatar";
+import Image from "next/image";
+import { useEffect, useState } from "react";
+import { TRole } from "../../lib/types";
 import { Avatar, AvatarImage } from "../Ui/Avatar";
 
 export const roles = {

@@ -1,8 +1,6 @@
 "use client";
 import { Button, Container, Input } from "@/components";
-import { Avatar, AvatarFallback, AvatarImage } from "@components/Ui/Avatar";
 import { roles } from "@/components/Account/AccountInfo";
-import { TableBodyData } from "@/components/Dashboard/TableBodyData";
 import {
   Table,
   TableBody,
@@ -13,6 +11,7 @@ import {
 } from "@/components/Ui/table";
 import useUser from "@/hooks/useUser";
 import { TUser, UserRole } from "@/models/User";
+import { Avatar, AvatarFallback, AvatarImage } from "@components/Ui/Avatar";
 import { SettingsIcon } from "@icons/index";
 import axios, { AxiosError } from "axios";
 import { nanoid } from "nanoid";
@@ -32,7 +31,6 @@ import "react-toastify/dist/ReactToastify.css";
 
 export default function UsersAC() {
   const [users, setUsers] = useState<TUser[]>([]);
-  const [admins, setAdmins] = useState<TUser[]>([]);
   const [showRolePopup, setShowRolePopup] = useState(false);
   const [selectedUser, setSelectedUser] = useState<TUser | null>(null);
   const [render, setRender] = useState(0);
@@ -43,10 +41,8 @@ export default function UsersAC() {
     async function getUsers() {
       const res = await axios.get("/api/all");
       const data = res.data.users;
-      const userRole = data.filter((user: TUser) => user.role !== "admin");
-      const adminRole = data.filter((user: TUser) => user.role === "admin");
-      setAdmins(adminRole);
-      setUsers(userRole);
+      const users = data.filter((user: TUser) => user.role !== "admin");
+      setUsers(users);
     }
     getUsers();
   }, [render]);

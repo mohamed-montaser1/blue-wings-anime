@@ -10,8 +10,10 @@
   },
   "dependencies": {
     "@radix-ui/react-avatar": "^1.1.0",
+    "@radix-ui/react-separator": "^1.1.0",
     "@radix-ui/react-slot": "^1.1.0",
     "@types/nanoid": "^3.0.0",
+    "@uidotdev/usehooks": "^2.4.1",
     "axios": "^1.6.8",
     "bcrypt": "^5.1.1",
     "class-variance-authority": "^0.7.0",

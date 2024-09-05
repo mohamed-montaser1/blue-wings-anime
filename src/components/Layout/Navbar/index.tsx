@@ -41,7 +41,7 @@ export default function Navbar() {
           </Link>
           <Menu />
         </div>
-        <div className="btn-container flex !w-fit">
+        <div className="btn-container flex !w-fit gap-2">
           {status === "authenticated" ? (
             <AccountSettings />
           ) : (
@@ -56,10 +56,12 @@ export default function Navbar() {
             </Button>
           )}
           <Button
-            className="2xl:!hidden md:mr-3 !p-3 !min-w-0"
+            className="2xl:!hidden md:mr-3"
+            variant={"default"}
+            size={"icon"}
             onClick={handleActiveMenu}
           >
-            <Image src={MenuIcon} alt="menu-icon" className="min-w-6" />
+            <Image src={MenuIcon} alt="menu-icon" />
           </Button>
         </div>
         <MobileMenu active={activeMobileMenu} />

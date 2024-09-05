@@ -1,15 +1,14 @@
 "use client";
 
+import "@/app/globals.css";
 import { Button, Container } from "@components";
+import useUser from "@hooks/useUser";
+import axios from "axios";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { ChangeEvent, useCallback, useEffect, useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import "@/app/globals.css";
-import useUser from "@hooks/useUser";
-import useFetch from "@hooks/useFetch";
-import axios from "axios";
 
 export default function VerifyEmail() {
   const { user } = useUser({ required: true });

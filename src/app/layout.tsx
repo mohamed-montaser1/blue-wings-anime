@@ -1,8 +1,8 @@
-import type { Metadata } from "next";
-import { Cairo } from "next/font/google";
 import "@/app/globals.css";
 import { NextAuthProvider } from "@/app/Providers";
 import Navbar from "@/components/Layout/Navbar";
+import type { Metadata } from "next";
+import { Cairo } from "next/font/google";
 import "tw-elements-react/dist/css/tw-elements-react.min.css";
 
 const cairo = Cairo({ subsets: ["arabic"] });

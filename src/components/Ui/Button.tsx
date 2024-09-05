@@ -34,11 +34,11 @@ export const buttonVariants = cva(
         danger: "bg-red-500 text-slate-200 hover:bg-red-500/90",
         "form-btn":
           "bg-card hover:bg-sub-card text-slate-200 hover:text-primary",
-        "light-form-btn": "bg-sub-card text-slate-200 hover:bg-sub-card/80",
+        "light-form-btn": "bg-sub-card text-slate-200 hover:bg-card",
         "border": "bg-transparent text-slate-200 border border-solid border-slate-200 hover:bg-sub-card hover:border-sub-card",
         ghost: "hover:bg-accent hover:text-accent-foreground",
         link: "text-primary underline-offset-4 hover:underline",
-        main: "bg-primary text-slate-200 hover:bg-primary/80",
+        main: "bg-primary text-slate-200 hover:bg-dark-primary",
       },
       size: {
         default: "h-10 px-4 py-2",
@@ -46,7 +46,7 @@ export const buttonVariants = cva(
         lg: "h-11 rounded-md px-8",
         xl: "h-14 rounded-md px-8 py-4",
         xxl: "h-16 rounded-md px-10 !py-6",
-        icon: "h-10 w-10",
+        icon: "!h-10 !w-10",
       },
     },
     defaultVariants: {

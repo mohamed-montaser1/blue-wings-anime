@@ -1,6 +1,5 @@
 "use client";
 import { Button, Container, Input, Title } from "@/components";
-import useFetch from "@/hooks/useFetch";
 import { slugifyOptions } from "@/lib/slugifyOptions";
 import axios from "axios";
 import { useState } from "react";

@@ -1,19 +1,17 @@
 "use client";
 import { Container } from "@/components";
 import { Breadcrumbs, Button, Input, Title } from "@/components/Ui";
-import { Avatar, AvatarFallback, AvatarImage } from "@components/Ui/Avatar";
-import useFetch from "@/hooks/useFetch";
 import useUser from "@/hooks/useUser";
 import { TChapter } from "@/models/Chapter";
 import { TComment } from "@/models/Comment";
 import DateController from "@/utils/date";
+import { Avatar, AvatarFallback, AvatarImage } from "@components/Ui/Avatar";
 import { PlainIcon } from "@icons/index";
 import axios from "axios";
 import { nanoid } from "nanoid";
 import Image from "next/image";
-import { redirect, usePathname, useRouter } from "next/navigation";
+import { redirect, usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
-import { toast } from "react-toastify";
 
 export default function Chapter() {
   const pathname = usePathname();

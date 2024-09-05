@@ -3,7 +3,7 @@ import { Button, Container, Input, Slide, Title } from "@/components";
 import useFetch from "@/hooks/useFetch";
 import { TManga } from "@/models/Manga";
 import Link from "next/link";
-import { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, useState } from "react";
 import Rater from "react-rater";
 
 export default function CreateChapter() {

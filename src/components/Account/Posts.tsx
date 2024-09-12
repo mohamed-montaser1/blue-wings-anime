@@ -1,18 +1,30 @@
+import useUser from "@/hooks/useUser";
 import { cn } from "@/lib/utils";
 import { TComment } from "@/models/Comment";
 import { type TPost } from "@/models/Post";
 import DateController from "@/utils/date";
-import { HeartIcon, MessageCircle, Share, Share2 } from "lucide-react";
+import twoLetterName from "@/utils/twoLetterName";
+import Plain from "@icons/plain";
+import axios from "axios";
+import { HeartIcon, MessageCircle, Share2 } from "lucide-react";
 import Image from "next/image";
 import { MouseEvent, useEffect, useRef, useState } from "react";
 import { SectionSwiper } from "../Swiper";
-import { Button, Container, Input } from "../Ui";
+import { Button, Container } from "../Ui";
 import { Avatar, AvatarFallback, AvatarImage } from "../Ui/Avatar";
 import { CarouselItem } from "../Ui/carousel";
 import { Separator } from "../Ui/separator";
-import twoLetterName from "@/utils/twoLetterName";
-import { Heart, PostHeart } from "@icons/index";
-import Plain from "@icons/plain";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/Ui/alert-dialog";
 
 type PostedPosts = { posts: TPost[] };
 
@@ -95,13 +107,29 @@ type TPostPopupProps = {
   handleClosePost: () => void;
 };
 
-function PostPopup({ post, handleClosePost }: TPostPopupProps) {
+function PostPopup({ post: p, handleClosePost }: TPostPopupProps) {
   const [createdAt, setCreatedAt] = useState<any>();
+  const [post, setPost] = useState<TPost>(p);
+  const [showShareAlertDialog, setShowShareAlertDialog] = useState(false);
   const commentInputRef = useRef<HTMLInputElement>(null);
+  const { user } = useUser({ required: false });
   useEffect(() => {
     const fromNow = new DateController(post.createdAt as number).fromNow();
     setCreatedAt(fromNow);
   });
+
+  async function handleLikePost() {
+    if (!user) return;
+    const form = new FormData();
+    form.set("userId", user._id);
+    const res = await axios.post(`/api/posts/info/${post._id}/like`, form);
+    const data = res.data.data;
+    setPost(data);
+  }
+
+  function handleSharePost() {
+    setShowShareAlertDialog(true);
+  }
 
   return (
     <>
@@ -151,11 +179,9 @@ function PostPopup({ post, handleClosePost }: TPostPopupProps) {
               </h1>
             )}
             <div className="comments mt-5 h-full overflow-auto">
-              {post.comments.map(
-                (comment, idx) => (
-                  <Comment comment={comment} idx={idx} />
-                )
-              )}
+              {post.comments.map((comment, idx) => (
+                <Comment comment={comment} idx={idx} />
+              ))}
             </div>
           </div>
 
@@ -164,13 +190,25 @@ function PostPopup({ post, handleClosePost }: TPostPopupProps) {
             <div>
               <div className="flex justify-between items-center mb-2">
                 <div className="controls mt-3">
-                  <Button variant={"ghost"} size={"icon"}>
+                  <Button
+                    variant={"ghost"}
+                    size={"icon"}
+                    onClick={handleLikePost}
+                  >
                     <HeartIcon stroke="#18B2FF" />
                   </Button>
-                  <Button variant={"ghost"} size={"icon"}>
+                  <Button
+                    variant={"ghost"}
+                    size={"icon"}
+                    onClick={() => commentInputRef.current?.focus()}
+                  >
                     <MessageCircle fillOpacity={0} stroke="#18B2FF" />
                   </Button>
-                  <Button variant={"ghost"} size={"icon"}>
+                  <Button
+                    variant={"ghost"}
+                    size={"icon"}
+                    onClick={handleSharePost}
+                  >
                     <Share2 stroke="#18B2FF" />
                   </Button>
                 </div>

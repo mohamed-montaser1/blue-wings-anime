@@ -28,7 +28,7 @@ const config = {
         card: "#303343",
         "sub-card": "#393C4C",
         primary: "#18B2FF",
-        'dark-primary': "#0086C9",
+        "dark-primary": "#0086C9",
         secondary: "#9128FF",
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
@@ -48,7 +48,8 @@ const config = {
           foreground: "hsl(var(--accent-foreground))",
         },
         popover: {
-          DEFAULT: "hsl(var(--popover))",
+          // DEFAULT: "hsl(var(--popover))",
+          DEFAULT: "#303343",
           foreground: "hsl(var(--popover-foreground))",
         },
       },

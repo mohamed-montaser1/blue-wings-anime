@@ -5,10 +5,12 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/Ui/dropdown-menu";
+import MangaNewImage from "@public/manga-new-image.svg";
+import { Separator } from "@/components/Ui/separator";
+import Image from "next/image";
+import { nanoid } from "nanoid";
 
 export default function NewsPage() {
   return (
@@ -58,16 +60,53 @@ function MangaList() {
           <div className="w-[236px] h-[45px] flex justify-center items-center">
             <DropdownMenuTrigger>الترتيب حسب</DropdownMenuTrigger>
             <DropdownMenuContent className="w-[236px]">
-              <DropdownMenuItem onClick={handleSortOlder}>
+              <DropdownMenuItem
+                onClick={handleSortOlder}
+                className="flex justify-center items-center cursor-pointer"
+              >
                 الأقدم
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={handleSortLatest}>
+              <DropdownMenuItem
+                onClick={handleSortLatest}
+                className="flex justify-center items-center cursor-pointer"
+              >
                 الأحدث
               </DropdownMenuItem>
             </DropdownMenuContent>
           </div>
         </DropdownMenu>
       </div>
+      {Array.from({ length: 5 }).map((el, i) => (
+        <MangaNew key={i} />
+      ))}
     </>
+  );
+}
+
+function MangaNew() {
+  return (
+    <article>
+      <Separator className="bg-slate-500 block mt-[32px] mb-[16px]" />
+      <div className="flex items-stretch gap-5">
+        <Image
+          src={MangaNewImage}
+          alt={`small-card-placeholder-${nanoid()}`}
+          className="h-[180px] w-[359px]"
+          width={359}
+          height={180}
+        />
+        <div className="content">
+          <div className="keywords !mt-0 mb-4">
+            <span className="keyword">أكشن</span>
+            <span className="keyword">خارق للطبيعه</span>
+          </div>
+          <h2 className="text-slate-200 font-bold text-xl mb-2">
+            عودة فيلمي HAIKYU!! The Dumpster Battle و THE FIRST SLAM DUNK إلى
+            قائمة العشرة الأوائل في شباك التذاكر الياباني بفضل العروض الخاصة
+          </h2>
+          <p className="text-slate-400">يتجاوز الفيلم الرابع من سلسلة أفلام Kingdom حاجز 6.8 مليار ين</p>
+        </div>
+      </div>
+    </article>
   );
 }

@@ -28,7 +28,7 @@ type TProps = Readonly<{
 
 export default function RootLayout({ children }: TProps) {
   return (
-    <html lang="ar" dir="rtl">
+    <html lang="ar" dir="rtl" translate="no">
       <body className={`${cairo.className} bg-page dark`}>
         <NextAuthProvider>
           <Navbar />

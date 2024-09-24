@@ -11,7 +11,7 @@ export default function SimilarManga() {
     <div className="mt-24">
       <Container>
         <Title>أعمال ذات صلة</Title>
-        <SectionSwiper slidesPerView={4} id="any" key={nanoid()}>
+        <SectionSwiper key={nanoid()}>
           {data.map((slide, i) => (
             <SwiperSlide className="mr-4" key={i}>
               <Slide title="مانجا" key={i}>

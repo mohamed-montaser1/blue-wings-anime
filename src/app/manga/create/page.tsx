@@ -1,6 +1,7 @@
 "use client";
 import { Button, Container, Input } from "@/components";
 import useUser from "@/hooks/useUser";
+import { manga_status, manga_types } from "@/models/Manga";
 import { classifications, TClassification } from "@/utils/classifications";
 import { imageTypesAllowed } from "@/utils/imageTypesAllowed";
 import uploadImage from "@/utils/uploadImage";
@@ -24,10 +25,10 @@ type FieldsType = {
 
 const createMangaSchema = z.object({
   title: z.string().min(1, "يجب إدخال اسم المانجا"),
-  status: z.enum(["Ongoing", "Completed", "Hiatus"], {
+  status: z.enum(manga_status, {
     required_error: "يجب تحديد حالة المانجا",
   }),
-  type: z.enum(["Manga", "Manhwa", "Manhua", "Comic", "Novel"], {
+  type: z.enum(manga_types, {
     required_error: "يجب تحديد نوع المانجا",
   }),
   story: z.string().min(10, "يجب أن تحتوي القصة على الأقل على 10 أحرف"),
@@ -51,7 +52,7 @@ export default function CreateManga() {
   });
   const { user } = useUser({ required: true });
   const [keywords, setKeywords] = useState<
-    TClassification[keyof TClassification]["value"][]
+    TClassification[keyof TClassification][]
   >([]);
   const toastId = useRef<null | Id>(null);
 
@@ -148,14 +149,14 @@ export default function CreateManga() {
                 setKeywords((prev) => [
                   ...prev,
                   classifications[e.target.value as keyof TClassification]
-                    .value,
+                    ,
                 ])
               }
             >
               <option disabled>الكلمات المفتاحيه</option>
               {Object.keys(classifications).map((keyword, i) => (
                 <option value={keyword} key={i}>
-                  {classifications[keyword as keyof TClassification].value}
+                  {classifications[keyword as keyof TClassification]}
                 </option>
               ))}
             </select>
@@ -166,7 +167,7 @@ export default function CreateManga() {
               {...register("status")}
             >
               <option disabled>حالة العمل</option>
-              {["Ongoing", "Completed", "Hiatus"].map((el, i) => (
+              {manga_status.map((el, i) => (
                 <option value={el} key={i}>
                   {el}
                 </option>
@@ -179,7 +180,7 @@ export default function CreateManga() {
               {...register("type")}
             >
               <option disabled>نوع العمل</option>
-              {["Manga", "Manhwa", "Manhua", "Comic", "Novel"].map((el, i) => (
+              {manga_types.map((el, i) => (
                 <option value={el} key={i}>
                   {el}
                 </option>

@@ -19,6 +19,10 @@ export interface TManga {
   ratingNumber: number;
 }
 
+export const manga_status = ["Ongoing", "Completed", "Hiatus"] as const;
+export const manga_types = ["Manga", "Manhwa", "Manhua", "Comic", "Novel"] as const;
+export const manga_rating = [1, 2, 3, 4, 5] as const;
+
 export const MangaSchema = new Schema<TManga>(
   {
     _id: {
@@ -81,4 +85,4 @@ export const MangaSchema = new Schema<TManga>(
 
 MangaSchema.index({ slug: "text", name: "text" });
 
-export const Manga = models.Manga || model("Manga", MangaSchema);
+export const Manga = models?.Manga || model("Manga", MangaSchema);

@@ -1,13 +1,49 @@
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import React, { useState } from "react";
-import { Button } from "@components";
+import { Button, Container, Title } from "@components";
+import {
+  classifications,
+  TClassification,
+  TClassificationKey,
+} from "@/utils/classifications";
+import { manga_rating, manga_status, manga_types } from "@/models/Manga";
+import star from "@icons/star.svg";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@radix-ui/react-dropdown-menu";
+const classifications_keys = Object.keys(classifications);
 
 const FILTER_ITEMS_DATA: FilterItemProps[] = [
-  { query: "newest", name: "الأحدث" },
-  { query: "oldest", name: "الأقدم" },
-  { query: "highest-rating", name: "الأعلى تقييماً" },
-  { query: "lowest-rating", name: "الأقل تقييماً" },
+  {
+    name: "تصنيف العمل",
+    query_name: "classification",
+    content: classifications_keys.map((key, i) => ({
+      title: classifications[key as TClassificationKey],
+      query: key,
+    })),
+  },
+  {
+    name: "حالة العمل",
+    query_name: "status",
+    content: manga_status.map((status) => ({ title: status, query: status })),
+  },
+  {
+    name: "نوع العمل",
+    query_name: "type",
+    content: manga_types.map((type) => ({ title: type, query: type })),
+  },
+  {
+    name: "تقييم العمل",
+    query_name: "rating",
+    content: manga_rating.map((rate) => ({
+      title: "star",
+      query: rate,
+    })),
+  },
 ];
 
 export default function WorkListFilterBar() {
@@ -16,42 +52,43 @@ export default function WorkListFilterBar() {
   const [showFilters, setShowFilters] = useState(false);
   console.log(query);
   return (
-    <div className="mt-16 flex justify-between">
-      <h1 className="text-white text-2xl font-semibold">فلاتر البحث</h1>
-      <div className="relative">
-        <Button
-          variant="form-btn"
-          className="h-fit"
-          onClick={() => setShowFilters((prev) => !prev)}
-        >
-          فلاتر
-        </Button>
-        {showFilters && (
-          <ul className="bg-card rounded-xl text-white p-2 border-none outline-none flex flex-col gap-2 absolute left-0 px-4 top-[120%] min-w-60">
-            {FILTER_ITEMS_DATA.map((item, i) => (
-              <FilterItem query={item.query} name={item.name} key={i} />
-            ))}
-          </ul>
-        )}
+    <div className="bg-slate-400">
+      <h2 className="font-bold text-2xl">التصفيات</h2>
+      <div className="flex gap-1">
+        {FILTER_ITEMS_DATA.map((el, i) => (
+          <FilterItem
+            name={el.name}
+            query_name={el.query_name}
+            content={el.content}
+            key={i}
+          />
+        ))}
       </div>
     </div>
   );
 }
 
 type FilterItemProps = {
-  query: string;
   name: string;
+  query_name: string;
+  content: {
+    title: string;
+    query: string | number;
+  }[];
 };
 
-function FilterItem({ query, name }: FilterItemProps) {
+function FilterItem({ name, content }: FilterItemProps) {
+  console.log({ content });
   return (
-    <li className="text-lg">
-      <Link
-        href={`?query=${query}`}
-        className="hover:text-primary transition-colors duration-300 ease-out"
-      >
-        {name}
-      </Link>
-    </li>
+    <DropdownMenu modal={false}>
+      <DropdownMenuTrigger asChild>
+        <Button className="bg-card text-slate-200">{name}</Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent className="min-w-80 w-[400px] bg-red-500 relative">
+        {content.map((el) => (
+          <Button variant={"ghost"}>{el.title}</Button>
+        ))}
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 }

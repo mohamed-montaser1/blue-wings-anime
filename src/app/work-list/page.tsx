@@ -9,8 +9,8 @@ import {
 
 export default function WorkList() {
   return (
-    <Container className="py-20">
-      <Title className="mx-auto">قائمة الأعمال</Title>
+    <Container className="py-20 min-h-screen">
+      <Title className="mx-auto">صفحة الأعمال</Title>
       <WorkListFilterBar />
       <WorkListContainer />
     </Container>

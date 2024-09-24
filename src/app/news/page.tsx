@@ -56,25 +56,36 @@ function MangaList() {
     <>
       <h1 className="text-5xl text-center my-10">قائمة الأخبار</h1>
       <div className="filter w-[236px] h-[45px] rounded-lg bg-card flex items-center justify-center">
-        <DropdownMenu>
-          <div className="w-[236px] h-[45px] flex justify-center items-center">
-            <DropdownMenuTrigger>الترتيب حسب</DropdownMenuTrigger>
-            <DropdownMenuContent className="w-[236px]">
-              <DropdownMenuItem
-                onClick={handleSortOlder}
-                className="flex justify-center items-center cursor-pointer"
-              >
-                الأقدم
-              </DropdownMenuItem>
-              <DropdownMenuItem
-                onClick={handleSortLatest}
-                className="flex justify-center items-center cursor-pointer"
-              >
-                الأحدث
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </div>
-        </DropdownMenu>
+        <div className="relative">
+          <span>
+            <DropdownMenu modal={false}>
+              <DropdownMenuTrigger className="w-[236px] h-[45px] flex justify-center items-center">
+                <button
+                  onMouseDown={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                  }}
+                >
+                  الترتيب حسب
+                </button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="w-[236px]">
+                <DropdownMenuItem
+                  onClick={handleSortOlder}
+                  className="flex justify-center items-center cursor-pointer"
+                >
+                  الأقدم
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  onClick={handleSortLatest}
+                  className="flex justify-center items-center cursor-pointer"
+                >
+                  الأحدث
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </span>
+        </div>
       </div>
       {Array.from({ length: 5 }).map((el, i) => (
         <MangaNew key={i} />
@@ -104,7 +115,9 @@ function MangaNew() {
             عودة فيلمي HAIKYU!! The Dumpster Battle و THE FIRST SLAM DUNK إلى
             قائمة العشرة الأوائل في شباك التذاكر الياباني بفضل العروض الخاصة
           </h2>
-          <p className="text-slate-400">يتجاوز الفيلم الرابع من سلسلة أفلام Kingdom حاجز 6.8 مليار ين</p>
+          <p className="text-slate-400">
+            يتجاوز الفيلم الرابع من سلسلة أفلام Kingdom حاجز 6.8 مليار ين
+          </p>
         </div>
       </div>
     </article>

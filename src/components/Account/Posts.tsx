@@ -14,17 +14,6 @@ import { Button, Container } from "../Ui";
 import { Avatar, AvatarFallback, AvatarImage } from "../Ui/Avatar";
 import { CarouselItem } from "../Ui/carousel";
 import { Separator } from "../Ui/separator";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/Ui/alert-dialog";
 
 type PostedPosts = { posts: TPost[] };
 
